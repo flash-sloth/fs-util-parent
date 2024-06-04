@@ -184,7 +184,7 @@ public class FsTenantLineInnerInterceptor extends JsqlParserSupport implements I
             // 过滤退出执行
             return;
         }
-        // update by zuihou
+        // update by tangyh
         Expression expression = this.andExpression(table, update.getWhere());
         if (expression == null) {
             return;
@@ -201,7 +201,7 @@ public class FsTenantLineInnerInterceptor extends JsqlParserSupport implements I
             // 过滤退出执行
             return;
         }
-        // update by zuihou
+        // update by tangyh
         Expression expression = this.andExpression(delete.getTable(), delete.getWhere());
         if (expression == null) {
             return;
@@ -213,7 +213,7 @@ public class FsTenantLineInnerInterceptor extends JsqlParserSupport implements I
      * delete update 语句 where 处理
      */
     protected BinaryExpression andExpression(Table table, Expression where) {
-        // update by zuihou 返回空即表示当前语句不需要拼接 租户id
+        // update by tangyh 返回空即表示当前语句不需要拼接 租户id
         if (tenantLineHandler.getTenantId() == null) {
             return null;
         }

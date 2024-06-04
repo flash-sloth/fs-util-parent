@@ -8,19 +8,6 @@ package top.fsfsfs.basic.context;
  */
 public final class ContextConstants {
     /**
-     * lamp_defaults库
-     */
-    public static final Long DEF_TENANT_ID = 0L;
-    public static final String DEF_TENANT_ID_STR = "0";
-    /**
-     * 内置租户
-     */
-    public static final String BUILT_IN_TENANT_ID_STR = "1";
-    /**
-     * 请求头中携带的 应用id key
-     */
-    public static final String APPLICATION_ID_KEY = "ApplicationId";
-    /**
      * 请求头中携带的 token key
      */
     public static final String TOKEN_KEY = "Token";
@@ -28,6 +15,10 @@ public final class ContextConstants {
      * 请求头中携带的 客户端信息 key
      */
     public static final String CLIENT_KEY = "Authorization";
+    /**
+     * 请求头中携带的 应用id key
+     */
+    public static final String APPLICATION_ID_KEY = "ApplicationId";
     /**
      * 请求头中携带的 租户id
      */
@@ -47,14 +38,6 @@ public final class ContextConstants {
      * JWT中封装的 随机数
      */
     public static final String JWT_KEY_UUID = "Uuid";
-    /**
-     * 请求头和线程变量中的 base库 租户数据源标识
-     */
-    public static final String TENANT_BASE_POOL_NAME_HEADER = "lamp_base";
-    /**
-     * 请求头和线程变量中的 extend库 租户数据源标识
-     */
-    public static final String TENANT_EXTEND_POOL_NAME_HEADER = "lamp_extend";
     /**
      * 请求头和线程变量中的 企业ID
      */
