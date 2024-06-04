@@ -1,20 +1,17 @@
-# 快速开发平台
+<div align="center">
+	<h1>flash-sloth</h1> 
+    <p>赋予树懒闪电般的速度，使其工作效率如疾风骤雨般迅捷。</p>
 
-[![Language](https://img.shields.io/badge/langs-Java%20%7C%20SpringCloud%20%7C%20Vue3%20%7C%20...-red?style=flat-square&color=42b883)](https://github.com/flash-sloth/fs-cloud)
+[![Version](https://img.shields.io/badge/版本-0.0.1-brightgreen.svg)](https://github.com/flash-sloth/fs-boot)
+[![Language](https://img.shields.io/badge/langs-Java%20%7C%20SpringCloud%20%7C%20Vue3%20%7C%20...-red?style=flat-square&color=42b883)](https://github.com/flash-sloth/fs-boot)
 [![License](https://img.shields.io/github/license/flash-sloth/fs-util?color=42b883&style=flat-square)](https://github.com/flash-sloth/fs-util/blob/master/LICENSE)
 [![Author](https://img.shields.io/badge/作者-tangyh|liulh|liy|hukz-orange.svg)](https://github.com/flash-sloth)
-[![Version](https://img.shields.io/badge/版本-0.0.1-brightgreen.svg)](https://github.com/flash-sloth/fs-cloud)
+
 [![Star](https://img.shields.io/github/stars/flash-sloth/fs-boot?color=42b883&logo=github&style=flat-square)](https://github.com/flash-sloth/fs-boot/stargazers)
 [![Fork](https://img.shields.io/github/forks/flash-sloth/fs-boot?color=42b883&logo=github&style=flat-square)](https://github.com/flash-sloth/fs-boot/network/members)
 [![Star](https://gitee.com/flash-sloth/fs-boot/badge/star.svg?theme=gray)](https://gitee.com/flash-sloth/fs-boot/stargazers)
 [![Fork](https://gitee.com/flash-sloth/fs-boot/badge/fork.svg?theme=gray)](https://gitee.com/flash-sloth/fs-boot/members)
-
-
-<div align="center">
-	<h1>flash-sloth</h1>
-赋予树懒闪电般的速度，使其工作效率如疾风骤雨般迅捷。
 </div>
-<br />
 
 
 ## 简介
