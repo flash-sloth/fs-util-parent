@@ -27,7 +27,7 @@ import top.fsfsfs.basic.base.manager.SuperCacheManager;
 import top.fsfsfs.basic.base.mapper.SuperMapper;
 import top.fsfsfs.basic.cache.redis2.CacheResult;
 import top.fsfsfs.basic.cache.repository.CacheOps;
-import top.fsfsfs.basic.database.mybatis.conditions.Wraps;
+import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.model.cache.CacheKey;
 import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
 import top.fsfsfs.basic.utils.CollHelper;

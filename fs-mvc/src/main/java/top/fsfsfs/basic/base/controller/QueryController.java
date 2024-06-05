@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.basic.database.mybatis.conditions.Wraps;
-import top.fsfsfs.basic.database.mybatis.conditions.query.QueryWrap;
+import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
+import top.fsfsfs.basic.mybatisplus.mybatis.conditions.query.QueryWrap;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.utils.BeanPlusUtil;
 

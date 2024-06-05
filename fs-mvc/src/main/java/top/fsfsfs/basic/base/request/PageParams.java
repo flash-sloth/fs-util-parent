@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.basic.database.mybatis.conditions.Wraps;
+import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.utils.StrPool;
 
 import java.util.ArrayList;

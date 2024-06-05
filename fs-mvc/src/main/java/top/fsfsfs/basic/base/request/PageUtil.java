@@ -2,7 +2,7 @@ package top.fsfsfs.basic.base.request;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
-import top.fsfsfs.basic.database.mybatis.conditions.Wraps;
+import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.utils.DateUtils;
 
 import java.util.Map;

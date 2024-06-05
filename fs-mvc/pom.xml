@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
-            <artifactId>fs-database</artifactId>
+            <artifactId>fs-db-mybatis-plus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

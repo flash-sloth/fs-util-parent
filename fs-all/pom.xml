@@ -49,9 +49,10 @@
         </dependency>
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
-            <artifactId>fs-database</artifactId>
+            <artifactId>fs-db-mybatis-flex</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
             <artifactId>fs-echo-starter</artifactId>

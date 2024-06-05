@@ -1,12 +1,9 @@
 package top.fsfsfs.basic.utils;
 
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.io.Resources;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -14,6 +11,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import top.fsfsfs.basic.exception.BizException;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -47,7 +45,7 @@ public class ClassUtils {
             for (Resource resource : resources) {
                 try {
                     ClassMetadata classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
-                    Class<?> clazz = Resources.classForName(classMetadata.getClassName());
+                    Class<?> clazz = ClassUtil.loadClass(classMetadata.getClassName());
                     if (assignableType == null || assignableType.isAssignableFrom(clazz)) {
                         classes.add(clazz);
                     }
@@ -70,24 +68,24 @@ public class ClassUtils {
      */
     @SneakyThrows
     public static Set<Class<?>> scanPackage(String packageName, Predicate<Class<?>> classFilter) {
-        if (StringUtils.isBlank(packageName)) {
+        if (StrUtil.isBlank(packageName)) {
             return Collections.emptySet();
         }
         Set<Class<?>> classes;
 
-        if (packageName.contains(StringPool.STAR) && !packageName.contains(StringPool.COMMA)
-                && !packageName.contains(StringPool.SEMICOLON)) {
+        if (packageName.contains(StrPool.STAR) && !packageName.contains(StrPool.COMMA)
+                && !packageName.contains(StrPool.SEMICOLON)) {
             classes = scanClasses(packageName, null);
         } else {
             classes = new HashSet<>();
             String[] packageNameArray = tokenizeToStringArray(packageName, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-            Assert.notNull(packageNameArray, "not find packageName:" + packageName);
+            ArgumentAssert.notNull(packageNameArray, "not find packageName:" + packageName);
             Stream.of(packageNameArray).forEach(typePackage -> {
                 try {
                     Set<Class<?>> scanTypePackage = scanClasses(typePackage, null);
                     classes.addAll(scanTypePackage);
                 } catch (IOException e) {
-                    throw new MybatisPlusException("Cannot scan class in '[" + typePackage + "]' package", e);
+                    throw new BizException("Cannot scan class in '[" + typePackage + "]' package", e);
                 }
             });
         }

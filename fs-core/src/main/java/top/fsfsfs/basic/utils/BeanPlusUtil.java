@@ -1,9 +1,6 @@
 package top.fsfsfs.basic.utils;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -37,32 +34,6 @@ public class BeanPlusUtil extends BeanUtil {
                 .filter(Objects::nonNull)
                 .map(source -> toBean(source, destinationClass))
                 .toList();
-    }
-
-    /**
-     * 转化Page 对象
-     *
-     * @param page             分页对象
-     * @param destinationClass 目标类型
-     * @return 目录分页对象
-     */
-    public static <T, E> IPage<T> toBeanPage(IPage<E> page, Class<T> destinationClass) {
-        if (page == null || destinationClass == null) {
-            return null;
-        }
-        IPage<T> newPage = new Page<>(page.getCurrent(), page.getSize());
-        newPage.setPages(page.getPages());
-        newPage.setTotal(page.getTotal());
-
-        List<E> list = page.getRecords();
-        if (CollUtil.isEmpty(list)) {
-            return newPage;
-        }
-
-        List<T> destinationList = toBeanList(list, destinationClass);
-
-        newPage.setRecords(destinationList);
-        return newPage;
     }
 
 }

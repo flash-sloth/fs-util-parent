@@ -3,9 +3,6 @@ package top.fsfsfs.basic.utils;
 import cn.hutool.core.text.CharPool;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.enums.SqlLike;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.sql.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.stream.Stream;
@@ -51,45 +48,6 @@ public final class StrHelper {
         return Stream.of(css).allMatch(StrUtil::isNotBlank);
     }
 
-    /**
-     * mybatis plus like查询转换
-     */
-    public static String keywordConvert(String value) {
-        if (StrUtil.isBlank(value)) {
-            return StrPool.EMPTY;
-        }
-        value = value.replaceAll(StrPool.PERCENT, "\\\\%");
-        value = value.replaceAll(StrPool.UNDERSCORE, "\\\\_");
-        return value;
-    }
-
-    public static Object keywordConvert(Object value) {
-        if (value instanceof String str) {
-            return keywordConvert(str);
-        }
-        return value;
-    }
-
-    /**
-     * 拼接like条件
-     *
-     * @param value   值
-     * @param sqlType 拼接类型
-     * @return 拼接后的值
-     */
-    public static String like(Object value, SqlLike sqlType) {
-        return SqlUtils.concatLike(keywordConvert(String.valueOf(value)), sqlType);
-    }
-
-    /**
-     * 拼接like 模糊条件
-     *
-     * @param value 值
-     * @return 拼接后的值
-     */
-    public static String fullLike(String value) {
-        return like(value, SqlLike.DEFAULT);
-    }
 
     /**
      * 将下划线命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。
@@ -172,19 +130,19 @@ public final class StrHelper {
             if ((Character.isWhitespace(lastChar)) && (!Character.isWhitespace(c))
                     && (CharPool.DASHED != c) && (buf.length() > 0)
                     && (buf.charAt(buf.length() - 1) != CharPool.DASHED)) {
-                buf.append(StringPool.DASH);
+                buf.append(StrPool.DASH);
             }
             if (CharPool.UNDERLINE == c) {
-                buf.append(StringPool.DASH);
+                buf.append(StrPool.DASH);
             } else if (CharPool.DOT == c) {
-                buf.append(StringPool.DASH);
+                buf.append(StrPool.DASH);
             } else if (!Character.isWhitespace(c)) {
                 buf.append(Character.toLowerCase(c));
             }
             lastChar = c;
         }
         if (Character.isWhitespace(lastChar)) {
-            buf.append(StringPool.DASH);
+            buf.append(StrPool.DASH);
         }
         return buf.toString();
     }

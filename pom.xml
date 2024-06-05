@@ -25,7 +25,9 @@
         <module>fs-core</module>
         <module>fs-mvc</module>
         <module>fs-webmvc</module>
-        <module>fs-database</module>
+        <module>fs-db</module>
+        <module>fs-db-mybatis-plus</module>
+        <module>fs-db-mybatis-flex</module>
         <module>fs-log-starter</module>
         <module>fs-openapi3-starter</module>
         <module>fs-validator-starter</module>
@@ -56,10 +58,13 @@
         <hutool.version>5.8.22</hutool.version>
         <oshi.version>6.3.2</oshi.version>
         <druid.version>1.2.20</druid.version>
-        <mybatis.version>3.5.13</mybatis.version>
-        <mybatis-spring.version>2.1.1</mybatis-spring.version>
+
+        <mybatis.version>3.5.15</mybatis.version>
+        <mybatis-spring.version>2.1.2</mybatis-spring.version>
+
         <mybatis.typehandlers.version>1.0.2</mybatis.typehandlers.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <mybatis-flex.version>1.9.2</mybatis-flex.version>
         <dynamic.datasource.version>4.2.0</dynamic.datasource.version>
         <jasypt.version>3.0.4</jasypt.version>
         <p6spy.version>3.9.1</p6spy.version>
@@ -231,6 +236,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.mybatis-flex</groupId>
+                <artifactId>mybatis-flex-dependencies</artifactId>
+                <version>${mybatis-flex.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <dependency>
                 <groupId>com.googlecode.aviator</groupId>
@@ -260,6 +272,7 @@
                 <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
                 <version>${dynamic.datasource.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -545,7 +558,6 @@
 
         </dependencies>
     </dependencyManagement>
-
 
 
     <build>
