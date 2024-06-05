@@ -74,18 +74,20 @@ public abstract class FsMybatisPlusConfiguration extends FsDbConfiguration {
             beforeInnerInterceptor.forEach(interceptor::addInnerInterceptor);
         }
 
+        DatabaseProperties.Plus plus = databaseProperties.getPlus();
+
         // 分页插件
         PaginationInnerInterceptor paginationInterceptor = new PaginationInnerInterceptor();
         // 单页分页条数限制
-        paginationInterceptor.setMaxLimit(databaseProperties.getMaxLimit());
+        paginationInterceptor.setMaxLimit(plus.getMaxLimit());
         // 数据库类型
         if (databaseProperties.getDbType() != null) {
             paginationInterceptor.setDbType(databaseProperties.getDbType());
         }
         // 溢出总页数后是否进行处理
-        paginationInterceptor.setOverflow(databaseProperties.getOverflow());
+        paginationInterceptor.setOverflow(plus.getOverflow());
         // 生成 countSql 优化掉 join 现在只支持 left join
-        paginationInterceptor.setOptimizeJoin(databaseProperties.getOptimizeJoin());
+        paginationInterceptor.setOptimizeJoin(plus.getOptimizeJoin());
         interceptor.addInnerInterceptor(paginationInterceptor);
 
 
@@ -95,11 +97,11 @@ public abstract class FsMybatisPlusConfiguration extends FsDbConfiguration {
         }
 
         //防止全表更新与删除插件
-        if (databaseProperties.getIsBlockAttack()) {
+        if (plus.getIsBlockAttack()) {
             interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         }
         // sql性能规范插件
-        if (databaseProperties.getIsIllegalSql()) {
+        if (plus.getIsIllegalSql()) {
             interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         }
 

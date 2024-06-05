@@ -27,37 +27,50 @@ import static top.fsfsfs.basic.db.properties.DatabaseProperties.PREFIX;
 @ConfigurationProperties(prefix = PREFIX)
 public class DatabaseProperties {
     public static final String PREFIX = Constants.PROJECT_PREFIX + ".database";
-    /**
-     * 溢出总页数后是否进行处理
-     */
-    protected Boolean overflow = true;
-    /**
-     * 生成 countSql 优化掉 join
-     * 现在只支持 left join
-     */
-    protected Boolean optimizeJoin = true;
-    /**
-     * 是否启用 防止全表更新与删除插件
-     */
-    private Boolean isBlockAttack = false;
-    /**
-     * 是否启用  sql性能规范插件
-     */
-    private Boolean isIllegalSql = false;
-    /**
-     * 是否启用 seata
-     * 仅仅 DATASOURCE 模式有效
-     */
-    private Boolean isSeata = false;
+
+    @Data
+    public static class Plus {
+        /**
+         * 溢出总页数后是否进行处理
+         */
+        protected Boolean overflow = true;
+        /**
+         * 生成 countSql 优化掉 join
+         * 现在只支持 left join
+         */
+        protected Boolean optimizeJoin = true;
+        /**
+         * 是否启用 防止全表更新与删除插件
+         */
+        private Boolean isBlockAttack = false;
+        /**
+         * 是否启用  sql性能规范插件
+         */
+        private Boolean isIllegalSql = false;
+        /**
+         * 单页分页条数限制
+         */
+        private long maxLimit = -1;
+    }
+
+    @Data
+    public static class Flex {
+        /** 启用SQL审计 */
+        private Boolean audit = false;
+        /** SQL审计收集器 */
+        private AuditCollector auditCollector = AuditCollector.DEFAULTS;
+    }
+
+    /** mybatis-plus 配置 */
+    private Plus plus = new Plus();
+    /** mybatis-flex 配置 */
+    private Flex flex = new Flex();
+
     /**
      * 是否p6spy在控制台打印日志
-     * 仅仅 DATASOURCE 模式有效
      */
     private Boolean p6spy = false;
-    /**
-     * 单页分页条数限制
-     */
-    private long maxLimit = -1;
+
     private DbType dbType;
     /**
      * 是否禁止写入
