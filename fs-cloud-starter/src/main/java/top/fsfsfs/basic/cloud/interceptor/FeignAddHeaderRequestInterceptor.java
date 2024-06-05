@@ -32,7 +32,6 @@ public class FeignAddHeaderRequestInterceptor implements RequestInterceptor {
             ContextConstants.CLIENT_KEY,
             ContextConstants.TENANT_ID_KEY, ContextConstants.JWT_KEY_USER_ID,
             ContextConstants.JWT_KEY_EMPLOYEE_ID, ContextConstants.JWT_KEY_UUID,
-            ContextConstants.TENANT_BASE_POOL_NAME_HEADER, ContextConstants.TENANT_EXTEND_POOL_NAME_HEADER,
             ContextConstants.PATH_HEADER, ContextConstants.CLIENT_ID_HEADER,
             ContextConstants.CURRENT_COMPANY_ID_HEADER,
             ContextConstants.CURRENT_TOP_COMPANY_ID_HEADER,

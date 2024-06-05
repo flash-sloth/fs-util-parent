@@ -37,8 +37,6 @@ public class OptLogDTO {
      * 租户编码
      */
     private Long tenantId;
-    private Long basePoolNameHeader;
-    private Long extendPoolNameHeader;
 
     /**
      * 日志链路追踪id日志标志

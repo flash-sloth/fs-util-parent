@@ -11,10 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import top.fsfsfs.basic.constant.Constants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static top.fsfsfs.basic.context.ContextConstants.TENANT_BASE_POOL_NAME_HEADER;
 import static top.fsfsfs.basic.database.properties.DatabaseProperties.PREFIX;
 
 

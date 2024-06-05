@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
-import top.fsfsfs.basic.context.ContextUtil;
 import top.fsfsfs.basic.echo.manager.CacheLoadKeys;
 import top.fsfsfs.basic.echo.properties.EchoProperties;
 
@@ -60,9 +59,6 @@ public class DefCacheLoader extends CacheLoader<CacheLoadKeys, Map<Serializable,
      */
     @Override
     public ListenableFuture<Map<Serializable, Object>> reload(@NonNull CacheLoadKeys key, @NonNull Map<Serializable, Object> oldValue) {
-        return backgroundRefreshPools.submit(() -> {
-            ContextUtil.setTenantBasePoolName(key.getTenantId());
-            return load(key);
-        });
+        return backgroundRefreshPools.submit(() -> load(key));
     }
 }

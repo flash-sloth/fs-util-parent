@@ -30,12 +30,6 @@ public class SysLogListener {
     public void saveSysLog(SysLogEvent event) {
         OptLogDTO sysLog = (OptLogDTO) event.getSource();
         ContextUtil.setTenantId(sysLog.getTenantId());
-        if (sysLog.getBasePoolNameHeader() != null) {
-            ContextUtil.setTenantBasePoolName(sysLog.getBasePoolNameHeader());
-        }
-        if (sysLog.getExtendPoolNameHeader() != null) {
-            ContextUtil.setTenantExtendPoolName(sysLog.getExtendPoolNameHeader());
-        }
         consumer.accept(sysLog);
     }
 

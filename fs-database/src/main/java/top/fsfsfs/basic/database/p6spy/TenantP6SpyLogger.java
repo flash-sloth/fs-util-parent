@@ -20,13 +20,13 @@ public class TenantP6SpyLogger implements MessageFormattingStrategy {
     public String formatMessage(int connectionId, String now, long elapsed, String category,
                                 String prepared, String sql, String url) {
         String msg = """
-                线程参数：{}: {} {}: {} {}: {}
+                线程参数：{}: {} {}: {}
                 消耗时间：{} ms, 执行时间 {}
                 数据源: {}
                 执行的SQL：{}
                 """;
         return StringUtils.isNotBlank(sql) ?
-                StrUtil.format(msg, ContextConstants.TENANT_BASE_POOL_NAME_HEADER, ContextUtil.getBasePoolNameHeader(),
+                StrUtil.format(msg,
                         ContextConstants.TENANT_ID_HEADER, ContextUtil.getTenantId(),
                         ContextConstants.USER_ID_HEADER, ContextUtil.getUserId(),
                         elapsed, now, url, sql.replaceAll(REGX, StringPool.SPACE)) :
