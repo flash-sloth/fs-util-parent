@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.handler;
+package top.fsfsfs.basic.web.handler;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.ServletException;

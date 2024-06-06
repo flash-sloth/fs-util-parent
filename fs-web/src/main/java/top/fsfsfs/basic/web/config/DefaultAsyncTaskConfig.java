@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.config;
+package top.fsfsfs.basic.web.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import top.fsfsfs.basic.webmvc.config.properties.AsyncProperties;
+import top.fsfsfs.basic.web.config.properties.AsyncProperties;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;

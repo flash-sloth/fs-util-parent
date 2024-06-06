@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.undertow;
+package top.fsfsfs.basic.web.undertow;
 
 import io.undertow.connector.ByteBufferPool;
 import io.undertow.server.DefaultByteBufferPool;

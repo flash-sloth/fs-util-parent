@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.config;
+package top.fsfsfs.basic.web.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import top.fsfsfs.basic.webmvc.undertow.UndertowServerFactoryCustomizer;
+import top.fsfsfs.basic.web.undertow.UndertowServerFactoryCustomizer;
 import top.fsfsfs.basic.constant.Constants;
 import top.fsfsfs.basic.converter.String2DateConverter;
 import top.fsfsfs.basic.converter.String2LocalDateConverter;

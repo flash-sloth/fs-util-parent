@@ -1,11 +1,11 @@
-package top.fsfsfs.basic.webmvc.config.properties;
+package top.fsfsfs.basic.web.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import top.fsfsfs.basic.constant.Constants;
 
-import static top.fsfsfs.basic.webmvc.config.properties.AsyncProperties.PREFIX;
+import static top.fsfsfs.basic.web.config.properties.AsyncProperties.PREFIX;
 
 /**
  * 异步线程配置

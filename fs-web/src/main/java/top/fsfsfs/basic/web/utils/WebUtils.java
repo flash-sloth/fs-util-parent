@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.utils;
+package top.fsfsfs.basic.web.utils;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;

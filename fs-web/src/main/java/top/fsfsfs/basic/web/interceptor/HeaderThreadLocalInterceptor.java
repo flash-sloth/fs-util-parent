@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.interceptor;
+package top.fsfsfs.basic.web.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +11,7 @@ import top.fsfsfs.basic.context.ContextUtil;
 
 import java.util.Map;
 
-import static top.fsfsfs.basic.webmvc.utils.WebUtils.getHeader;
+import static top.fsfsfs.basic.web.utils.WebUtils.getHeader;
 
 /**
  * 拦截器：

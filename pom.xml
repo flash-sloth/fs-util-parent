@@ -24,7 +24,7 @@
         <module>fs-annotation</module>
         <module>fs-core</module>
         <module>fs-mvc</module>
-        <module>fs-webmvc</module>
+        <module>fs-web</module>
         <module>fs-db</module>
         <module>fs-db-mybatis-plus</module>
         <module>fs-db-mybatis-flex</module>

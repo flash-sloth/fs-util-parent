@@ -22,10 +22,6 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations-jakarta</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
         <!-- @Hidden 注解使用 -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>

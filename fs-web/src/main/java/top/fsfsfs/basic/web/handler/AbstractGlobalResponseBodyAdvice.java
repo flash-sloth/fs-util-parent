@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.webmvc.handler;
+package top.fsfsfs.basic.web.handler;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
