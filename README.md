@@ -22,7 +22,7 @@ flash-sloth 简称：fs，中文名：闪电树懒，ta是一款革命性的开�
 
 | 名称   | 项目名     | gitee                                          | github                                                     | 备注                           |
 |------|---------|------------------------------------------------|------------------------------------------------------------|------------------------------|
-| 工具集  | fs-util-parent | [fs-util-parent](https://gitee.com/flash-sloth/fs-boot) | [fs-util-parent](https://github.com/flash-sloth/fs-util-parent)           | 基于java开发的核心工具集               |
+| 工具集  | fs-util-parent | [fs-util-parent](https://gitee.com/flash-sloth/fs-util-parent) | [fs-util-parent](https://github.com/flash-sloth/fs-util-parent)           | 基于java开发的核心工具集               |
 | 单体版  | fs-boot | [fs-boot](https://gitee.com/flash-sloth/fs-boot) | [fs-boot](https://github.com/flash-sloth/fs-boot)       | 基于SpringBoot开发的java后端        |
 | 定时任务 | fs-job  | [fs-job](https://gitee.com/flash-sloth/fs-job)   | [fs-job](https://github.com/flash-sloth/fs-job)             | 基于xxl-job、power-job的分布式定时调度器 |
 | PC端  | fs-web  | [fs-web](https://gitee.com/flash-sloth/fs-web)   | [fs-web](https://github.com/flash-sloth/fs-web)                     | 基于ant-design-vue开发的web端      |
