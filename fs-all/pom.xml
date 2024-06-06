@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
-            <artifactId>fs-mvc</artifactId>
+            <artifactId>fs-mvc-plus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
