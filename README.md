@@ -4,7 +4,7 @@
 
 [![Version](https://img.shields.io/badge/版本-0.0.1-brightgreen.svg)](https://github.com/flash-sloth/fs-boot)
 [![Language](https://img.shields.io/badge/langs-Java%20%7C%20SpringCloud%20%7C%20Vue3%20%7C%20...-red?style=flat-square&color=42b883)](https://github.com/flash-sloth/fs-boot)
-[![License](https://img.shields.io/github/license/flash-sloth/fs-util?color=42b883&style=flat-square)](https://github.com/flash-sloth/fs-util/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/flash-sloth/fs-util-parent?color=42b883&style=flat-square)](https://github.com/flash-sloth/fs-util-parent/blob/master/LICENSE)
 [![Author](https://img.shields.io/badge/作者-tangyh|liulh|liy|hukz-orange.svg)](https://github.com/flash-sloth)
 
 [![Star](https://img.shields.io/github/stars/flash-sloth/fs-boot?color=42b883&logo=github&style=flat-square)](https://github.com/flash-sloth/fs-boot/stargazers)
@@ -22,17 +22,17 @@ flash-sloth 简称：fs，中文名：闪电树懒，ta是一款革命性的开�
 
 | 名称   | 项目名     | gitee                                          | github                                                     | 备注                           |
 |------|---------|------------------------------------------------|------------------------------------------------------------|------------------------------|
-| 工具集  | fs-util | [fs-util](https://gitee.com/flash-sloth/fs-boot) | [fs-util](https://github.com/flash-sloth/fs-util)           | 基于java开发的核心工具集               |
+| 工具集  | fs-util-parent | [fs-util-parent](https://gitee.com/flash-sloth/fs-boot) | [fs-util-parent](https://github.com/flash-sloth/fs-util-parent)           | 基于java开发的核心工具集               |
 | 单体版  | fs-boot | [fs-boot](https://gitee.com/flash-sloth/fs-boot) | [fs-boot](https://github.com/flash-sloth/fs-boot)       | 基于SpringBoot开发的java后端        |
 | 定时任务 | fs-job  | [fs-job](https://gitee.com/flash-sloth/fs-job)   | [fs-job](https://github.com/flash-sloth/fs-job)             | 基于xxl-job、power-job的分布式定时调度器 |
 | PC端  | fs-web  | [fs-web](https://gitee.com/flash-sloth/fs-web)   | [fs-web](https://github.com/flash-sloth/fs-web)                     | 基于ant-design-vue开发的web端      |
 | 移动端  | fs-app  | [fs-app](https://gitee.com/flash-sloth/fs-app)   | [fs-app](https://github.com/flash-sloth/fs-app)                     | 基于uni-app开发的移动端              |
 
-# fs-util 简介
+# fs-util-parent 简介
 
-`fs-util` 是 [fs-boot](https://github.com/flash-sloth/fs-boot) 和 [fs-cloud](https://github.com/flash-sloth/fs-cloud) 项目的工具集，开发宗旨是打造一套兼顾 SpringBoot 和 SpringCloud 项目的公共工具类。
+`fs-util-parent` 是 [fs-boot](https://github.com/flash-sloth/fs-boot) 和 [fs-cloud](https://github.com/flash-sloth/fs-cloud) 项目的工具集，开发宗旨是打造一套兼顾 SpringBoot 和 SpringCloud 项目的公共工具类。
 
-## fs-util 亮点功能
+## fs-util-parent 亮点功能
 
 - Mvc封装： 通用的 Controller、Service、Mapper、全局异常、全局序列化、反序列化规则
 - SpringCloud封装：请求头传递、调用日志、灰度、统一配置编码解码规则等
