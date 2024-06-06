@@ -14,8 +14,8 @@ import java.util.Map;
  * @date 2019/08/06
  */
 @Data
-@ConfigurationProperties(prefix = CustomCacheProperties.PREFIX)
-public class CustomCacheProperties {
+@ConfigurationProperties(prefix = CacheProperties.PREFIX)
+public class CacheProperties {
     public static final String PREFIX = Constants.PROJECT_PREFIX + ".cache";
     /**
      * 目前只支持 REDIS 和 CAFFEINE ！

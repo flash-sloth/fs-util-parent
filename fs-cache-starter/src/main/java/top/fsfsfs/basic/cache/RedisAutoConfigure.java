@@ -21,11 +21,9 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import top.fsfsfs.basic.cache.properties.CustomCacheProperties;
+import top.fsfsfs.basic.cache.properties.CacheProperties;
 import top.fsfsfs.basic.cache.properties.SerializerType;
-import top.fsfsfs.basic.cache.redis2.RedisOps;
 import top.fsfsfs.basic.cache.repository.CacheOps;
-import top.fsfsfs.basic.cache.repository.CachePlusOps;
 import top.fsfsfs.basic.cache.repository.impl.RedisOpsImpl;
 import top.fsfsfs.basic.cache.utils.ProtoStuffSerializer;
 import top.fsfsfs.basic.cache.utils.RedisObjectSerializer;
@@ -43,12 +41,12 @@ import java.util.Optional;
  * @date 2019-08-06 10:42
  */
 @ConditionalOnClass(RedisConnectionFactory.class)
-@ConditionalOnProperty(prefix = CustomCacheProperties.PREFIX, name = "type", havingValue = "REDIS", matchIfMissing = true)
-@EnableConfigurationProperties({RedisProperties.class, CustomCacheProperties.class})
+@ConditionalOnProperty(prefix = CacheProperties.PREFIX, name = "type", havingValue = "REDIS", matchIfMissing = true)
+@EnableConfigurationProperties({RedisProperties.class, CacheProperties.class})
 @RequiredArgsConstructor
 @Slf4j
 public class RedisAutoConfigure {
-    private final CustomCacheProperties cacheProperties;
+    private final CacheProperties cacheProperties;
 
 
     /**
@@ -96,27 +94,15 @@ public class RedisAutoConfigure {
     /**
      * redis 持久库
      *
-     * @param redisOps the redis template
+     * @param redisTemplate the redis template
      * @return the redis repository
      */
     @Bean
     @ConditionalOnMissingBean
-    public CacheOps cacheOps(RedisOps redisOps) {
-        log.warn("检查到缓存采用了 Redis模式");
-        return new RedisOpsImpl(redisOps);
+    public CacheOps getCacheOps(@Qualifier("redisTemplate") RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
+        return new RedisOpsImpl(redisTemplate, stringRedisTemplate, cacheProperties.getCacheNullVal());
     }
 
-    /**
-     * redis 增强持久库
-     *
-     * @param redisOps the redis template
-     * @return the redis repository
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public CachePlusOps cachePlusOps(RedisOps redisOps) {
-        return new RedisOpsImpl(redisOps);
-    }
 
     /**
      * 用于 @Cacheable 相关注解
@@ -130,7 +116,7 @@ public class RedisAutoConfigure {
         RedisCacheConfiguration defConfig = getDefConf();
         defConfig.entryTtl(cacheProperties.getDef().getTimeToLive());
 
-        Map<String, CustomCacheProperties.Cache> configs = cacheProperties.getConfigs();
+        Map<String, CacheProperties.Cache> configs = cacheProperties.getConfigs();
         Map<String, RedisCacheConfiguration> map = Maps.newHashMap();
         //自定义的缓存过期时间配置
         Optional.ofNullable(configs).ifPresent(config ->
@@ -154,7 +140,7 @@ public class RedisAutoConfigure {
         return handleRedisCacheConfiguration(cacheProperties.getDef(), def);
     }
 
-    private RedisCacheConfiguration handleRedisCacheConfiguration(CustomCacheProperties.Cache redisProperties, RedisCacheConfiguration config) {
+    private RedisCacheConfiguration handleRedisCacheConfiguration(CacheProperties.Cache redisProperties, RedisCacheConfiguration config) {
         if (Objects.isNull(redisProperties)) {
             return config;
         }
@@ -176,9 +162,5 @@ public class RedisAutoConfigure {
         return config;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public RedisOps getRedisOps(@Qualifier("redisTemplate") RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
-        return new RedisOps(redisTemplate, stringRedisTemplate, cacheProperties.getCacheNullVal());
-    }
+
 }

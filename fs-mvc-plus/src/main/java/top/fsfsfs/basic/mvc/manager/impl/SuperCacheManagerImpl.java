@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvc.manager.SuperCacheManager;
 import top.fsfsfs.basic.mvc.mapper.SuperMapper;
-import top.fsfsfs.basic.cache.redis2.CacheResult;
+import top.fsfsfs.basic.cache.redis.CacheResult;
 import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.model.cache.CacheKey;
@@ -92,7 +92,7 @@ public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends 
         }
         List<CacheKey> cacheKeys = keyIdList.stream().map(cacheBuilder).toList();
         // 通过 mGet 方法批量查询缓存
-        List<CacheResult<List<E>>> resultList = cacheOps.find(cacheKeys);
+        List<CacheResult<List<E>>> resultList = cacheOps.mGetByCacheKey(cacheKeys);
 
         if (resultList.size() != cacheKeys.size()) {
             log.warn("key和结果数量不一致，请排查原因!");
@@ -118,7 +118,7 @@ public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends 
     }
 
     private List<CacheResult<T>> find(List<CacheKey> keys) {
-        return cacheOps.find(keys);
+        return cacheOps.mGetByCacheKey(keys);
     }
 
     @Override

@@ -8,10 +8,6 @@ package top.fsfsfs.basic.cache.properties;
  */
 public enum CacheType {
     /**
-     * 内存
-     */
-    CAFFEINE,
-    /**
      * redis
      */
     REDIS,

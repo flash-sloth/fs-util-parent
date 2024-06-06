@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.cache.redis2;
+package top.fsfsfs.basic.cache.redis;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;

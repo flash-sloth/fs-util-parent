@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.SetOperations;
@@ -21,6 +22,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.model.cache.CacheHashKey;
 import top.fsfsfs.basic.model.cache.CacheKey;
@@ -55,7 +57,7 @@ import java.util.function.Function;
  */
 @Slf4j
 @Getter
-public abstract class BaseRedis {
+public abstract class BaseRedis implements CacheOps {
 
     protected static final String KEY_NOT_NULL = "key不能为空";
     protected static final String CACHE_KEY_NOT_NULL = "cacheKey不能为空";
@@ -122,6 +124,7 @@ public abstract class BaseRedis {
      * @return key 被删除返回true
      * @see <a href="https://redis.io/commands/del">Redis Documentation: DEL</a>
      */
+    @Override
     public Long del(@NonNull CacheKey... keys) {
         return del(Arrays.stream(keys).map(CacheKey::getKey).toList());
     }
@@ -134,6 +137,7 @@ public abstract class BaseRedis {
      * @return key 被删除返回true
      * @see <a href="https://redis.io/commands/del">Redis Documentation: DEL</a>
      */
+    @Override
     public Long del(@NonNull String... keys) {
         return del(Arrays.stream(keys).toList());
     }
@@ -167,6 +171,7 @@ public abstract class BaseRedis {
      * @return key 被删除返回true
      * @see <a href="https://redis.io/commands/del">Redis Documentation: DEL</a>
      */
+    @Override
     public Long del(@NonNull Collection<CacheKey> keys) {
         return del(keys.stream().map(CacheKey::getKey).toList());
     }
@@ -236,6 +241,7 @@ public abstract class BaseRedis {
      * @date 2021/6/18 3:21 下午
      * @create [2021/6/18 3:21 下午 ] [tangyh] [初始创建]
      */
+    @Override
     public void scanUnlink(@NonNull String pattern) {
         log.info("pattern={}", pattern);
         if (StrUtil.isEmpty(pattern) || StrPool.STAR.equals(pattern.trim())) {
@@ -264,6 +270,7 @@ public abstract class BaseRedis {
      * @return 符合给定模式的 key 列表
      * @see <a href="https://redis.io/commands/keys">Redis Documentation: KEYS</a>
      */
+    @Override
     public List<String> scan(@NonNull String pattern) {
         List<String> keyList = new ArrayList<>();
         scan(pattern, item -> {
@@ -306,6 +313,7 @@ public abstract class BaseRedis {
      * @return 符合给定模式的 key 列表
      * @see <a href="https://redis.io/commands/keys">Redis Documentation: KEYS</a>
      */
+    @Override
     public Set<String> keys(@NonNull String pattern) {
         return redisTemplate.keys(pattern);
     }
@@ -318,8 +326,9 @@ public abstract class BaseRedis {
      * @return 是否存在
      * @see <a href="https://redis.io/commands/exists">Redis Documentation: EXISTS</a>
      */
-    public Boolean exists(@NonNull String key) {
-        return redisTemplate.hasKey(key);
+    @Override
+    public Boolean exists(@NonNull CacheKey key) {
+        return redisTemplate.hasKey(key.getKey());
     }
 
     /**
@@ -369,6 +378,17 @@ public abstract class BaseRedis {
      */
     public Boolean move(@NonNull String key, int dbIndex) {
         return redisTemplate.move(key, dbIndex);
+    }
+
+    /**
+     * 清空redis存储的数据
+     */
+    @Override
+    public void flushDb() {
+        redisTemplate.execute((RedisCallback<String>) connection -> {
+            connection.flushDb();
+            return "ok";
+        });
     }
 
     /**
@@ -442,6 +462,12 @@ public abstract class BaseRedis {
         return expireAt(key, new Date(unixTimestamp));
     }
 
+    @Override
+    public Boolean expire(CacheKey key) {
+        assert key.getExpire() != null;
+        return expire(key.getKey(), key.getExpire());
+    }
+
     /**
      * 这个命令和 EXPIRE 命令的作用类似，但是它以毫秒为单位设置 key 的生存时间，而不像 EXPIRE 命令那样，以秒为单位。
      *
@@ -465,6 +491,11 @@ public abstract class BaseRedis {
         return redisTemplate.persist(key);
     }
 
+    @Override
+    public Boolean persist(@NonNull CacheKey key) {
+        return persist(key.getKey());
+    }
+
     /**
      * 返回 key 所储存的值的类型。
      *
@@ -475,6 +506,11 @@ public abstract class BaseRedis {
     public String type(@NonNull String key) {
         DataType type = redisTemplate.type(key);
         return type == null ? DataType.NONE.code() : type.code();
+    }
+
+    @Override
+    public String type(@NonNull CacheKey key) {
+        return type(key.getKey());
     }
 
     /**
@@ -488,6 +524,12 @@ public abstract class BaseRedis {
         return redisTemplate.getExpire(key);
     }
 
+    @Override
+    public Long ttl(@NonNull CacheKey key) {
+        return ttl(key.getKey());
+    }
+
+
     /**
      * 这个命令类似于 TTL 命令，但它以毫秒为单位返回 key 的剩余生存时间，而不是像 TTL 命令那样，以秒为单位。
      *
@@ -497,6 +539,11 @@ public abstract class BaseRedis {
      */
     public Long pTtl(@NonNull String key) {
         return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public Long pTtl(@NonNull CacheKey key) {
+        return pTtl(key.getKey());
     }
     // ---------------------------- common end ----------------------------
 
@@ -530,6 +577,7 @@ public abstract class BaseRedis {
      * @param value           缓存value
      * @param cacheNullValues 是否缓存null对象
      */
+    @Override
     public void set(@NonNull CacheKey cacheKey, Object value, boolean... cacheNullValues) {
         boolean cacheNullVal = cacheNullValues.length > 0 ? cacheNullValues[0] : defaultCacheNullVal;
         ArgumentAssert.notNull(cacheKey, CACHE_KEY_NOT_NULL);
@@ -795,6 +843,7 @@ public abstract class BaseRedis {
      * @return 返回键 key 在执行加一操作之后的值。
      * @see <a href="https://redis.io/commands/incr">Redis Documentation: INCR</a>
      */
+    @Override
     public Long incr(@NonNull CacheKey key) {
         Long increment = stringRedisTemplate.opsForValue().increment(key.getKey());
         setExpire(key);
@@ -814,6 +863,7 @@ public abstract class BaseRedis {
      * @return 返回键 key 在执行加上 increment ，操作之后的值。
      * @see <a href="https://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
      */
+    @Override
     public Long incrBy(@NonNull CacheKey key, long increment) {
         Long incrBy = stringRedisTemplate.opsForValue().increment(key.getKey(), increment);
         setExpire(key);
@@ -837,6 +887,7 @@ public abstract class BaseRedis {
      * @return 在加上增量 increment 之后， 键 key 的值。
      * @see <a href="https://redis.io/commands/incrbyfloat">Redis Documentation: INCRBYFLOAT</a>
      */
+    @Override
     public Double incrByFloat(@NonNull CacheKey key, double increment) {
         Double incrByFloat = stringRedisTemplate.opsForValue().increment(key.getKey(), increment);
         setExpire(key);
@@ -863,6 +914,7 @@ public abstract class BaseRedis {
      * @param key 一定不能为 {@literal null}.
      * @return key中存储的的数字
      */
+    @Override
     public Long getCounter(@NonNull CacheKey key, Function<CacheKey, Long> loader) {
         Object val = stringRedisTemplate.opsForValue().get(key.getKey());
         if (isNullVal(val)) {
@@ -881,6 +933,7 @@ public abstract class BaseRedis {
      * @return 在减去增量 1 之后， 键 key 的值。
      * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECR</a>
      */
+    @Override
     public Long decr(@NonNull CacheKey key) {
         Long decr = stringRedisTemplate.opsForValue().decrement(key.getKey());
         setExpire(key);
@@ -897,6 +950,7 @@ public abstract class BaseRedis {
      * @return 在减去增量 decrement 之后， 键 key 的值。
      * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECR</a>
      */
+    @Override
     public Long decrBy(@NonNull CacheKey key, long decrement) {
         Long decr = stringRedisTemplate.opsForValue().decrement(key.getKey(), decrement);
         setExpire(key);
@@ -939,6 +993,7 @@ public abstract class BaseRedis {
      * @param cacheNullValues 是否缓存空对象
      * @see <a href="https://redis.io/commands/hset">Redis Documentation: HSET</a>
      */
+    @Override
     public void hSet(@NonNull CacheHashKey key, Object value, boolean... cacheNullValues) {
         ArgumentAssert.notNull(key, "CacheHashKey不能为空");
 
@@ -965,6 +1020,7 @@ public abstract class BaseRedis {
      * @return 是否存在
      * @see <a href="https://redis.io/commands/hexists">Redis Documentation: HEXISTS</a>
      */
+    @Override
     public Boolean hExists(@NonNull CacheHashKey cacheHashKey) {
         return hashOps.hasKey(cacheHashKey.getKey(), cacheHashKey.getField());
     }
@@ -977,10 +1033,12 @@ public abstract class BaseRedis {
      * @return 删除的数量
      * @see <a href="https://redis.io/commands/hdel">Redis Documentation: HDEL</a>
      */
+    @Override
     public Long hDel(@NonNull String key, Object... fields) {
         return hashOps.delete(key, fields);
     }
 
+    @Override
     public Long hDel(@NonNull CacheHashKey key) {
         return hashOps.delete(key.getKey(), key.getField());
     }
@@ -995,6 +1053,11 @@ public abstract class BaseRedis {
      */
     public Long hLen(@NonNull String key) {
         return hashOps.size(key);
+    }
+
+    @Override
+    public Long hLen(@NonNull CacheHashKey key) {
+        return hLen(key.getKey());
     }
 
     /**
@@ -1022,6 +1085,7 @@ public abstract class BaseRedis {
      * @return 执行 HINCRBY 命令之后，哈希表 key 中域 field 的值
      * @see <a href="https://redis.io/commands/hincrby">Redis Documentation: HINCRBY</a>
      */
+    @Override
     public Long hIncrBy(@NonNull CacheHashKey key, long increment) {
         Long hIncrBy = stringRedisTemplate.opsForHash().increment(key.getKey(), key.getField(), increment);
         if (key.getExpire() != null) {
@@ -1044,7 +1108,8 @@ public abstract class BaseRedis {
      * @return 执行 HINCRBY 命令之后，哈希表 key 中域 field 的值
      * @see <a href="https://redis.io/commands/hincrbyfloat">Redis Documentation: HINCRBYFLOAT</a>
      */
-    public Double hIncrByFloat(@NonNull CacheHashKey key, double increment) {
+    @Override
+    public Double hIncrBy(@NonNull CacheHashKey key, double increment) {
         Double hIncrBy = stringRedisTemplate.opsForHash().increment(key.getKey(), key.getField(), increment);
         if (key.getExpire() != null) {
             stringRedisTemplate.expire(key.getKey(), key.getExpire());
@@ -1087,6 +1152,11 @@ public abstract class BaseRedis {
      */
     public <HK> Set<HK> hKeys(@NonNull String key) {
         return (Set<HK>) hashOps.keys(key);
+    }
+
+    @Override
+    public <HK> Set<HK> hKeys(CacheHashKey key) {
+        return hKeys(key.getKey());
     }
     // ---------------------------- hash end ----------------------------
 
@@ -1385,6 +1455,7 @@ public abstract class BaseRedis {
      * @return 被添加到集合中的新元素的数量，不包括被忽略的元素。
      * @see <a href="https://redis.io/commands/sadd">Redis Documentation: SADD</a>
      */
+    @Override
     public <V> Long sAdd(@NonNull CacheKey key, V... members) {
         Long count = setOps.add(key.getKey(), members);
         setExpire(key);
@@ -1428,6 +1499,7 @@ public abstract class BaseRedis {
      * @see <a href="https://redis.io/commands/spop">Redis Documentation: SPOP</a>
      */
     @Nullable
+    @Override
     public <T> T sPop(@NonNull CacheKey key) {
         return (T) setOps.pop(key.getKey());
     }
@@ -1487,6 +1559,7 @@ public abstract class BaseRedis {
      * @see <a href="https://redis.io/commands/srem">Redis Documentation: SREM</a>
      */
     @Nullable
+    @Override
     public Long sRem(@NonNull CacheKey key, Object... members) {
         return setOps.remove(key.getKey(), members);
     }
@@ -1515,6 +1588,7 @@ public abstract class BaseRedis {
      * @return 集合的基数。 当 key 不存在时，返回 0 。
      * @see <a href="https://redis.io/commands/scard">Redis Documentation: SCARD</a>
      */
+    @Override
     public Long sCard(@NonNull CacheKey key) {
         return setOps.size(key.getKey());
     }
@@ -1528,6 +1602,7 @@ public abstract class BaseRedis {
      * @see <a href="https://redis.io/commands/smembers">Redis Documentation: SMEMBERS</a>
      */
     @Nullable
+    @Override
     public <V> Set<V> sMembers(@NonNull CacheKey key) {
         return (Set<V>) setOps.members(key.getKey());
     }

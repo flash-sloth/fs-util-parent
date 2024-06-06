@@ -16,7 +16,7 @@ import top.fsfsfs.basic.utils.StrPool;
 @Slf4j
 @EnableCaching
 @Import({
-        CaffeineAutoConfigure.class, RedisAutoConfigure.class
+        RedisAutoConfigure.class
 })
 public class CacheAutoConfigure {
 
