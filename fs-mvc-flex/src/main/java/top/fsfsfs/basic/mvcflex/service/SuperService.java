@@ -35,7 +35,7 @@ public interface SuperService<Entity> extends IService<Entity> {
      * @param entity 实体对象
      * @return 是否插入成功
      */
-    <SaveVO> Entity saveVo(SaveVO entity);
+    <VO> Entity saveVo(VO entity);
 
 
     /**
@@ -44,6 +44,6 @@ public interface SuperService<Entity> extends IService<Entity> {
      * @param entity 实体对象
      * @return 是否修改成功
      */
-    <UpdateVO> Entity updateVoById(UpdateVO entity);
+    <VO> Entity updateVoById(VO entity);
 
 }

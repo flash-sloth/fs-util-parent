@@ -20,7 +20,7 @@ public abstract class SuperSimpleController<S extends SuperService<Entity>, Enti
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected S superService;
-    protected Class<Entity> entityClass = (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 1).getClass();
+    protected Class<Entity> entityClass = (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 1);
 
     @Override
     public Class<Entity> getEntityClass() {

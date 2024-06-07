@@ -22,23 +22,29 @@ import java.io.Serializable;
  * @param <S>      Service
  * @param <Id>     主键
  * @param <Entity> 实体
- * @param <SaveVO> 保存方法入参VO
- * @param <UpdateVO> 修改方法入参VO
- * @param <PageQuery> 查询方法入参VO
+ * @param <VO> 保存和修改方法入参VO
+ * @param <QueryVO> 查询方法入参VO
  * @param <ResultVO> 查询方法出参VO
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperController<S extends SuperService<Entity>, Id extends Serializable, Entity, SaveVO, UpdateVO, PageQuery, ResultVO>
+public abstract class SuperController<S extends SuperService<Entity>, Id extends Serializable, Entity, VO, QueryVO, ResultVO>
         extends SuperSimpleController<S, Entity>
-        implements SaveController<Id, Entity, SaveVO>,
-        UpdateController<Entity, UpdateVO>,
+        implements SaveController<Id, Entity, VO>,
+        UpdateController<Entity, VO>,
         DeleteController<Id, Entity>,
-        QueryController<Id, Entity, PageQuery, ResultVO> {
-    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 6).getClass();
+        QueryController<Id, Entity, QueryVO, ResultVO> {
+    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 5);
 
     @Override
     public Class<ResultVO> getResultVoClass() {
         return resultVoClass;
+    }
+
+    protected Class<Entity> entityClass = (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 2);
+
+    @Override
+    public Class<Entity> getEntityClass() {
+        return this.entityClass;
     }
 }

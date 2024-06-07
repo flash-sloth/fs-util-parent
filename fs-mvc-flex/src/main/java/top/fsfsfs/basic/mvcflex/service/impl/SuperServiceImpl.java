@@ -30,7 +30,7 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
 
     @Override
     public Class<Entity> getEntityClass() {
-        return (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 1).getClass();
+        return (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 1);
     }
 
     @Override
@@ -39,8 +39,17 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
         Entity old = getById(id);
         ArgumentAssert.notNull(old, "您要复制的数据不存在或已被删除，请刷新重试");
         Entity entity = BeanUtil.toBean(old, getEntityClass());
-        if (entity instanceof SuperEntity<?> superEntity) {
+        if (entity instanceof top.fsfsfs.basic.base.entity.Entity<?> superEntity) {
             superEntity.setId(null);
+            superEntity.setCreatedBy(null);
+            superEntity.setCreatedTime(null);
+            superEntity.setUpdatedBy(null);
+            superEntity.setUpdatedTime(null);
+            save((Entity) superEntity);
+        } else if (entity instanceof SuperEntity<?> superEntity) {
+            superEntity.setId(null);
+            superEntity.setCreatedBy(null);
+            superEntity.setCreatedTime(null);
             save((Entity) superEntity);
         } else {
             save(entity);
@@ -54,13 +63,13 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
      *
      * @param saveVO 保存VO
      */
-    protected <SaveVO> Entity saveBefore(SaveVO saveVO) {
+    protected <VO> Entity saveBefore(VO saveVO) {
         return BeanUtil.toBean(saveVO, getEntityClass());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <SaveVO> Entity saveVo(SaveVO saveVO) {
+    public <VO> Entity saveVo(VO saveVO) {
         Entity entity = saveBefore(saveVO);
         save(entity);
         saveAfter(saveVO, entity);
@@ -73,7 +82,7 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
      * @param saveVO 保存VO
      * @param entity 实体
      */
-    protected <SaveVO> void saveAfter(SaveVO saveVO, Entity entity) {
+    protected <VO> void saveAfter(VO saveVO, Entity entity) {
     }
 
     /**
@@ -81,14 +90,14 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
      *
      * @param updateVO 修改VO
      */
-    protected <UpdateVO> Entity updateBefore(UpdateVO updateVO) {
+    protected <VO> Entity updateBefore(VO updateVO) {
         return BeanUtil.toBean(updateVO, getEntityClass());
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <UpdateVO> Entity updateVoById(UpdateVO updateVO) {
+    public <VO> Entity updateVoById(VO updateVO) {
         Entity entity = updateBefore(updateVO);
         updateById(entity);
         updateAfter(updateVO, entity);
@@ -101,6 +110,6 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
      * @param updateVO 修改VO
      * @param entity   实体
      */
-    protected <UpdateVO> void updateAfter(UpdateVO updateVO, Entity entity) {
+    protected <VO> void updateAfter(VO updateVO, Entity entity) {
     }
 }

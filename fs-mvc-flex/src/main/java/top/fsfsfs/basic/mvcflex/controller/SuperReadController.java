@@ -21,16 +21,16 @@ import java.io.Serializable;
  * @param <S>         Service
  * @param <Id>        主键
  * @param <Entity>    实体
- * @param <PageQuery> 分页参数
+ * @param <QueryVO> 分页参数
  * @param <ResultVO>  实体返回VO
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperReadController<S extends SuperService<Entity>, Id extends Serializable, Entity, PageQuery, ResultVO>
+public abstract class SuperReadController<S extends SuperService<Entity>, Id extends Serializable, Entity, QueryVO, ResultVO>
         extends SuperSimpleController<S, Entity>
-        implements QueryController<Id, Entity, PageQuery, ResultVO> {
+        implements QueryController<Id, Entity, QueryVO, ResultVO> {
 
-    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 4).getClass();
+    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 4);
 
     @Override
     public Class<ResultVO> getResultVoClass() {
