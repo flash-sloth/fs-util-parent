@@ -13,20 +13,20 @@ import top.fsfsfs.basic.jwt.model.JwtInfo;
 import top.fsfsfs.basic.jwt.model.Token;
 import top.fsfsfs.basic.jwt.properties.JwtProperties;
 import top.fsfsfs.basic.jwt.utils.JwtUtil;
-import top.fsfsfs.basic.utils.DateUtils;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_COMPANY_ID;
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_DEPT_ID;
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_EMPLOYEE_ID;
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_TOP_COMPANY_ID;
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_USER_ID;
-import static top.fsfsfs.basic.context.ContextConstants.JWT_KEY_UUID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_COMPANY_ID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_DEPT_ID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_EMPLOYEE_ID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_TOP_COMPANY_ID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_USER_ID;
+import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_UUID;
 
 /**
  * 认证工具类

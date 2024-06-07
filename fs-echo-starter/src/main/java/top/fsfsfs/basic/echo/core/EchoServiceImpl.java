@@ -35,8 +35,8 @@ import top.fsfsfs.basic.interfaces.BaseEnum;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.interfaces.echo.EchoVO;
 import top.fsfsfs.basic.interfaces.echo.LoadService;
-import top.fsfsfs.basic.jackson.JsonUtil;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.util.utils.JsonUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

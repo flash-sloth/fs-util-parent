@@ -9,11 +9,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
-import top.fsfsfs.basic.jackson.JsonUtil;
 import top.fsfsfs.basic.log.aspect.SysLogAspect;
 import top.fsfsfs.basic.log.event.SysLogListener;
 import top.fsfsfs.basic.log.monitor.PointUtil;
 import top.fsfsfs.basic.log.properties.OptLogProperties;
+import top.fsfsfs.util.utils.JsonUtil;
 
 /**
  * 日志自动配置

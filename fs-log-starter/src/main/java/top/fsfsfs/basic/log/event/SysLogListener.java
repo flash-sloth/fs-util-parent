@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
-import top.fsfsfs.basic.context.ContextUtil;
+import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.model.log.OptLogDTO;
 
 import java.util.function.Consumer;

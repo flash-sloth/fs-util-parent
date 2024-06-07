@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvc.manager.SuperManager;
 import top.fsfsfs.basic.mvc.service.SuperService;
-import top.fsfsfs.basic.utils.ArgumentAssert;
-import top.fsfsfs.basic.utils.BeanPlusUtil;
+import top.fsfsfs.util.utils.ArgumentAssert;
+import top.fsfsfs.util.utils.BeanPlusUtil;
 
 import java.io.Serializable;
 import java.util.Collection;

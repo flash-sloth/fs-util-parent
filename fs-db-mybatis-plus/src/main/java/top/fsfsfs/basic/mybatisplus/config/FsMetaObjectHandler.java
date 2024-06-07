@@ -10,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import top.fsfsfs.basic.base.entity.Entity;
 import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.basic.context.ContextUtil;
-import top.fsfsfs.basic.utils.SpringUtils;
+import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.util.utils.SpringUtils;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;

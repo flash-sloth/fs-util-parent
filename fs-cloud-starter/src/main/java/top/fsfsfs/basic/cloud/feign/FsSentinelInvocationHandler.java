@@ -15,7 +15,7 @@ import feign.Target;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.jackson.JsonUtil;
+import top.fsfsfs.util.utils.JsonUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

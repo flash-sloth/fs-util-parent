@@ -17,7 +17,7 @@ import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.query.QueryWrap;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
-import top.fsfsfs.basic.utils.BeanPlusUtil;
+import top.fsfsfs.util.utils.BeanPlusUtil;
 
 import java.io.Serializable;
 import java.util.Collections;

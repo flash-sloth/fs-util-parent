@@ -3,6 +3,7 @@ package top.fsfsfs.basic.cloud.feign;
 import org.springframework.cloud.openfeign.FeignFormatterRegistrar;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,9 +12,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import static top.fsfsfs.basic.utils.DateUtils.DEFAULT_DATE_FORMAT;
-import static top.fsfsfs.basic.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
-import static top.fsfsfs.basic.utils.DateUtils.DEFAULT_TIME_FORMAT;
+import static top.fsfsfs.util.utils.DateUtils.DEFAULT_TIME_FORMAT;
+
 
 /**
  * 在feign调用方配置， 解决入参和出参是以下类型.
@@ -40,21 +40,21 @@ public class DateFormatRegister implements FeignFormatterRegistrar {
     private static class Date2StringConverter implements Converter<Date, String> {
         @Override
         public String convert(Date source) {
-            return new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(source);
+            return new SimpleDateFormat(DateUtils.DEFAULT_DATE_TIME_FORMAT).format(source);
         }
     }
 
     private static class LocalDateTime2StringConverter implements Converter<LocalDateTime, String> {
         @Override
         public String convert(LocalDateTime source) {
-            return source.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT));
+            return source.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_TIME_FORMAT));
         }
     }
 
     private static class LocalDate2StringConverter implements Converter<LocalDate, String> {
         @Override
         public String convert(LocalDate source) {
-            return source.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT));
+            return source.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT));
         }
     }
 

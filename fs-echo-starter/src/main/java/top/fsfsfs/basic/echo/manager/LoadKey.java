@@ -1,10 +1,12 @@
 package top.fsfsfs.basic.echo.manager;
 
-import com.google.common.base.Objects;
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import top.fsfsfs.basic.annotation.echo.Echo;
+
+import java.util.Arrays;
 
 /**
  * 封装 Echo 注解中解析出来的参数
@@ -41,11 +43,11 @@ public class LoadKey {
             return false;
         }
         LoadKey that = (LoadKey) o;
-        return Objects.equal(api, that.api);
+        return StrUtil.equals(api, that.api);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(api);
+        return Arrays.hashCode(new Object[]{api});
     }
 }

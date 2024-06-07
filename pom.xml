@@ -23,11 +23,15 @@
     <modules>
         <module>fs-annotation</module>
         <module>fs-core</module>
-        <module>fs-mvc-plus</module>
-        <module>fs-web</module>
+        <module>fs-util</module>
+        <module>fs-uid</module>
+        <module>fs-cache-starter</module>
         <module>fs-db</module>
         <module>fs-db-mybatis-plus</module>
         <module>fs-db-mybatis-flex</module>
+        <module>fs-mvc-plus</module>
+        <module>fs-mvc-flex</module>
+        <module>fs-web</module>
         <module>fs-log-starter</module>
         <module>fs-openapi3-starter</module>
         <module>fs-validator-starter</module>
@@ -35,9 +39,7 @@
         <module>fs-captcha-starter</module>
         <module>fs-xss-starter</module>
         <module>fs-cloud-starter</module>
-        <module>fs-cache-starter</module>
         <module>fs-echo-starter</module>
-        <module>fs-uid</module>
         <module>fs-scan-starter</module>
         <module>fs-all</module>
         <module>FastDFS_Client</module>

@@ -10,8 +10,8 @@ import top.fsfsfs.basic.cache.redis.BaseRedis;
 import top.fsfsfs.basic.cache.redis.CacheResult;
 import top.fsfsfs.basic.model.cache.CacheHashKey;
 import top.fsfsfs.basic.model.cache.CacheKey;
-import top.fsfsfs.basic.utils.ArgumentAssert;
-import top.fsfsfs.basic.utils.CollHelper;
+import top.fsfsfs.util.utils.ArgumentAssert;
+import top.fsfsfs.util.utils.CollHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

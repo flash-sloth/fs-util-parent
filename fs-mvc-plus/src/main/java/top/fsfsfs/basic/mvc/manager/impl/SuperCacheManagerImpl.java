@@ -30,7 +30,7 @@ import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.model.cache.CacheKey;
 import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
-import top.fsfsfs.basic.utils.CollHelper;
+import top.fsfsfs.util.utils.CollHelper;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

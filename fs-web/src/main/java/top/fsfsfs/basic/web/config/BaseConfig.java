@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import top.fsfsfs.basic.web.undertow.UndertowServerFactoryCustomizer;
 import top.fsfsfs.basic.constant.Constants;
-import top.fsfsfs.basic.converter.String2DateConverter;
-import top.fsfsfs.basic.converter.String2LocalDateConverter;
-import top.fsfsfs.basic.converter.String2LocalDateTimeConverter;
-import top.fsfsfs.basic.converter.String2LocalTimeConverter;
-import top.fsfsfs.basic.jackson.FsJacksonModule;
-import top.fsfsfs.basic.utils.SpringUtils;
+import top.fsfsfs.basic.web.undertow.UndertowServerFactoryCustomizer;
+import top.fsfsfs.util.converter.String2DateConverter;
+import top.fsfsfs.util.converter.String2LocalDateConverter;
+import top.fsfsfs.util.converter.String2LocalDateTimeConverter;
+import top.fsfsfs.util.converter.String2LocalTimeConverter;
+import top.fsfsfs.util.jackson.FsJacksonModule;
+import top.fsfsfs.util.utils.SpringUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static top.fsfsfs.basic.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
+import static top.fsfsfs.util.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
 
 /**
  * 基础配置类

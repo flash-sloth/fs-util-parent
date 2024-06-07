@@ -20,10 +20,10 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.fsfsfs.basic.context.ContextUtil;
+import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.db.properties.DatabaseProperties;
 import top.fsfsfs.basic.exception.BizException;
-import top.fsfsfs.basic.utils.SpringUtils;
+import top.fsfsfs.util.utils.SpringUtils;
 
 import java.sql.Connection;
 import java.util.Properties;

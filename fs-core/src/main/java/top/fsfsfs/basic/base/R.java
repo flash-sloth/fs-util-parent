@@ -1,5 +1,6 @@
 package top.fsfsfs.basic.base;
 
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.exception.code.BaseExceptionCode;
-import top.fsfsfs.basic.jackson.JsonUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -236,6 +236,6 @@ public class R<T> {
 
     @Override
     public String toString() {
-        return JsonUtil.toJson(this);
+        return JSONUtil.toJsonStr(this);
     }
 }

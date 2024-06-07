@@ -2,13 +2,13 @@ package top.fsfsfs.basic.model.cache;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import top.fsfsfs.basic.context.ContextUtil;
-import top.fsfsfs.basic.utils.ArgumentAssert;
+import top.fsfsfs.basic.utils.ContextUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -143,7 +143,7 @@ public interface CacheKeyBuilder {
      */
     default CacheKey key(Object... uniques) {
         String key = getKey(uniques);
-        ArgumentAssert.notEmpty(key, "key 不能为空");
+        Assert.notEmpty(key, "key 不能为空");
         return new CacheKey(key, getExpire());
     }
 
@@ -157,8 +157,8 @@ public interface CacheKeyBuilder {
     default CacheHashKey hashFieldKey(@NonNull Object field, Object... uniques) {
         String key = getKey(uniques);
 
-        ArgumentAssert.notEmpty(key, "key 不能为空");
-        ArgumentAssert.notNull(field, "field 不能为空");
+        Assert.notEmpty(key, "key 不能为空");
+        Assert.notNull(field, "field 不能为空");
         return new CacheHashKey(key, field, getExpire());
     }
 
@@ -171,7 +171,7 @@ public interface CacheKeyBuilder {
     default CacheHashKey hashKey(Object... uniques) {
         String key = getKey(uniques);
 
-        ArgumentAssert.notEmpty(key, "key 不能为空");
+        Assert.notEmpty(key, "key 不能为空");
         return new CacheHashKey(key, null, getExpire());
     }
 
@@ -202,7 +202,7 @@ public interface CacheKeyBuilder {
         }
         // 业务类型
         String table = this.getTable();
-        ArgumentAssert.notEmpty(table, "缓存业务类型不能为空");
+        Assert.notEmpty(table, "缓存业务类型不能为空");
         regionList.add(table);
         // 业务字段
         String field = getField();

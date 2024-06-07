@@ -12,7 +12,7 @@ import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvc.request.PageParams;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.query.QueryWrap;
-import top.fsfsfs.basic.mybatisplus.utils.PageUtil;
+import top.fsfsfs.basic.mybatisplus.utils.BeanPageUtil;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 
 import java.io.Serializable;
@@ -116,7 +116,7 @@ public interface PageController<Id extends Serializable, Entity extends SuperEnt
     @WebLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
     default R<IPage<ResultVO>> page(@RequestBody @Validated PageParams<PageQuery> params) {
         IPage<Entity> page = query(params);
-        IPage<ResultVO> voPage = PageUtil.toBeanPage(page, getResultVOClass());
+        IPage<ResultVO> voPage = BeanPageUtil.toBeanPage(page, getResultVOClass());
         // 处理查询后的分页结果， 如：调用EchoService回显字典、关联表数据等 【提供给子类重写】【有默认实现】
         handlerResult(voPage);
         return success(voPage);

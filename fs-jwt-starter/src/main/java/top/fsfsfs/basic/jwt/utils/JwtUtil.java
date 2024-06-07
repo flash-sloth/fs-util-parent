@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.exception.UnauthorizedException;
 import top.fsfsfs.basic.exception.code.ExceptionCode;
 import top.fsfsfs.basic.jwt.model.Token;
-import top.fsfsfs.basic.utils.DateUtils;
+import top.fsfsfs.util.utils.DateUtils;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;

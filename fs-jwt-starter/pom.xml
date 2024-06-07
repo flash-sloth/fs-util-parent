@@ -20,6 +20,11 @@
             <artifactId>fs-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
