@@ -11,7 +11,7 @@ import static top.fsfsfs.basic.jwt.properties.JwtProperties.PREFIX;
  * 认证服务端 属性
  *
  * @author tangyh
- * @date 2018/11/20
+ * @since 2018/11/20
  */
 @Data
 @NoArgsConstructor

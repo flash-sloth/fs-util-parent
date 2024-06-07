@@ -13,7 +13,7 @@ import static top.fsfsfs.basic.openapi3.Swagger2Configuration.TRUE;
  * 2，配置文件中不存在： ${SwaggerProperties.PREFIX}.enable 值
  *
  * @author tangyh
- * @date 2018/11/18 9:20
+ * @since 2018/11/18 9:20
  */
 @ConditionalOnProperty(prefix = "knife4j", name = "enable", havingValue = TRUE, matchIfMissing = true)
 public class Swagger2Configuration {

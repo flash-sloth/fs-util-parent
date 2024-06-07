@@ -11,7 +11,7 @@ import java.util.function.Function;
  *
  * @author IT牧场
  * @author tangyh
- * @date 2019/05/15
+ * @since 2019/05/15
  */
 public final class Either<L, R> {
     /**

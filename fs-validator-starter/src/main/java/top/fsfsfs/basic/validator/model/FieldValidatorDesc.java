@@ -10,7 +10,7 @@ import java.util.List;
  * 字段校验规则信息
  *
  * @author tangyh
- * @date 2019-07-12 14:28
+ * @since 2019-07-12 14:28
  */
 @Data
 @ToString

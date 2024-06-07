@@ -20,7 +20,11 @@
             <artifactId>fs-db</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-3-starter</artifactId>
@@ -33,6 +37,11 @@
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-processor</artifactId>
         </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

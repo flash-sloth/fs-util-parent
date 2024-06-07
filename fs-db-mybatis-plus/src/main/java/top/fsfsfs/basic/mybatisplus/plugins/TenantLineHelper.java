@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author tangyh
  * @version v1.0
- * @date 2022/8/25 1:12 PM
+ * @since 2022/8/25 1:12 PM
  * @create [2022/8/25 1:12 PM ] [tangyh] [初始创建]
  */
 public class TenantLineHelper {
@@ -19,7 +19,7 @@ public class TenantLineHelper {
      *
      * @param id mapper 唯一
      * @author tangyh
-     * @date 2022/8/25 1:15 PM
+     * @since 2022/8/25 1:15 PM
      * @create [2022/8/25 1:15 PM ] [tangyh] [初始创建]
      */
     public static boolean willTenantLine(String id) {

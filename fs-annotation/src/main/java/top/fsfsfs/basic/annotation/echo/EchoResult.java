@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * 注意，该方法不能写在 Mapper 的方法上。
  *
  * @author tangyh
- * @date 2020年01月19日09:08:40
+ * @since 2020年01月19日09:08:40
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})

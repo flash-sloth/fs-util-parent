@@ -9,7 +9,7 @@ import top.fsfsfs.basic.constant.Constants;
  * 默认开启，视情况关闭。
  *
  * @author tangyh
- * @date 2021年07月13日11:44:09
+ * @since 2021年07月13日11:44:09
  */
 @ConditionalOnProperty(value = Constants.PROJECT_PREFIX + ".grayscale.enabled", havingValue = "true", matchIfMissing = true)
 @LoadBalancerClients(defaultConfiguration = GrayscaleLbConfig.class)

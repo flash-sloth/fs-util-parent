@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 异步任务配置
  *
  * @author tangyh
- * @date 2021年06月23日19:49:53
+ * @since 2021年06月23日19:49:53
  */
 @Setter
 @Getter

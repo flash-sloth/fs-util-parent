@@ -12,7 +12,7 @@ import java.util.Set;
  * 若一个表想要一个实体不同字段回显不同的值，可以新建多个实现类返回不一样的Map
  *
  * @author tangyh
- * @date 2020-05-19 10:26:15
+ * @since 2020-05-19 10:26:15
  */
 public interface LoadService {
     /**

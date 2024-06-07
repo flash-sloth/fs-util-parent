@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * 字符串帮助类
  *
  * @author tangyh
- * @date 2019-07-16 22:09
+ * @since 2019-07-16 22:09
  */
 @Slf4j
 public final class StrHelper {

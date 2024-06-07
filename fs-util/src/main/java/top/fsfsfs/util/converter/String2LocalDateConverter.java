@@ -13,7 +13,7 @@ import java.time.LocalDate;
  * yyyy年MM月dd日
  *
  * @author tangyh
- * @date 2019-04-30
+ * @since 2019-04-30
  */
 public class String2LocalDateConverter implements Converter<String, LocalDate> {
 

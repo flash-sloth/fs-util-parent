@@ -14,9 +14,7 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import top.fsfsfs.basic.db.properties.DatabaseProperties;
 import top.fsfsfs.basic.db.typehandler.FullLikeTypeHandler;
@@ -30,7 +28,7 @@ import java.util.Properties;
  * 持久层常用配置
  *
  * @author tangyh
- * @date 2018/10/24
+ * @since 2018/10/24
  */
 @Slf4j
 public abstract class FsDbConfiguration {
@@ -58,57 +56,37 @@ public abstract class FsDbConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnExpression("'DEFAULT'.equals('${" + DatabaseProperties.PREFIX + ".id-type:DEFAULT}') || 'CACHE'.equals('${" + DatabaseProperties.PREFIX + ".id-type:DEFAULT}')")
-    public DisposableWorkerIdAssigner disposableWorkerIdAssigner(WorkerNodeDao workerNodeDao) {
-        return new DisposableWorkerIdAssigner(workerNodeDao);
-    }
-
-    /**
-     * ${DatabaseProperties.PREFIX}.database.id-type = DEFAULT 或 ${DatabaseProperties.PREFIX}.database.id-type 未设置时启用。
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = DatabaseProperties.PREFIX, name = "id-type", havingValue = "DEFAULT", matchIfMissing = true)
-    public UidGenerator getDefaultUidGenerator(DisposableWorkerIdAssigner disposableWorkerIdAssigner) {
-        DefaultUidGenerator uidGenerator = new DefaultUidGenerator();
-        BeanUtil.copyProperties(databaseProperties.getDefaultId(), uidGenerator);
-        uidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);
-        return uidGenerator;
-    }
-
-    /**
-     * ${DatabaseProperties.PREFIX}.database.id-type = CACHE 时启用。
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = DatabaseProperties.PREFIX, name = "id-type", havingValue = "CACHE")
-    public UidGenerator getCacheUidGenerator(DisposableWorkerIdAssigner disposableWorkerIdAssigner) {
-        CachedUidGenerator uidGenerator = new CachedUidGenerator();
-        DatabaseProperties.CacheId cacheId = databaseProperties.getCacheId();
-        BeanUtil.copyProperties(cacheId, uidGenerator);
-        if (cacheId.getRejectedPutBufferHandlerClass() != null) {
-            RejectedPutBufferHandler rejectedPutBufferHandler = ReflectUtil.newInstance(cacheId.getRejectedPutBufferHandlerClass());
-            uidGenerator.setRejectedPutBufferHandler(rejectedPutBufferHandler);
+    public UidGenerator getHuToolUidGenerator(WorkerNodeDao workerNodeDao) {
+        switch (databaseProperties.getIdType()) {
+            case CACHE -> {
+                DisposableWorkerIdAssigner disposableWorkerIdAssigner = new DisposableWorkerIdAssigner(workerNodeDao);
+                CachedUidGenerator uidGenerator = new CachedUidGenerator();
+                DatabaseProperties.CacheId cacheId = databaseProperties.getCacheId();
+                BeanUtil.copyProperties(cacheId, uidGenerator);
+                if (cacheId.getRejectedPutBufferHandlerClass() != null) {
+                    RejectedPutBufferHandler rejectedPutBufferHandler = ReflectUtil.newInstance(cacheId.getRejectedPutBufferHandlerClass());
+                    uidGenerator.setRejectedPutBufferHandler(rejectedPutBufferHandler);
+                }
+                if (cacheId.getRejectedTakeBufferHandlerClass() != null) {
+                    RejectedTakeBufferHandler rejectedTakeBufferHandler = ReflectUtil.newInstance(cacheId.getRejectedTakeBufferHandlerClass());
+                    uidGenerator.setRejectedTakeBufferHandler(rejectedTakeBufferHandler);
+                }
+                uidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);
+                return uidGenerator;
+            }
+            case HU_TOOL -> {
+                DatabaseProperties.HutoolId id = databaseProperties.getHutoolId();
+                return new HuToolUidGenerator(id.getWorkerId(), id.getDataCenterId());
+            }
+            default -> {
+                DisposableWorkerIdAssigner disposableWorkerIdAssigner = new DisposableWorkerIdAssigner(workerNodeDao);
+                DefaultUidGenerator uidGenerator = new DefaultUidGenerator();
+                BeanUtil.copyProperties(databaseProperties.getDefaultId(), uidGenerator);
+                uidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);
+                return uidGenerator;
+            }
         }
-        if (cacheId.getRejectedTakeBufferHandlerClass() != null) {
-            RejectedTakeBufferHandler rejectedTakeBufferHandler = ReflectUtil.newInstance(cacheId.getRejectedTakeBufferHandlerClass());
-            uidGenerator.setRejectedTakeBufferHandler(rejectedTakeBufferHandler);
-        }
-        uidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);
-        return uidGenerator;
     }
-
-    /**
-     * ${DatabaseProperties.PREFIX}.database.id-type = HU_TOOL 时启用。
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = DatabaseProperties.PREFIX, name = "id-type", havingValue = "HU_TOOL")
-    public UidGenerator getHuToolUidGenerator() {
-        DatabaseProperties.HutoolId id = databaseProperties.getHutoolId();
-        return new HuToolUidGenerator(id.getWorkerId(), id.getDataCenterId());
-    }
-
 
     /**
      * Mybatis 自定义的类型处理器： 处理XML中  #{name,typeHandler=leftLike} 类型的参数

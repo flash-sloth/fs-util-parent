@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 线程变量封装的参数
  *
  * @author tangyh
- * @date 2020/11/1 2:10 下午
+ * @since 2020/11/1 2:10 下午
  */
 @Data
 public class ThreadLocalParam implements Serializable {

@@ -15,7 +15,7 @@ import top.fsfsfs.basic.scan.utils.RequestMappingScanUtils;
  * 启动配置
  *
  * @author tangyh
- * @date 2021年09月19日15:13:33
+ * @since 2021年09月19日15:13:33
  */
 @AllArgsConstructor
 @ComponentScan(

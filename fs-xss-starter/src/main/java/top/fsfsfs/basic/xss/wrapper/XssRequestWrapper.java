@@ -17,7 +17,7 @@ import static top.fsfsfs.basic.xss.utils.XssUtils.xssClean;
  * 跨站攻击请求包装器
  *
  * @author tangyh
- * @date 2019-06-28 17:04
+ * @since 2019-06-28 17:04
  */
 @Slf4j
 public class XssRequestWrapper extends HttpServletRequestWrapper {

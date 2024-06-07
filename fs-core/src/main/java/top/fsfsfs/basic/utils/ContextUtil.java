@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 获取当前线程变量中的 用户id、用户昵称、租户编码、账号等信息
  *
  * @author tangyh
- * @date 2017-12-13 16:52
+ * @since 2017-12-13 16:52
  */
 public final class ContextUtil {
 
@@ -21,7 +21,7 @@ public final class ContextUtil {
      * 支持多线程传递参数
      *
      * @author tangyh
-     * @date 2021/6/23 9:26 下午
+     * @since 2021/6/23 9:26 下午
      * @create [2021/6/23 9:26 下午 ] [tangyh] [初始创建]
      */
     private static final ThreadLocal<Map<String, String>> THREAD_LOCAL = new ThreadLocal<>();
@@ -198,7 +198,7 @@ public final class ContextUtil {
      *
      * @return java.lang.Long
      * @author tangyh
-     * @date 2022/9/9 4:50 PM
+     * @since 2022/9/9 4:50 PM
      * @create [2022/9/9 4:50 PM ] [tangyh] [初始创建]
      */
     public static Long getCurrentCompanyId() {
@@ -214,7 +214,7 @@ public final class ContextUtil {
      *
      * @return java.lang.Long
      * @author tangyh
-     * @date 2022/9/9 4:50 PM
+     * @since 2022/9/9 4:50 PM
      * @create [2022/9/9 4:50 PM ] [tangyh] [初始创建]
      */
     public static Long getCurrentTopCompanyId() {
@@ -230,7 +230,7 @@ public final class ContextUtil {
      *
      * @return java.lang.Long
      * @author tangyh
-     * @date 2022/9/9 4:50 PM
+     * @since 2022/9/9 4:50 PM
      * @create [2022/9/9 4:50 PM ] [tangyh] [初始创建]
      */
     public static Long getCurrentDeptId() {

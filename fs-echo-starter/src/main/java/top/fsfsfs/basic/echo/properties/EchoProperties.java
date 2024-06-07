@@ -10,7 +10,7 @@ import java.util.List;
  * 配置类
  *
  * @author tangyh
- * @date 2020年01月19日09:11:19
+ * @since 2020年01月19日09:11:19
  */
 @Data
 @ConfigurationProperties(EchoProperties.PREFIX)

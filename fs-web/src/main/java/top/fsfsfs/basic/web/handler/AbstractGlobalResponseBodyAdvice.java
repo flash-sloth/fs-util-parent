@@ -15,7 +15,7 @@ import java.util.Objects;
  * 全局响应体包装
  *
  * @author tangyh
- * @date 2020/12/24 8:09 下午
+ * @since 2020/12/24 8:09 下午
  */
 @ControllerAdvice
 public abstract class AbstractGlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {

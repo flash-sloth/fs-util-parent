@@ -14,7 +14,7 @@ package top.fsfsfs.basic.exception.code;
  * [系统]_[模块]_[功能]： 每段3位数，_只是java或js语言的语法糖，实际上的数字编码并不存在下划线
  *
  * @author tangyh
- * @date 2017-12-13 16:22
+ * @since 2017-12-13 16:22
  */
 public enum ExceptionCode implements BaseExceptionCode {
 

@@ -70,7 +70,7 @@ import java.util.Properties;
 /**
  * @author tangyh
  * @version v1.0
- * @date 2022/8/24 3:41 PM
+ * @since 2022/8/24 3:41 PM
  * @create [2022/8/24 3:41 PM ] [tangyh] [初始创建]
  */
 @Data

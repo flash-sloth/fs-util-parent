@@ -21,7 +21,7 @@ import static top.fsfsfs.basic.xss.filter.XssFilter.IGNORE_PATH;
  * XSS 跨站攻击自动配置
  *
  * @author tangyh
- * @date 2019/07/25
+ * @since 2019/07/25
  */
 @AllArgsConstructor
 @EnableConfigurationProperties({XssProperties.class})

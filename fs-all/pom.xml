@@ -29,6 +29,11 @@
         </dependency>
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-mvc-flex</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>top.fsfsfs.basic</groupId>
             <artifactId>fs-web</artifactId>
             <version>${project.version}</version>
         </dependency>

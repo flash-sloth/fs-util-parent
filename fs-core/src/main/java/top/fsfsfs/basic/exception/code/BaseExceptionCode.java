@@ -4,7 +4,7 @@ package top.fsfsfs.basic.exception.code;
  * 异常编码
  *
  * @author tangyh
- * @date 2017-12-25 13:46
+ * @since 2017-12-25 13:46
  */
 public interface BaseExceptionCode {
     /**

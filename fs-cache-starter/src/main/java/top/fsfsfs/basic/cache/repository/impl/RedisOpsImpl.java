@@ -26,7 +26,7 @@ import java.util.function.Function;
 /**
  * @author tangyh
  * @version v1.0
- * @date 2022/10/24 11:21 AM
+ * @since 2022/10/24 11:21 AM
  * @create [2022/10/24 11:21 AM ] [tangyh] [初始创建]
  */
 public class RedisOpsImpl extends BaseRedis {
@@ -34,8 +34,6 @@ public class RedisOpsImpl extends BaseRedis {
     public RedisOpsImpl(RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate, boolean defaultCacheNullVal) {
         super(redisTemplate, stringRedisTemplate, defaultCacheNullVal);
     }
-
-
 
 
     // ---------------------------- string start ----------------------------
@@ -185,6 +183,25 @@ public class RedisOpsImpl extends BaseRedis {
         return cacheResult;
     }
 
+    @Override
+    public void mSet(Map<String, ?> map, boolean... cacheNullValues) {
+        if (CollUtil.isEmpty(map)) {
+            return;
+        }
+        boolean cacheNullVal = cacheNullValues.length > 0 ? cacheNullValues[0] : defaultCacheNullVal;
+        Map<String, Object> newMap = new HashMap<>(map.size());
+        map.forEach((key, value) -> {
+            if (!cacheNullVal && value == null) {
+                return;
+            }
+
+            newMap.put(key, value == null ? newNullVal() : value);
+        });
+
+        if (!newMap.isEmpty()) {
+            valueOps.multiSet(newMap);
+        }
+    }
 
     /**
      * 返回所有(一个或多个)给定 key 的值, 值按请求的键的顺序返回。

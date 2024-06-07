@@ -26,7 +26,7 @@ import java.util.Map;
  * feign 自动注册
  *
  * @author tangyh
- * @date 2021年07月13日16:39:42
+ * @since 2021年07月13日16:39:42
  */
 @Getter
 @Slf4j

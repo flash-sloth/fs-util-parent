@@ -49,7 +49,7 @@ import static top.fsfsfs.basic.exception.code.ExceptionCode.REQUIRED_FILE_PARAM_
  * 全局异常统一处理
  *
  * @author tangyh
- * @date 2017-12-13 17:04
+ * @since 2017-12-13 17:04
  */
 @SuppressWarnings("AlibabaUndefineMagicConstant")
 @Slf4j

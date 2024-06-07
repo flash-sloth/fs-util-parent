@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  * 缺点2： 不能和@RequesyBody 标记的参数，同时使用
  *
  * @author tangyh
- * @date 2018/7/24 16:44
+ * @since 2018/7/24 16:44
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,7 +5,7 @@ package top.fsfsfs.basic.constant;
  *
  * @author tangyh
  * @version v1.0
- * @date 2022/4/12 11:05 PM
+ * @since 2022/4/12 11:05 PM
  * @create [2022/4/12 11:05 PM ] [tangyh] [初始创建]
  */
 public interface Constants {

@@ -4,7 +4,7 @@ package top.fsfsfs.util.function;
  * 处理异常的 函数
  *
  * @author tangyh
- * @date 2019/05/15
+ * @since 2019/05/15
  */
 @FunctionalInterface
 public interface CheckedFunction<T, R> {

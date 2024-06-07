@@ -17,7 +17,7 @@ import static top.fsfsfs.basic.openapi3.properties.SwaggerProperties.PREFIX;
  * 必须配置 prefix ，才能有提示
  *
  * @author tangyh
- * @date 2018/11/18 9:17
+ * @since 2018/11/18 9:17
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)

@@ -34,7 +34,7 @@ import top.fsfsfs.basic.validator.constraintvalidators.NotNullConstraintValidato
  * 验证器配置
  *
  * @author tangyh
- * @date 2019/07/14
+ * @since 2019/07/14
  */
 @ComponentScan(basePackageClasses = FormValidatorController.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * 操作日志注解
  *
  * @author tangyh
- * @date 2019/2/1
+ * @since 2019/2/1
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -3,7 +3,7 @@ package top.fsfsfs.basic.db.properties;
 /**
  * mybatis-flex 审计实现类
  * @author tangyh
- * @date 2024年06月06日00:13:28
+ * @since 2024年06月06日00:13:28
  */
 public enum AuditCollector {
     /** slf4j 输出到日志文件 */

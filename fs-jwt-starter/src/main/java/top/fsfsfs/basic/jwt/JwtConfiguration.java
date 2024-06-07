@@ -9,7 +9,7 @@ import top.fsfsfs.basic.jwt.properties.JwtProperties;
  * 认证服务端配置
  *
  * @author tangyh
- * @date 2018/11/20
+ * @since 2018/11/20
  */
 @EnableConfigurationProperties(value = {
         JwtProperties.class,

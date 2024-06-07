@@ -12,7 +12,7 @@ import java.time.LocalTime;
  * HH时mm分ss秒
  *
  * @author tangyh
- * @date 2019-04-30
+ * @since 2019-04-30
  */
 public class String2LocalTimeConverter implements Converter<String, LocalTime> {
     @Override

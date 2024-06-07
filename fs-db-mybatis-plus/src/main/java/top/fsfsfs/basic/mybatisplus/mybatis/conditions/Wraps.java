@@ -29,7 +29,7 @@ import static top.fsfsfs.basic.utils.StrPool.UNDERSCORE;
  * Wrappers 工具类， 该方法的主要目的是为了 缩短代码长度
  *
  * @author tangyh
- * @date 2019/06/14
+ * @since 2019/06/14
  */
 public final class Wraps {
     /**
@@ -171,7 +171,7 @@ public final class Wraps {
      * @param modelClazz modelClazz 条件对象类型
      * @return top.fsfsfs.basic.database.mybatis.conditions.query.QueryWrap<Entity>
      * @author tangyh
-     * @date 2021/8/26 8:47 下午
+     * @since 2021/8/26 8:47 下午
      * @create [2021/8/26 8:47 下午 ] [tangyh] [初始创建]
      */
     public static <Entity> QueryWrap<Entity> q(Entity model, Map<String, Object> extra, Class<Entity> modelClazz) {

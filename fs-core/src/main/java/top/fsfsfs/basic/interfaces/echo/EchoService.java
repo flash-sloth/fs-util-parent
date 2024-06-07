@@ -2,7 +2,7 @@ package top.fsfsfs.basic.interfaces.echo;
 
 /**
  * @author tangyh
- * @date 2021/9/12 12:03
+ * @since 2021/9/12 12:03
  */
 public interface EchoService {
     /**

@@ -11,7 +11,7 @@ import java.util.List;
  * 提取指定表单验证规则
  *
  * @author tangyh
- * @date 2019-06-12
+ * @since 2019-06-12
  */
 public interface IConstraintExtract {
 

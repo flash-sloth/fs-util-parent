@@ -11,7 +11,7 @@ import java.util.List;
  * 忽略XSS 配置类
  *
  * @author tangyh
- * @date 2020/10/31
+ * @since 2020/10/31
  */
 @Data
 @ConfigurationProperties(prefix = XssProperties.PREFIX)

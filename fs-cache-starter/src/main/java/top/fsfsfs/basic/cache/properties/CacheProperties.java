@@ -11,7 +11,7 @@ import java.util.Map;
  * 缓存配置
  *
  * @author tangyh
- * @date 2019/08/06
+ * @since 2019/08/06
  */
 @Data
 @ConfigurationProperties(prefix = CacheProperties.PREFIX)

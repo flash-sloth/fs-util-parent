@@ -52,7 +52,7 @@ import java.util.function.Function;
  *
  * @author tangyh
  * @version v1.0
- * @date 2022/10/24 11:23 AM
+ * @since 2022/10/24 11:23 AM
  * @create [2022/10/24 11:23 AM ] [tangyh] [初始创建]
  */
 @Slf4j
@@ -238,7 +238,7 @@ public abstract class BaseRedis implements CacheOps {
      *
      * @param pattern pattern
      * @author tangyh
-     * @date 2021/6/18 3:21 下午
+     * @since 2021/6/18 3:21 下午
      * @create [2021/6/18 3:21 下午 ] [tangyh] [初始创建]
      */
     @Override

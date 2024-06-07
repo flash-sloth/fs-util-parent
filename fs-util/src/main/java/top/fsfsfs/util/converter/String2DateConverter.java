@@ -26,7 +26,7 @@ import java.util.Date;
  * yyyy年MM月dd日HH时mm分ss秒
  *
  * @author tangyh
- * @date 2019-04-30
+ * @since 2019-04-30
  */
 @Slf4j
 public class String2DateConverter implements Converter<String, Date> {

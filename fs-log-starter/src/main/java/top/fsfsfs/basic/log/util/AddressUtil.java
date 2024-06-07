@@ -15,7 +15,7 @@ import java.net.URL;
  * 根据ip查询地址
  *
  * @author tangyh
- * @date 2019/10/30
+ * @since 2019/10/30
  */
 @Slf4j
 public final class AddressUtil {

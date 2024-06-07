@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * RequestMapping 扫描工具类
  *
  * @author tangyh
- * @date 2019/12/16
+ * @since 2019/12/16
  */
 @Getter
 public class RequestMappingScanUtils {

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * 包括id、created_time、created_by、updated_by、updated_time字段的表继承的基础实体
  *
  * @author tangyh
- * @date 2019/05/05
+ * @since 2019/05/05
  */
 @Getter
 @Setter

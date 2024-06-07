@@ -10,7 +10,7 @@ import top.fsfsfs.basic.utils.StrPool;
  * 用于 p6spy 在输出的sql日志中，打印当前租户、当前用户ID、当前数据源连接url
  *
  * @author tangyh
- * @date 2020/9/3 3:39 下午
+ * @since 2020/9/3 3:39 下午
  */
 public class TenantP6SpyLogger implements MessageFormattingStrategy {
     public static final String REGX = "\\s+";

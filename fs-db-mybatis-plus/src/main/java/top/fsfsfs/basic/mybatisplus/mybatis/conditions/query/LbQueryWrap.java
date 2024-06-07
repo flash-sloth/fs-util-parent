@@ -61,7 +61,7 @@ import static top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps.replace;
  *
  * @author tangyh
  * @author hubin miemie HCL
- * @date Created on 2019/5/27 17:11
+ * @since Created on 2019/5/27 17:11
  */
 public class LbQueryWrap<T> extends AbstractLambdaWrapper<T, LbQueryWrap<T>>
         implements Query<LbQueryWrap<T>, T, SFunction<T, ?>> {

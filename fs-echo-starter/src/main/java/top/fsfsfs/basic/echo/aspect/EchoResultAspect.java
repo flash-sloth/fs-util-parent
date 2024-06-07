@@ -13,7 +13,7 @@ import top.fsfsfs.basic.interfaces.echo.EchoService;
  * InjectionResult 注解的 AOP 工具
  *
  * @author tangyh
- * @date 2020年01月19日09:27:41
+ * @since 2020年01月19日09:27:41
  */
 @Aspect
 @AllArgsConstructor

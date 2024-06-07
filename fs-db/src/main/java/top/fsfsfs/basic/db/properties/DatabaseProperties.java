@@ -20,7 +20,7 @@ import static top.fsfsfs.basic.db.properties.DatabaseProperties.PREFIX;
  * 客户端认证配置
  *
  * @author tangyh
- * @date 2018/11/20
+ * @since 2018/11/20
  */
 @Data
 @NoArgsConstructor

@@ -8,7 +8,7 @@ import top.fsfsfs.basic.constant.Constants;
  * 缓存配置
  *
  * @author tangyh
- * @date 2021年09月19日15:12:32
+ * @since 2021年09月19日15:12:32
  */
 @Data
 @ConfigurationProperties(prefix = ScanProperties.PREFIX)

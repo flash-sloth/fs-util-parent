@@ -12,7 +12,7 @@ import top.fsfsfs.basic.xss.utils.XssUtils;
  * 在本项目中，没有使用该类
  *
  * @author tangyh
- * @date 2019/06/28
+ * @since 2019/06/28
  */
 @Slf4j
 public class XssStringJsonSerializer extends JsonSerializer<String> {

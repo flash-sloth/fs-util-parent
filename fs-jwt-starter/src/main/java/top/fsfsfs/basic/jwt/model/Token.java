@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * token 工具类返回值
  *
  * @author tangyh
- * @date 2017-12-15 11:22
+ * @since 2017-12-15 11:22
  */
 @Data
 @EqualsAndHashCode(callSuper=false)

@@ -6,7 +6,7 @@ import cn.hutool.core.util.RandomUtil;
  * 常用字符串
  *
  * @author tangyh
- * @date 2019/07/25
+ * @since 2019/07/25
  */
 public interface StrPool {
     String AMPERSAND = "&";

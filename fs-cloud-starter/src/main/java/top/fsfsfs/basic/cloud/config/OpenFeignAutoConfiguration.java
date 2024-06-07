@@ -24,7 +24,7 @@ import java.util.List;
  * OpenFeign 配置
  *
  * @author tangyh
- * @date 2019/07/25
+ * @since 2019/07/25
  */
 @Import(MyFeignClientsRegistrar.class)
 @ConditionalOnClass(Feign.class)

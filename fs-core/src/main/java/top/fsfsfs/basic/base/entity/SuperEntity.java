@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.groups.Default;
@@ -15,6 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -22,7 +25,7 @@ import java.time.LocalDateTime;
  * 包括id、created_time、created_by字段的表继承的基础实体
  *
  * @author tangyh
- * @date 2019/05/05
+ * @since 2019/05/05
  */
 @Getter
 @Setter
@@ -40,9 +43,11 @@ public class SuperEntity<T> implements Serializable {
     public static final String CREATED_ORG_ID = "createdOrgId";
     public static final String CREATED_ORG_ID_FIELD = "created_org_id";
 
+    @Serial
     private static final long serialVersionUID = -4603650115461757622L;
 
     @TableId(value = "id", type = IdType.INPUT)
+    @Id(keyType = KeyType.Generator, value = "uid")
     @Schema(description = "主键")
     @NotNull(message = "id不能为空", groups = SuperEntity.Update.class)
     protected T id;

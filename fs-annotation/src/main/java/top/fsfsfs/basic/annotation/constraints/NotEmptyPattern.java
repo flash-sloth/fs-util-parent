@@ -22,7 +22,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 跟 jakarta.validation.constraints.Pattern 的区别在于： 本类校验时，传递过来的参数为null或者""时，不会校验正则表达式
  *
  * @author tangyh
- * @date 2021/3/30 7:47 下午
+ * @since 2021/3/30 7:47 下午
  */
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
@@ -114,7 +114,7 @@ public @interface NotEmptyPattern {
          * JDK flag value
          *
          * @author tangyh
-         * @date 2021/8/15 10:18 下午
+         * @since 2021/8/15 10:18 下午
          * @create [2021/8/15 10:18 下午 ] [tangyh] [初始创建]
          */
         private final int value;

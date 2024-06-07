@@ -11,7 +11,7 @@ import static top.fsfsfs.basic.log.properties.OptLogProperties.PREFIX;
  * 操作日志配置类
  *
  * @author tangyh
- * @date 2020年03月09日15:00:47
+ * @since 2020年03月09日15:00:47
  */
 @ConfigurationProperties(prefix = PREFIX)
 @Data

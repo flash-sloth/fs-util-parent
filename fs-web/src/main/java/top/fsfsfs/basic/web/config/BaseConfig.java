@@ -40,7 +40,7 @@ import static top.fsfsfs.util.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
  * 基础配置类
  *
  * @author tangyh
- * @date 2019-06-22 22:53
+ * @since 2019-06-22 22:53
  */
 @AutoConfigureBefore(JacksonAutoConfiguration.class)
 public abstract class BaseConfig {

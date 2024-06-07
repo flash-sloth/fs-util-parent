@@ -11,7 +11,7 @@ import static top.fsfsfs.basic.web.config.properties.AsyncProperties.PREFIX;
  * 异步线程配置
  *
  * @author tangyh
- * @date 2021/6/23 8:06 下午
+ * @since 2021/6/23 8:06 下午
  * @create [2021/6/23 8:06 下午 ] [tangyh] [初始创建]
  */
 @Getter

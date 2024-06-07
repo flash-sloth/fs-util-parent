@@ -9,7 +9,7 @@ import top.fsfsfs.basic.web.interceptor.HeaderThreadLocalInterceptor;
  * 公共配置类, 一些公共工具配置
  *
  * @author tangyh
- * @date 2018/8/25
+ * @since 2018/8/25
  */
 @AllArgsConstructor
 public class GlobalMvcConfigurer implements WebMvcConfigurer {

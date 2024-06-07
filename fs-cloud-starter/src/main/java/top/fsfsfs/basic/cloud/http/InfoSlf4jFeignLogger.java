@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 
 /**
  * @author tangyh
- * @date 2020/8/9 上午10:01
+ * @since 2020/8/9 上午10:01
  */
 public class InfoSlf4jFeignLogger extends feign.Logger {
     private final Logger logger;

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * AuthInfo
  *
  * @author tangyh
- * @date 2020年03月31日21:43:31
+ * @since 2020年03月31日21:43:31
  */
 @Data
 @Accessors(chain = true)

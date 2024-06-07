@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
  * 初始化TtlMDCAdapter实例，并替换MDC中的adapter对象
  *
  * @author tangyh
- * @date 2020年03月09日16:46:47
+ * @since 2020年03月09日16:46:47
  */
 public class MdcAdapterInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     @Override

@@ -65,7 +65,7 @@ import static top.fsfsfs.basic.validator.utils.ValidatorConstants.PATTERN;
  * 缺省的约束提取器
  *
  * @author tangyh
- * @date 2019-07-14 12:12
+ * @since 2019-07-14 12:12
  */
 @Slf4j
 public class DefaultConstraintExtractImpl implements IConstraintExtract {

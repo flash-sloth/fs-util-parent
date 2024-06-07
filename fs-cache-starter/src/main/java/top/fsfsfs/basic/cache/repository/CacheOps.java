@@ -15,7 +15,7 @@ import java.util.function.Function;
  * 缓存操作公共接口
  *
  * @author tangyh
- * @date 2019/08/07
+ * @since 2019/08/07
  */
 public interface CacheOps {
 
@@ -85,6 +85,14 @@ public interface CacheOps {
      * @return 值 不存在时，返回空集合
      */
     <T> List<CacheResult<T>> mGetByCacheKey(@NonNull Collection<CacheKey> keys);
+
+    /**
+     * 批量设置缓存
+     *
+     * @param map 集合
+     * @param cacheNullValues 是否缓存空值
+     */
+    void mSet(Map<String, ?> map, boolean... cacheNullValues);
 
     /**
      * 根据key获取对象

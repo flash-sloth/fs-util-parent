@@ -27,7 +27,7 @@ import java.util.List;
  * WriteInterceptor > DataScopeInterceptor > PaginationInterceptor
  *
  * @author tangyh
- * @date 2018/10/24
+ * @since 2018/10/24
  */
 @Slf4j
 public abstract class FsMybatisPlusConfiguration extends FsDbConfiguration {

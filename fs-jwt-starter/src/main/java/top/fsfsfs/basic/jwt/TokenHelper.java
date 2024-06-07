@@ -32,7 +32,7 @@ import static top.fsfsfs.basic.constant.ContextConstants.JWT_KEY_UUID;
  * 认证工具类
  *
  * @author tangyh
- * @date 2020年03月31日19:03:47
+ * @since 2020年03月31日19:03:47
  */
 @Slf4j
 public class TokenHelper {

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * jwt 中存储的 内容
  *
  * @author tangyh
- * @date 2018/11/20
+ * @since 2018/11/20
  */
 @Data
 @AllArgsConstructor

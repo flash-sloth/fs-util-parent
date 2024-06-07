@@ -27,7 +27,7 @@ import static com.baomidou.mybatisplus.core.enums.WrapperKeyword.APPLY;
  * 2，对*like*相关方法的参数 %和_ 符号进行转义，便于模糊查询
  *
  * @author tangyh
- * @date Created on 2019/5/27 17:15
+ * @since Created on 2019/5/27 17:15
  */
 public class LbUpdateWrap<T> extends AbstractLambdaWrapper<T, LbUpdateWrap<T>>
         implements Update<LbUpdateWrap<T>, SFunction<T, ?>> {

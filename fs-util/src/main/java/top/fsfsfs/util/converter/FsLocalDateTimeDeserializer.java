@@ -42,7 +42,7 @@ import static top.fsfsfs.util.utils.DateUtils.SLASH_DATE_TIME_FORMAT_MATCHES;
  * 6. yyyy/MM/dd HH:mm:ss
  *
  * @author tangyh
- * @date 2020/6/18 上午10:50
+ * @since 2020/6/18 上午10:50
  */
 @SuppressWarnings("ALL")
 public class FsLocalDateTimeDeserializer extends JSR310DateTimeDeserializerBase<LocalDateTime> {

@@ -20,7 +20,7 @@ import static top.fsfsfs.basic.web.utils.WebUtils.getHeader;
  * 该拦截器要优先于系统中其他的业务拦截器
  *
  * @author tangyh
- * @date 2020/10/31 9:49 下午
+ * @since 2020/10/31 9:49 下午
  */
 @Slf4j
 public class HeaderThreadLocalInterceptor implements AsyncHandlerInterceptor {

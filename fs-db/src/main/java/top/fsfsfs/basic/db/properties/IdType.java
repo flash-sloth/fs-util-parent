@@ -2,7 +2,7 @@ package top.fsfsfs.basic.db.properties;
 
 /**
  * @author tangyh
- * @date 2020/9/15 3:44 下午
+ * @since 2020/9/15 3:44 下午
  */
 public enum IdType {
     /**
