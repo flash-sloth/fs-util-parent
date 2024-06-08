@@ -79,9 +79,9 @@ public interface QueryController<Id extends Serializable, Entity extends SuperEn
      * @return 查询结果
      */
     @Operation(summary = "批量查询", description = "批量查询")
-    @PostMapping("/query")
+    @PostMapping("/list")
     @WebLog("批量查询")
-    default R<List<ResultVO>> query(@RequestBody PageQuery data) {
+    default R<List<ResultVO>> list(@RequestBody PageQuery data) {
         Entity entity = BeanPlusUtil.toBean(data, getEntityClass());
         QueryWrap<Entity> wrapper = Wraps.q(entity);
         List<Entity> list = getSuperService().list(wrapper);
@@ -96,9 +96,9 @@ public interface QueryController<Id extends Serializable, Entity extends SuperEn
      * @return 查询结果
      */
     @Operation(summary = "根据Id批量查询", description = "根据Id批量查询")
-    @PostMapping("/findByIds")
+    @PostMapping("/listByIds")
     @WebLog("根据Id批量查询")
-    default R<List<ResultVO>> findByIds(@RequestBody List<Id> ids) {
+    default R<List<ResultVO>> listByIds(@RequestBody List<Id> ids) {
         if (CollUtil.isEmpty(ids)) {
             return R.success(Collections.emptyList());
         }
