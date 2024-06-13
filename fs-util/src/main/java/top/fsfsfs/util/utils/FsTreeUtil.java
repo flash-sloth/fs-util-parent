@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author tangyh
  */
-public final class FsTreeUtil extends TreeUtil {
+public final class FsTreeUtil {
     /**
      * 默认的树节点 分隔符
      */
@@ -69,7 +69,7 @@ public final class FsTreeUtil extends TreeUtil {
      * @param list           源数据集合; 必须继承TreeNode<Long>
      * @return List
      */
-    public static <T extends TreeNode<Long>> List<Tree<Long>> build2(List<T> list) {
+    public static <T extends TreeNode<Long>> List<Tree<Long>> build(List<T> list) {
         return build(list, TreeNodeConfig.DEFAULT_CONFIG);
     }
 
@@ -83,6 +83,19 @@ public final class FsTreeUtil extends TreeUtil {
      */
     public static <T extends TreeNode<Long>> List<Tree<Long>> build(List<T> list, TreeNodeConfig treeNodeConfig) {
         return build(list, DEF_PARENT_ID, treeNodeConfig);
+    }
+
+    /**
+     * 构建  根节点存储 <code>rootId</code>，节点ID类型为Long 的树
+     *
+     * @param <T>            转换的实体 为数据源里的对象类型
+     * @param <E>            ID类型
+     * @param list           源数据集合; 必须继承TreeNode<E>
+     * @param rootId         最顶层父id值 一般为 0 或 null 之类
+     * @return List
+     */
+    public static <T extends TreeNode<E>, E> List<Tree<E>> build(List<T> list, E rootId) {
+        return build(list, rootId, TreeNodeConfig.DEFAULT_CONFIG);
     }
 
     /**

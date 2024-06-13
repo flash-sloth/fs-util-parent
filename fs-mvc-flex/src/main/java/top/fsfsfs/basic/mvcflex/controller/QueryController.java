@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
+import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
 import top.fsfsfs.util.utils.BeanPlusUtil;
 
 import java.io.Serializable;
@@ -45,7 +46,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     })
     @Operation(summary = "单体查询", description = "单体查询")
     @GetMapping("/{id}")
-    @WebLog("'查询:' + #id")
+    @WebLog("'单体查询:' + #id")
     default R<ResultVO> get(@PathVariable Id id) {
         Entity entity = getSuperService().getById(id);
         return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
@@ -59,7 +60,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
      */
     @Operation(summary = "查询单体详情")
     @GetMapping("/detail")
-    @WebLog("'查询:' + #id")
+    @WebLog("'查询单体详情:' + #id")
     default R<ResultVO> getDetail(@RequestParam("id") Id id) {
         Entity entity = getSuperService().getById(id);
         ResultVO resultVO = BeanPlusUtil.toBean(entity, getResultVoClass());
@@ -81,7 +82,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     @WebLog("批量查询")
     default R<List<ResultVO>> list(@RequestBody QueryVO data) {
         Entity entity = BeanPlusUtil.toBean(data, getEntityClass());
-        QueryWrapper wrapper = QueryWrapper.create(entity);
+        QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
         List<Entity> list = getSuperService().list(wrapper);
         return success(BeanPlusUtil.toBeanList(list, getResultVoClass()));
     }

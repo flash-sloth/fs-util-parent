@@ -47,4 +47,6 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
     public Class<Entity> getEntityClass() {
         return this.entityClass;
     }
+
+
 }
