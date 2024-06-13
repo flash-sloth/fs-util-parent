@@ -77,7 +77,7 @@ public class ControllerUtil {
 
         String column = tableInfo.getColumnByProperty(beanProperty);
 
-        if (ArrayUtil.contains(tableInfo.getColumns(), column)) {
+        if (!ArrayUtil.contains(tableInfo.getAllColumns(), column)) {
             throw BizException.wrap("实体类{} 中没有字段：{}， 排序请传递实体类的字段名，而非数据库字段名", clazz.getSimpleName(), beanProperty);
         }
         return column;
