@@ -17,15 +17,15 @@ import static com.mybatisflex.core.constant.SqlConsts.EQUALS;
  */
 @RequiredArgsConstructor
 public class TimeStampDelByLogicDeleteProcessor extends TimeStampLogicDeleteProcessor {
-    private final String delBy;
+    private final String delByColumn;
     @Override
     public String buildLogicDeletedSet(String logicColumn, TableInfo tableInfo, IDialect dialect) {
         String sql = dialect.wrap(logicColumn) + EQUALS + getLogicDeletedValue();
 
         if (ContextUtil.getUserId() != null) {
             // 实体类中存在 delBy 字段，才记录删除人ID
-            if (ArrayUtil.contains(tableInfo.getColumns(), delBy)) {
-                sql += "," + dialect.wrap(tableInfo.getColumnByProperty(delBy)) + EQUALS + ContextUtil.getUserId();
+            if (ArrayUtil.contains(tableInfo.getColumns(), delByColumn)) {
+                sql += "," + dialect.wrap(delByColumn) + EQUALS + ContextUtil.getUserId();
             }
         }
 

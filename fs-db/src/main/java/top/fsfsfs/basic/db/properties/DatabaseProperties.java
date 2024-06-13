@@ -63,8 +63,8 @@ public class DatabaseProperties {
         private AuditCollector auditCollector = AuditCollector.DEFAULTS;
         /** 逻辑删除处理器 */
         private LogicDeleteProcessor logicDeleteProcessor = LogicDeleteProcessor.TIME_STAMP_DEL_BY_LOGIC_DELETE_PROCESSOR;
-        /** 逻辑删除人 */
-        private String delBy = "del_by";
+        /** 逻辑删除人 数据库中的字段名 */
+        private String delByColumn = "del_by";
     }
 
     /** mybatis-plus 配置 */

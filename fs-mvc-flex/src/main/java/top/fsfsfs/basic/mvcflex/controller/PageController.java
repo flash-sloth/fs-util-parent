@@ -12,6 +12,7 @@ import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.mvcflex.request.PageParams;
+import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
 import top.fsfsfs.basic.utils.StrPool;
 
 import java.util.List;
@@ -78,7 +79,8 @@ public interface PageController<Entity, QueryVO, ResultVO>
      * @return 查询构造器
      */
     default QueryWrapper handlerWrapper(PageParams<QueryVO> params) {
-        QueryWrapper wrapper = QueryWrapper.create(params.getModel());
+        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
+
         List<String> sortArr = StrUtil.split(params.getSort(), StrPool.COMMA);
         List<String> orderArr = StrUtil.split(params.getOrder(), StrPool.COMMA);
 
@@ -86,11 +88,14 @@ public interface PageController<Entity, QueryVO, ResultVO>
         for (int i = 0; i < len; i++) {
             String humpSort = sortArr.get(i);
             String order = orderArr.get(i);
-            wrapper.orderBy(new QueryColumn(humpSort), StrUtil.equalsAny(order, "ascending", "ascend"));
-        }
 
+            String beanColumn = ControllerUtil.getColumnByProperty(humpSort, params.getModel().getClass());
+            wrapper.orderBy(new QueryColumn(beanColumn), StrUtil.equalsAny(order, "ascending", "ascend"));
+        }
         return wrapper;
     }
+
+
 
     /**
      * 获取echo Service
