@@ -1,16 +1,10 @@
 package top.fsfsfs.basic.base.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -23,47 +17,18 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public class TreeEntity<E, T extends Serializable> extends Entity<T> {
-
-    public static final String LABEL = "label";
-    public static final String PARENT_ID = "parentId";
-    public static final String SORT_VALUE = "sortValue";
-    public static final String PARENT_ID_FIELD = "parent_id";
-    public static final String SORT_VALUE_FIELD = "sort_value";
+public class TreeEntity<T> extends Entity<T> {
 
     /**
      * 父ID
      */
     @Schema(description = "父ID")
-    @TableField(value = "parent_id")
     protected T parentId;
 
     /**
      * 排序
      */
     @Schema(description = "排序号")
-    @TableField(value = "sort_value")
-    protected Integer sortValue;
+    private Integer weight;
 
-
-    @Schema(description = "子节点", hidden = true)
-    @TableField(exist = false)
-    protected List<E> children;
-
-
-    /**
-     * 初始化子类
-     */
-    @JsonIgnore
-    public void initChildren() {
-        if (getChildren() == null) {
-            this.setChildren(new ArrayList<>());
-        }
-    }
-
-    @JsonIgnore
-    public void addChildren(E child) {
-        initChildren();
-        children.add(child);
-    }
 }
