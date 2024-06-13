@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import top.fsfsfs.basic.constant.Constants;
+import top.fsfsfs.basic.db.properties.flex.AuditCollector;
+import top.fsfsfs.basic.db.properties.flex.LogicDeleteProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,10 @@ public class DatabaseProperties {
         private Boolean audit = false;
         /** SQL审计收集器 */
         private AuditCollector auditCollector = AuditCollector.DEFAULTS;
+        /** 逻辑删除处理器 */
+        private LogicDeleteProcessor logicDeleteProcessor = LogicDeleteProcessor.TIME_STAMP_DEL_BY_LOGIC_DELETE_PROCESSOR;
+        /** 逻辑删除人 */
+        private String delBy = "del_by";
     }
 
     /** mybatis-plus 配置 */
@@ -66,10 +72,6 @@ public class DatabaseProperties {
     /** mybatis-flex 配置 */
     private Flex flex = new Flex();
 
-    /**
-     * 是否p6spy在控制台打印日志
-     */
-    private Boolean p6spy = false;
 
     private DbType dbType;
     /**

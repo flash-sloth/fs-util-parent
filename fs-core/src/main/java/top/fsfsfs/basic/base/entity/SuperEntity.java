@@ -36,12 +36,30 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class SuperEntity<T> implements Serializable {
     public static final String ID_FIELD = "id";
+    /** 创建时间 实体字段 */
     public static final String CREATED_TIME = "createdTime";
+    /** 创建时间 数据库字段 */
     public static final String CREATED_TIME_FIELD = "created_time";
+    /** 创建人ID 实体字段 */
     public static final String CREATED_BY = "createdBy";
+    /** 创建人ID 数据库字段 */
     public static final String CREATED_BY_FIELD = "created_by";
-    public static final String CREATED_ORG_ID = "createdOrgId";
-    public static final String CREATED_ORG_ID_FIELD = "created_org_id";
+    /** 删除人 实体字段 */
+    public static final String DEL_BY = "delBy";
+    /** 删除人 数据库字段 */
+    public static final String DEL_BY_FIELD = "del_by";
+    /** 删除标记 实体字段 */
+    public static final String DEL_FLAG = "delFlag";
+    /** 删除标记 数据库字段 */
+    public static final String DEL_FLAG_FIELD = "del_flag";
+    /** 创建单位ID 实体字段 */
+    public static final String CREATED_COMPANY_ID = "createdCompanyId";
+    /** 创建单位ID 数据库字段 */
+    public static final String CREATED_COMPANY_ID_FIELD = "created_company_id";
+    /** 创建部门ID 实体字段 */
+    public static final String CREATED_DEPT_ID = "createdDeptId";
+    /** 创建部门ID 数据库字段 */
+    public static final String CREATED_DEPT_ID_FIELD = "created_dept_id";
 
     @Serial
     private static final long serialVersionUID = -4603650115461757622L;
@@ -61,14 +79,14 @@ public class SuperEntity<T> implements Serializable {
     protected T createdBy;
 
     /**
-     * 保存和缺省验证组
+     * 保存验证组
      */
     public interface Save extends Default {
 
     }
 
     /**
-     * 更新和缺省验证组
+     * 更新验证组
      */
     public interface Update extends Default {
 

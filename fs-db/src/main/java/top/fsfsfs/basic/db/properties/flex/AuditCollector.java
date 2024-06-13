@@ -1,7 +1,7 @@
-package top.fsfsfs.basic.db.properties;
+package top.fsfsfs.basic.db.properties.flex;
 
 /**
- * mybatis-flex 审计实现类
+ * mybatis-flex 审计实现类型
  * @author tangyh
  * @since 2024年06月06日00:13:28
  */
