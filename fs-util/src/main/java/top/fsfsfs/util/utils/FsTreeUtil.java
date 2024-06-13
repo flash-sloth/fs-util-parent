@@ -2,10 +2,18 @@ package top.fsfsfs.util.utils;
 
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.lang.tree.parser.NodeParser;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import top.fsfsfs.basic.utils.StrPool;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * list列表 转换成tree列表
@@ -21,7 +29,7 @@ public final class FsTreeUtil extends TreeUtil {
     /**
      * 默认的父id
      */
-    public static final Long DEF_PARENT_ID = 0L;
+    public static final Long DEF_PARENT_ID = null;
     private static final int TOP_LEVEL = 1;
 
     private FsTreeUtil() {
@@ -42,7 +50,7 @@ public final class FsTreeUtil extends TreeUtil {
      * @return
      */
     public static boolean isRoot(Long id) {
-        return id == null || DEF_PARENT_ID.equals(id);
+        return id == null;
     }
 
 
@@ -52,5 +60,58 @@ public final class FsTreeUtil extends TreeUtil {
             return Convert.toLong(pathIds[TOP_LEVEL]);
         }
         return null;
+    }
+
+    /**
+     * 构建 根节点存储null，节点ID类型为Long 的树
+     *
+     * @param <T>            转换的实体 为数据源里的对象类型
+     * @param list           源数据集合; 必须继承TreeNode<Long>
+     * @return List
+     */
+    public static <T extends TreeNode<Long>> List<Tree<Long>> build2(List<T> list) {
+        return build(list, TreeNodeConfig.DEFAULT_CONFIG);
+    }
+
+    /**
+     * 构建 根节点存储null，节点ID类型为Long 的树
+     *
+     * @param <T>            转换的实体 为数据源里的对象类型
+     * @param list           源数据集合; 必须继承TreeNode<Long>
+     * @param treeNodeConfig 配置
+     * @return List
+     */
+    public static <T extends TreeNode<Long>> List<Tree<Long>> build(List<T> list, TreeNodeConfig treeNodeConfig) {
+        return build(list, DEF_PARENT_ID, treeNodeConfig);
+    }
+
+    /**
+     * 构建  根节点存储 <code>rootId</code>，节点ID类型为Long 的树
+     *
+     * @param <T>            转换的实体 为数据源里的对象类型
+     * @param <E>            ID类型
+     * @param list           源数据集合; 必须继承TreeNode<E>
+     * @param rootId         最顶层父id值 一般为 0 或 null 之类
+     * @param treeNodeConfig 配置
+     * @return List
+     */
+    public static <T extends TreeNode<E>, E> List<Tree<E>> build(List<T> list, E rootId, TreeNodeConfig treeNodeConfig) {
+        return TreeUtil.build(list, rootId, treeNodeConfig, new FsNodeParser<>());
+    }
+
+    public static class FsNodeParser<E, T extends TreeNode<E>> implements NodeParser<T, E> {
+        @Override
+        public void parse(T treeNode, Tree<E> tree) {
+            tree.setId(treeNode.getId());
+            tree.setParentId(treeNode.getParentId());
+            tree.setWeight(treeNode.getWeight());
+            tree.setName(treeNode.getName());
+
+            //扩展字段
+            final Map<String, Object> extra = treeNode.getExtra();
+            if (MapUtil.isNotEmpty(extra)) {
+                extra.forEach(tree::putExtra);
+            }
+        }
     }
 }
