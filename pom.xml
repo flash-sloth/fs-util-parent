@@ -109,6 +109,7 @@
 
         <okio.version>2.10.0</okio.version>
         <okhttp3.version>4.10.0</okhttp3.version>
+        <magic-api.version>2.1.1</magic-api.version>
     </properties>
 
 
@@ -557,7 +558,11 @@
                 <artifactId>logging-interceptor</artifactId>
                 <version>${okhttp3.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.ssssssss</groupId>
+                <artifactId>magic-api-spring-boot-starter</artifactId>
+                <version>${magic-api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -681,4 +686,39 @@
         <!--            </plugin>-->
         <!--        </plugins>-->
     </build>
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>oss-maven2</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </repositories>
+
+    <!-- 项目发布管理
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+    -->
+    <!-- 插件资源 -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
