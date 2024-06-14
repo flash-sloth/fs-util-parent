@@ -22,7 +22,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.manager.SuperCacheManager;
 import top.fsfsfs.basic.mvcplus.mapper.SuperMapper;
 import top.fsfsfs.basic.cache.redis.CacheResult;
@@ -62,7 +62,7 @@ import java.util.function.Function;
  * @author tangyh
  * @since 2020年02月27日18:15:17
  */
-public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends SuperEntity> extends SuperManagerImpl<M, T> implements SuperCacheManager<T> {
+public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends BaseEntity> extends SuperManagerImpl<M, T> implements SuperCacheManager<T> {
 
     protected static final int MAX_BATCH_KEY_SIZE = 500;
     @Autowired
@@ -310,7 +310,7 @@ public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends 
     public void refreshCache(List<Long> ids) {
         Wrapper<T> wrap = null;
         if (CollUtil.isNotEmpty(ids)) {
-            wrap = Wraps.<T>lbQ().in(SuperEntity::getId, ids);
+            wrap = Wraps.<T>lbQ().in(BaseEntity::getId, ids);
         }
         list(wrap).forEach(this::setCache);
     }
@@ -319,7 +319,7 @@ public abstract class SuperCacheManagerImpl<M extends SuperMapper<T>, T extends 
     public void clearCache(List<Long> ids) {
         Wrapper<T> wrap = null;
         if (CollUtil.isNotEmpty(ids)) {
-            wrap = Wraps.<T>lbQ().in(SuperEntity::getId, ids);
+            wrap = Wraps.<T>lbQ().in(BaseEntity::getId, ids);
         }
         list(wrap).forEach(this::delCache);
     }

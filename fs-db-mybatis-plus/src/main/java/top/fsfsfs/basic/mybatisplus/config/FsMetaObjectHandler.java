@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
-import top.fsfsfs.basic.base.entity.Entity;
 import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.util.utils.SpringUtils;
@@ -74,7 +74,7 @@ public class FsMetaObjectHandler implements MetaObjectHandler {
 
 
         //1. 继承了SuperEntity 若 ID 中有值，就不设置
-        if (metaObject.getOriginalObject() instanceof SuperEntity<?> superEntity) {
+        if (metaObject.getOriginalObject() instanceof BaseEntity<?> superEntity) {
             Object oldId = superEntity.getId();
             if (oldId != null) {
                 return;
@@ -82,21 +82,21 @@ public class FsMetaObjectHandler implements MetaObjectHandler {
             // 根据 ${DatabaseProperties.PREFIX}.database.id-type 决定实现类
             Long id = uidGenerator.getUid();
             // 判断id字段的类型是字符串还是Long
-            Object idVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(SuperEntity.ID_FIELD).getName()) ? String.valueOf(id) : id;
-            this.setFieldValByName(SuperEntity.ID_FIELD, idVal, metaObject);
+            Object idVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(BaseEntity.ID_FIELD).getName()) ? String.valueOf(id) : id;
+            this.setFieldValByName(BaseEntity.ID_FIELD, idVal, metaObject);
             return;
         }
 
         // 2. 没有继承SuperEntity， 但主键的字段名为：  id
-        if (metaObject.hasGetter(SuperEntity.ID_FIELD)) {
-            Object oldId = metaObject.getValue(SuperEntity.ID_FIELD);
+        if (metaObject.hasGetter(BaseEntity.ID_FIELD)) {
+            Object oldId = metaObject.getValue(BaseEntity.ID_FIELD);
             if (oldId != null) {
                 return;
             }
             // 根据 ${DatabaseProperties.PREFIX}.database.id-type 决定实现类
             Long id = uidGenerator.getUid();
-            Object idVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(SuperEntity.ID_FIELD).getName()) ? String.valueOf(id) : id;
-            this.setFieldValByName(SuperEntity.ID_FIELD, idVal, metaObject);
+            Object idVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(BaseEntity.ID_FIELD).getName()) ? String.valueOf(id) : id;
+            this.setFieldValByName(BaseEntity.ID_FIELD, idVal, metaObject);
             return;
         }
 
@@ -132,67 +132,67 @@ public class FsMetaObjectHandler implements MetaObjectHandler {
 
     private void fillCreated(MetaObject metaObject) {
         // 设置创建时间和创建人
-        if (metaObject.getOriginalObject() instanceof SuperEntity) {
+        if (metaObject.getOriginalObject() instanceof BaseEntity) {
             created(metaObject);
             return;
         }
 
-        if (metaObject.hasGetter(Entity.CREATED_BY)) {
-            Object oldVal = metaObject.getValue(Entity.CREATED_BY);
+        if (metaObject.hasGetter(SuperEntity.CREATED_BY)) {
+            Object oldVal = metaObject.getValue(SuperEntity.CREATED_BY);
             if (oldVal == null) {
-                this.setFieldValByName(Entity.CREATED_BY, ContextUtil.getUserId(), metaObject);
+                this.setFieldValByName(SuperEntity.CREATED_BY, ContextUtil.getUserId(), metaObject);
             }
         }
-        if (metaObject.hasGetter(Entity.CREATED_TIME)) {
-            Object oldVal = metaObject.getValue(Entity.CREATED_TIME);
+        if (metaObject.hasGetter(SuperEntity.CREATED_AT)) {
+            Object oldVal = metaObject.getValue(SuperEntity.CREATED_AT);
             if (oldVal == null) {
-                this.setFieldValByName(Entity.CREATED_TIME, LocalDateTime.now(), metaObject);
+                this.setFieldValByName(SuperEntity.CREATED_AT, LocalDateTime.now(), metaObject);
             }
         }
 
     }
 
     private void created(MetaObject metaObject) {
-        SuperEntity<?> entity = (SuperEntity<?>) metaObject.getOriginalObject();
-        if (entity.getCreatedTime() == null) {
-            this.setFieldValByName(Entity.CREATED_TIME, LocalDateTime.now(), metaObject);
+        BaseEntity<?> entity = (BaseEntity<?>) metaObject.getOriginalObject();
+        if (entity.getCreatedAt()  == null) {
+            this.setFieldValByName(SuperEntity.CREATED_AT, LocalDateTime.now(), metaObject);
         }
         if (entity.getCreatedBy() == null || entity.getCreatedBy().equals(0)) {
-            Object userIdVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(SuperEntity.CREATED_BY).getName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
-            this.setFieldValByName(Entity.CREATED_BY, userIdVal, metaObject);
+            Object userIdVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(BaseEntity.CREATED_BY).getName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
+            this.setFieldValByName(SuperEntity.CREATED_BY, userIdVal, metaObject);
         }
     }
 
 
     private void fillUpdated(MetaObject metaObject) {
         // 修改人 修改时间
-        if (metaObject.getOriginalObject() instanceof Entity<?>) {
+        if (metaObject.getOriginalObject() instanceof SuperEntity<?>) {
             update(metaObject);
             return;
         }
 
-        if (metaObject.hasGetter(Entity.UPDATED_BY)) {
-            Object oldVal = metaObject.getValue(Entity.UPDATED_BY);
+        if (metaObject.hasGetter(SuperEntity.UPDATED_BY)) {
+            Object oldVal = metaObject.getValue(SuperEntity.UPDATED_BY);
             if (oldVal == null) {
-                this.setFieldValByName(Entity.UPDATED_BY, ContextUtil.getUserId(), metaObject);
+                this.setFieldValByName(SuperEntity.UPDATED_BY, ContextUtil.getUserId(), metaObject);
             }
         }
-        if (metaObject.hasGetter(Entity.UPDATED_TIME)) {
-            Object oldVal = metaObject.getValue(Entity.UPDATED_TIME);
+        if (metaObject.hasGetter(SuperEntity.UPDATED_AT)) {
+            Object oldVal = metaObject.getValue(SuperEntity.UPDATED_AT);
             if (oldVal == null) {
-                this.setFieldValByName(Entity.UPDATED_TIME, LocalDateTime.now(), metaObject);
+                this.setFieldValByName(SuperEntity.UPDATED_AT, LocalDateTime.now(), metaObject);
             }
         }
     }
 
     private void update(MetaObject metaObject) {
-        Entity<?> entity = (Entity<?>) metaObject.getOriginalObject();
+        SuperEntity<?> entity = (SuperEntity<?>) metaObject.getOriginalObject();
         if (entity.getUpdatedBy() == null || entity.getUpdatedBy().equals(0)) {
-            Object userIdVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(Entity.UPDATED_BY).getName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
-            this.setFieldValByName(Entity.UPDATED_BY, userIdVal, metaObject);
+            Object userIdVal = StrPool.STRING_TYPE_NAME.equals(metaObject.getGetterType(SuperEntity.UPDATED_BY).getName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
+            this.setFieldValByName(SuperEntity.UPDATED_BY, userIdVal, metaObject);
         }
-        if (entity.getUpdatedTime() == null) {
-            this.setFieldValByName(Entity.UPDATED_TIME, LocalDateTime.now(), metaObject);
+        if (entity.getUpdatedAt() == null) {
+            this.setFieldValByName(SuperEntity.UPDATED_AT, LocalDateTime.now(), metaObject);
         }
     }
 

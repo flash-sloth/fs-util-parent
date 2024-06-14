@@ -2,7 +2,7 @@ package top.fsfsfs.basic.mybatisflex.listener;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.mybatisflex.annotation.UpdateListener;
-import top.fsfsfs.basic.base.entity.Entity;
+import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.utils.StrPool;
 
@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 public class DefaultUpdateListener implements UpdateListener {
     @Override
     public void onUpdate(Object param) {
-        if (param instanceof Entity entity) {
+        if (param instanceof SuperEntity entity) {
             if (entity.getUpdatedBy() == null) {
-                Field updatedByField = ReflectUtil.getField(param.getClass(), Entity.UPDATED_BY_FIELD);
+                Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY_FIELD);
                 Object userIdVal = ContextUtil.getUserId();
                 if (updatedByField != null) {
                     userIdVal = StrPool.STRING_TYPE_NAME.equals(updatedByField.getGenericType().getTypeName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
@@ -28,14 +28,14 @@ public class DefaultUpdateListener implements UpdateListener {
                 entity.setUpdatedBy(userIdVal);
             }
 
-            if (entity.getUpdatedTime() == null) {
-                entity.setUpdatedTime(LocalDateTime.now());
+            if (entity.getUpdatedAt() == null) {
+                entity.setUpdatedAt(LocalDateTime.now());
             }
             return;
         }
 
 
-        Field updatedByField = ReflectUtil.getField(param.getClass(), Entity.UPDATED_BY_FIELD);
+        Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY_FIELD);
         if (updatedByField != null) {
             Object fieldValue = ReflectUtil.getFieldValue(param, updatedByField);
             if (fieldValue == null) {
@@ -45,7 +45,7 @@ public class DefaultUpdateListener implements UpdateListener {
             }
         }
 
-        Field updatedTimeField = ReflectUtil.getField(param.getClass(), Entity.UPDATED_TIME_FIELD);
+        Field updatedTimeField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_AT_FIELD);
         if (updatedTimeField != null) {
             Object fieldValue = ReflectUtil.getFieldValue(param, updatedTimeField);
             if (fieldValue == null) {

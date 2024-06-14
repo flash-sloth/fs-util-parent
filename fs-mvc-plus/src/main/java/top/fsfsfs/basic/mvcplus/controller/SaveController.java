@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serializable;
 
@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月07日22:07:31
  */
-public interface SaveController<Id extends Serializable, Entity extends SuperEntity<Id>, SaveVO>
+public interface SaveController<Id extends Serializable, Entity extends BaseEntity<Id>, SaveVO>
         extends BaseController<Id, Entity> {
 
     /**

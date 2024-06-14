@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.request.PageParams;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.query.QueryWrap;
@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月07日22:06:35
  */
-public interface PageController<Id extends Serializable, Entity extends SuperEntity<Id>, PageQuery, ResultVO>
+public interface PageController<Id extends Serializable, Entity extends BaseEntity<Id>, PageQuery, ResultVO>
         extends BaseController<Id, Entity> {
 
     /**

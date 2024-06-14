@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月07日22:30:37
  */
-public interface UpdateController<Id extends Serializable, Entity extends SuperEntity<Id>, UpdateVO>
+public interface UpdateController<Id extends Serializable, Entity extends BaseEntity<Id>, UpdateVO>
         extends BaseController<Id, Entity> {
 
     /**
@@ -30,7 +30,7 @@ public interface UpdateController<Id extends Serializable, Entity extends SuperE
     @Operation(summary = "修改", description = "修改UpdateVO中不为空的字段")
     @PutMapping
     @WebLog(value = "'修改:' + #updateVO?.id", request = false)
-    default R<Entity> update(@RequestBody @Validated(SuperEntity.Update.class) UpdateVO updateVO) {
+    default R<Entity> update(@RequestBody @Validated(BaseEntity.Update.class) UpdateVO updateVO) {
         R<Entity> result = handlerUpdate(updateVO);
         if (result.getDefExec()) {
             return R.success(getSuperService().updateById(updateVO));

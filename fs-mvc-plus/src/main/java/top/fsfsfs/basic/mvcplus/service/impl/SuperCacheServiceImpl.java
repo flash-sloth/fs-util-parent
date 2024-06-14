@@ -3,7 +3,7 @@ package top.fsfsfs.basic.mvcplus.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.manager.SuperCacheManager;
 import top.fsfsfs.basic.mvcplus.service.SuperCacheService;
 import top.fsfsfs.basic.cache.repository.CacheOps;
@@ -30,7 +30,7 @@ import java.util.function.Function;
  * @author tangyh
  * @since 2020年02月27日18:15:17
  */
-public abstract class SuperCacheServiceImpl<M extends SuperCacheManager<Entity>, Id extends Serializable, Entity extends SuperEntity<?>>
+public abstract class SuperCacheServiceImpl<M extends SuperCacheManager<Entity>, Id extends Serializable, Entity extends BaseEntity<?>>
         extends SuperServiceImpl<M, Id, Entity>
         implements SuperCacheService<Id, Entity> {
 

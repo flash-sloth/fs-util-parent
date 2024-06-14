@@ -5,7 +5,6 @@ import com.mybatisflex.core.dialect.IDialect;
 import com.mybatisflex.core.logicdelete.impl.TimeStampLogicDeleteProcessor;
 import com.mybatisflex.core.table.TableInfo;
 import lombok.RequiredArgsConstructor;
-import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.utils.ContextUtil;
 
 import static com.mybatisflex.core.constant.SqlConsts.EQUALS;

@@ -1,6 +1,6 @@
 package top.fsfsfs.basic.mvcplus.controller;
 
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.service.SuperService;
 
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperWriteController<S extends SuperService<Id, Entity>, Id extends Serializable, Entity extends SuperEntity<Id>, SaveVO, UpdateVO>
+public abstract class SuperWriteController<S extends SuperService<Id, Entity>, Id extends Serializable, Entity extends BaseEntity<Id>, SaveVO, UpdateVO>
         extends SuperSimpleController<S, Id, Entity>
         implements SaveController<Id, Entity, SaveVO>,
         UpdateController<Id, Entity, UpdateVO>,

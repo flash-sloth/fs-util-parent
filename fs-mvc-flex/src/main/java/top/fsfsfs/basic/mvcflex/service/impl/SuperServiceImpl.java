@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.TypeUtil;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
@@ -39,17 +40,17 @@ public class SuperServiceImpl<M extends SuperMapper<Entity>, Entity>
         Entity old = getById(id);
         ArgumentAssert.notNull(old, "您要复制的数据不存在或已被删除，请刷新重试");
         Entity entity = BeanUtil.toBean(old, getEntityClass());
-        if (entity instanceof top.fsfsfs.basic.base.entity.Entity<?> superEntity) {
+        if (entity instanceof SuperEntity<?> superEntity) {
             superEntity.setId(null);
             superEntity.setCreatedBy(null);
-            superEntity.setCreatedTime(null);
+            superEntity.setCreatedAt(null);
             superEntity.setUpdatedBy(null);
-            superEntity.setUpdatedTime(null);
+            superEntity.setUpdatedAt(null);
             save((Entity) superEntity);
-        } else if (entity instanceof SuperEntity<?> superEntity) {
+        } else if (entity instanceof BaseEntity<?> superEntity) {
             superEntity.setId(null);
             superEntity.setCreatedBy(null);
-            superEntity.setCreatedTime(null);
+            superEntity.setCreatedAt(null);
             save((Entity) superEntity);
         } else {
             save(entity);

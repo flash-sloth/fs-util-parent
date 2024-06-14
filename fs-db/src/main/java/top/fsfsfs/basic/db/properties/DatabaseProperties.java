@@ -64,7 +64,7 @@ public class DatabaseProperties {
         /** 逻辑删除处理器 */
         private LogicDeleteProcessor logicDeleteProcessor = LogicDeleteProcessor.TIME_STAMP_DEL_BY_LOGIC_DELETE_PROCESSOR;
         /** 逻辑删除人 数据库中的字段名 */
-        private String delByColumn = "del_by";
+        private String deletedByColumn = "deleted_by";
     }
 
     /** mybatis-plus 配置 */

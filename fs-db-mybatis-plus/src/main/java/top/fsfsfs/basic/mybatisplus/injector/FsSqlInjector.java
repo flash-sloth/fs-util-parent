@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mybatisplus.injector.method.UpdateAllById;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class FsSqlInjector extends DefaultSqlInjector {
         //增加自定义方法
         methodList.add(new InsertBatchSomeColumn(i -> i.getFieldFill() != FieldFill.UPDATE));
         methodList.add(new UpdateAllById(field -> !ArrayUtil.containsAny(new String[]{
-                SuperEntity.CREATED_TIME_FIELD, SuperEntity.CREATED_BY_FIELD
+                BaseEntity.CREATED_AT_FIELD, BaseEntity.CREATED_BY_FIELD
         }, field.getColumn())));
         return methodList;
     }

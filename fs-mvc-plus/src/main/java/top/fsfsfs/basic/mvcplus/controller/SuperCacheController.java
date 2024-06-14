@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.service.SuperCacheService;
 import top.fsfsfs.util.utils.BeanPlusUtil;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2020年03月06日11:06:46
  */
 public abstract class SuperCacheController<S extends SuperCacheService<Id, Entity>,
-        Id extends Serializable, Entity extends SuperEntity<Id>, SaveVO, UpdateVO, PageQuery, ResultVO>
+        Id extends Serializable, Entity extends BaseEntity<Id>, SaveVO, UpdateVO, PageQuery, ResultVO>
         extends SuperController<S, Id, Entity, SaveVO, UpdateVO, PageQuery, ResultVO> {
     @Override
     public SuperCacheService<Id, Entity> getSuperService() {

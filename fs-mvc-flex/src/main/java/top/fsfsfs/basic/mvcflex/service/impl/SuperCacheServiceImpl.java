@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.cache.redis.CacheResult;
 import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.model.cache.CacheKey;
@@ -51,7 +51,7 @@ import java.util.function.Function;
  * @since 2020年02月27日18:15:17
  */
 @Slf4j
-public abstract class SuperCacheServiceImpl<M extends SuperMapper<Entity>, Entity extends SuperEntity<?>>
+public abstract class SuperCacheServiceImpl<M extends SuperMapper<Entity>, Entity extends BaseEntity<?>>
         extends SuperServiceImpl<M, Entity> implements SuperCacheService<Entity> {
     protected static final int MAX_BATCH_KEY_SIZE = 500;
     @Autowired

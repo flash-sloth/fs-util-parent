@@ -2,7 +2,7 @@ package top.fsfsfs.basic.mvcplus.controller;
 
 
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.service.SuperService;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperReadController<S extends SuperService<Id, Entity>, Id extends Serializable, Entity extends SuperEntity<Id>, PageQuery, ResultVO>
+public abstract class SuperReadController<S extends SuperService<Id, Entity>, Id extends Serializable, Entity extends BaseEntity<Id>, PageQuery, ResultVO>
         extends SuperSimpleController<S, Id, Entity>
         implements QueryController<Id, Entity, PageQuery, ResultVO> {
 

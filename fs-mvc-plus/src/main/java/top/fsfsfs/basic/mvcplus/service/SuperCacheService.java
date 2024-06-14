@@ -1,7 +1,7 @@
 package top.fsfsfs.basic.mvcplus.service;
 
 import org.springframework.lang.NonNull;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.model.cache.CacheKey;
 
 import java.io.Serializable;
@@ -20,7 +20,7 @@ import java.util.function.Function;
  * @author tangyh
  * @since 2020年03月03日20:49:03
  */
-public interface SuperCacheService<Id extends Serializable, Entity extends SuperEntity<?>>
+public interface SuperCacheService<Id extends Serializable, Entity extends BaseEntity<?>>
         extends SuperService<Id, Entity> {
 
     /**

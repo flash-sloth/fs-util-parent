@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.Wraps;
 import top.fsfsfs.basic.mybatisplus.mybatis.conditions.query.QueryWrap;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author tangyh
  * @since 2020年03月07日22:06:35
  */
-public interface QueryController<Id extends Serializable, Entity extends SuperEntity<Id>, PageQuery, ResultVO>
+public interface QueryController<Id extends Serializable, Entity extends BaseEntity<Id>, PageQuery, ResultVO>
         extends PageController<Id, Entity, PageQuery, ResultVO> {
 
     /**

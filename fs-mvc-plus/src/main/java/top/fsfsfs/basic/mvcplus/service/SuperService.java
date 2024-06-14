@@ -2,7 +2,7 @@ package top.fsfsfs.basic.mvcplus.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.manager.SuperManager;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author tangyh
  * @since 2020年03月03日20:49:03
  */
-public interface SuperService<Id extends Serializable, Entity extends SuperEntity<?>> {
+public interface SuperService<Id extends Serializable, Entity extends BaseEntity<?>> {
 
     /**
      * 获取实体的类型

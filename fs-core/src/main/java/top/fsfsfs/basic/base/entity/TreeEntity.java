@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public class TreeEntity<T> extends Entity<T> {
+public class TreeEntity<T> extends SuperEntity<T> {
 
     /**
      * 父ID

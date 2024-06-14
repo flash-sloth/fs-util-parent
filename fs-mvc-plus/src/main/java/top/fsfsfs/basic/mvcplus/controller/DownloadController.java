@@ -3,7 +3,7 @@ package top.fsfsfs.basic.mvcplus.controller;
 import cn.hutool.core.util.URLUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月07日22:02:16
  */
-public interface DownloadController<Id extends Serializable, Entity extends SuperEntity<Id>>
+public interface DownloadController<Id extends Serializable, Entity extends BaseEntity<Id>>
         extends BaseController<Id, Entity> {
 
     /**

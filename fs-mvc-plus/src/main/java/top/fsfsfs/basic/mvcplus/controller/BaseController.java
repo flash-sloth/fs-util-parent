@@ -1,7 +1,7 @@
 package top.fsfsfs.basic.mvcplus.controller;
 
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.service.SuperService;
 import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.exception.BizException;
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月07日21:56:32
  */
-public interface BaseController<Id extends Serializable, Entity extends SuperEntity<Id>> {
+public interface BaseController<Id extends Serializable, Entity extends BaseEntity<Id>> {
 
     /**
      * 获取Service

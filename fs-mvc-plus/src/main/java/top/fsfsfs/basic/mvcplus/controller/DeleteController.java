@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author tangyh
  * @since 2020年03月07日22:02:16
  */
-public interface DeleteController<Id extends Serializable, Entity extends SuperEntity<Id>>
+public interface DeleteController<Id extends Serializable, Entity extends BaseEntity<Id>>
         extends BaseController<Id, Entity> {
 
     /**

@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class PageParams<T> {
     private long current = 1;
 
     @Schema(description = "排序字段，默认id；请传递实体类字段", allowableValues = "id,createdTime,updatedTime", example = "id")
-    private String sort = SuperEntity.ID_FIELD;
+    private String sort = BaseEntity.ID_FIELD;
 
     @Schema(description = "排序规则，默认descending", allowableValues = "descending,ascending", example = "descending")
     private String order = "descending";

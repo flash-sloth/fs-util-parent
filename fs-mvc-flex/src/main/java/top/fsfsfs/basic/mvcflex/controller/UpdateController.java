@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 /**
  * 修改Controller
@@ -28,7 +28,7 @@ public interface UpdateController<Entity, UpdateVO>
     @Operation(summary = "修改", description = "修改UpdateVO中不为空的字段")
     @PutMapping
     @WebLog(value = "'修改:' + #updateVO?.id", request = false)
-    default R<Entity> update(@RequestBody @Validated(SuperEntity.Update.class) UpdateVO updateVO) {
+    default R<Entity> update(@RequestBody @Validated(BaseEntity.Update.class) UpdateVO updateVO) {
         R<Entity> result = handlerUpdate(updateVO);
         if (result.getDefExec()) {
             return R.success(getSuperService().updateVoById(updateVO));

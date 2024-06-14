@@ -67,7 +67,8 @@ public abstract class FsMybatisFlexConfiguration extends FsDbConfiguration imple
                     LogicDeleteManager.setProcessor(new TimeStampLogicDeleteProcessor());
             case PRIMARY_KEY_LOGIC_DELETE_PROCESSOR ->
                     LogicDeleteManager.setProcessor(new PrimaryKeyLogicDeleteProcessor());
-            default -> LogicDeleteManager.setProcessor(new TimeStampDelByLogicDeleteProcessor(flex.getDelByColumn()));
+            default ->
+                    LogicDeleteManager.setProcessor(new TimeStampDelByLogicDeleteProcessor(flex.getDeletedByColumn()));
         }
     }
 

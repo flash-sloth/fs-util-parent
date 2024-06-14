@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcplus.manager.SuperManager;
 import top.fsfsfs.basic.mvcplus.service.SuperService;
 import top.fsfsfs.util.utils.ArgumentAssert;
@@ -30,7 +30,7 @@ import java.util.List;
  * @author tangyh
  * @since 2020年02月27日18:15:17
  */
-public class SuperServiceImpl<M extends SuperManager<Entity>, Id extends Serializable, Entity extends SuperEntity<?>> implements SuperService<Id, Entity> {
+public class SuperServiceImpl<M extends SuperManager<Entity>, Id extends Serializable, Entity extends BaseEntity<?>> implements SuperService<Id, Entity> {
     @Autowired
     protected M superManager;
 
