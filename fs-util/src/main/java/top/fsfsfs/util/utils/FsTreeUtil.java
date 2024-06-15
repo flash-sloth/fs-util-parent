@@ -112,6 +112,19 @@ public final class FsTreeUtil {
         return TreeUtil.build(list, rootId, treeNodeConfig, new FsNodeParser<>());
     }
 
+
+    /**
+     * 构建  根节点存储 <code>rootId</code>，节点ID类型为Long 的树
+     *
+     * @param <T>            转换的实体 为数据源里的对象类型
+     * @param list           源数据集合; 必须继承TreeNode<E>
+     * @param nodeParser  解析器
+     * @return List
+     */
+    public static <T extends TreeNode<Long>> List<Tree<Long>> build(List<T> list, NodeParser<T, Long> nodeParser) {
+        return TreeUtil.build(list, DEF_PARENT_ID, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
+    }
+
     public static class FsNodeParser<E, T extends TreeNode<E>> implements NodeParser<T, E> {
         @Override
         public void parse(T treeNode, Tree<E> tree) {
