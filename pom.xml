@@ -569,6 +569,11 @@
                 <artifactId>magic-api-spring-boot-starter</artifactId>
                 <version>${magic-api.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.ssssssss</groupId>
+                <artifactId>magic-api-plugin-redis</artifactId>
+                <version>${magic-api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
