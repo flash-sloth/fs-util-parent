@@ -24,6 +24,7 @@
         <module>fs-annotation</module>
         <module>fs-core</module>
         <module>fs-util</module>
+        <module>fs-codegen</module>
         <module>fs-uid</module>
         <module>fs-cache-starter</module>
         <module>fs-db</module>
@@ -319,6 +320,11 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
             </dependency>
             <dependency>
