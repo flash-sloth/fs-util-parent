@@ -82,8 +82,6 @@ public interface IGenerator {
      * @param globalConfig 全局配置
      * @return 代码
      */
-    default String preview(Table table, GlobalConfig globalConfig) {
-        return "";
-    }
+    String preview(Table table, GlobalConfig globalConfig);
 
 }

@@ -45,17 +45,6 @@ public class EntityGenerator implements IGenerator {
     protected String templateContent;
     private String genType;
 
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-    @Override
-    public IGenerator setGenType(String genType) {
-        this.genType = genType;
-        return this;
-    }
-
-
     protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
     protected String ktEntityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.kotlin.tpl";
 
@@ -67,6 +56,45 @@ public class EntityGenerator implements IGenerator {
 
     public EntityGenerator(String templatePath) {
         this.templatePath = templatePath;
+    }
+
+    @Override
+    public String getGenType() {
+        return genType;
+    }
+
+    @Override
+    public IGenerator setGenType(String genType) {
+        this.genType = genType;
+        return this;
+    }
+
+    public String getEntityWithBaseTemplatePath() {
+        return entityWithBaseTemplatePath;
+    }
+
+    public void setEntityWithBaseTemplatePath(String entityWithBaseTemplatePath) {
+        this.entityWithBaseTemplatePath = entityWithBaseTemplatePath;
+    }
+
+    @Override
+    public String getTemplatePath() {
+        return templatePath;
+    }
+
+    @Override
+    public IGenerator setTemplatePath(String templatePath) {
+        this.templatePath = templatePath;
+        return this;
+    }
+
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    public IGenerator setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+        return this;
     }
 
     @Override
@@ -87,13 +115,6 @@ public class EntityGenerator implements IGenerator {
     public String preview(Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         EntityConfig entityConfig = globalConfig.getEntityConfig();
-
-        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
-        String entityClassName = table.buildEntityClassName();
-
-        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + globalConfig.getFileType());
 
         // 排除忽略列
         if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
@@ -131,7 +152,6 @@ public class EntityGenerator implements IGenerator {
             params.put("entityClassName", table.buildEntityClassName());
         }
 
-        log.info("Entity ---> " + entityJavaFile);
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
@@ -190,7 +210,7 @@ public class EntityGenerator implements IGenerator {
             params.put("entityClassName", table.buildEntityClassName());
         }
 
-        log.info("Entity ---> " + entityJavaFile);
+        log.info("Entity ---> {}", entityJavaFile);
 
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, entityJavaFile);
@@ -237,35 +257,7 @@ public class EntityGenerator implements IGenerator {
 
         globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, baseEntityJavaFile);
 
-        log.info("BaseEntity ---> " + baseEntityJavaFile);
+        log.info("BaseEntity ---> {}", baseEntityJavaFile);
     }
 
-
-    public String getEntityWithBaseTemplatePath() {
-        return entityWithBaseTemplatePath;
-    }
-
-    public void setEntityWithBaseTemplatePath(String entityWithBaseTemplatePath) {
-        this.entityWithBaseTemplatePath = entityWithBaseTemplatePath;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
-
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
 }

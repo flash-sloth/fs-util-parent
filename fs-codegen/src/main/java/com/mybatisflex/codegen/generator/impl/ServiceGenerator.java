@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.generator.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceConfig;
@@ -23,6 +24,7 @@ import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
@@ -34,17 +36,28 @@ import java.util.Map;
  * @author 王帅
  * @since 2023-05-14
  */
+@Slf4j
 public class ServiceGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
     private String genType;
 
+    public ServiceGenerator() {
+        this(TemplateConst.SERVICE);
+        this.genType = GenTypeConst.SERVICE;
+    }
+
+    public ServiceGenerator(String templatePath) {
+        this.templatePath = templatePath;
+    }
+
     @Override
     public String getGenType() {
         return genType;
     }
 
+    @Override
     public IGenerator setGenType(String genType) {
         this.genType = genType;
         return this;
@@ -61,14 +74,17 @@ public class ServiceGenerator implements IGenerator {
         return this;
     }
 
-    public ServiceGenerator() {
-        this(TemplateConst.SERVICE);
-        this.genType = GenTypeConst.SERVICE;
+    @Override
+    public String getTemplatePath() {
+        return templatePath;
     }
 
-    public ServiceGenerator(String templatePath) {
+    @Override
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
+
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -100,18 +116,26 @@ public class ServiceGenerator implements IGenerator {
         params.putAll(globalConfig.getCustomConfig());
         globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, serviceJavaFile);
 
-        System.out.println("Service ---> " + serviceJavaFile);
+        log.info("Service ---> {}", serviceJavaFile);
     }
 
     @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
+    public String preview(Table table, GlobalConfig globalConfig) {
 
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        ServiceConfig serviceConfig = globalConfig.getServiceConfig();
 
+
+        Map<String, Object> params = new HashMap<>(4);
+        params.put("table", table);
+        params.put("serviceConfig", serviceConfig);
+        params.put("packageConfig", packageConfig);
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.putAll(globalConfig.getCustomConfig());
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        } else {
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+        }
+    }
 }

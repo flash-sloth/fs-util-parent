@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.generator.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.MapperXmlConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
@@ -22,6 +23,7 @@ import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
@@ -33,17 +35,28 @@ import java.util.Map;
  * @author 王帅
  * @since 2023-05-17
  */
+@Slf4j
 public class MapperXmlGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
     private String genType;
 
+    public MapperXmlGenerator() {
+        this(TemplateConst.MAPPER_XML);
+        this.genType = GenTypeConst.MAPPER_XML;
+    }
+
+    public MapperXmlGenerator(String templatePath) {
+        this.templatePath = templatePath;
+    }
+
     @Override
     public String getGenType() {
         return genType;
     }
 
+    @Override
     public IGenerator setGenType(String genType) {
         this.genType = genType;
         return this;
@@ -60,13 +73,15 @@ public class MapperXmlGenerator implements IGenerator {
         return this;
     }
 
-    public MapperXmlGenerator() {
-        this(TemplateConst.MAPPER_XML);
-        this.genType = GenTypeConst.MAPPER_XML;
+    @Override
+    public String getTemplatePath() {
+        return templatePath;
     }
 
-    public MapperXmlGenerator(String templatePath) {
+    @Override
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
     @Override
@@ -94,18 +109,24 @@ public class MapperXmlGenerator implements IGenerator {
         params.putAll(globalConfig.getCustomConfig());
         globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, mapperXmlFile);
 
-        System.out.println("MapperXML ---> " + mapperXmlFile);
+        log.info("MapperXML ---> {}", mapperXmlFile);
     }
 
     @Override
-    public String getTemplatePath() {
-        return templatePath;
+    public String preview(Table table, GlobalConfig globalConfig) {
+
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("table", table);
+        params.put("packageConfig", packageConfig);
+        params.putAll(globalConfig.getCustomConfig());
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        } else {
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+        }
     }
 
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
 
 }

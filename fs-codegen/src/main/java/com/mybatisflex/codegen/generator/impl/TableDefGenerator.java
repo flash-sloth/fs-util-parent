@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.generator.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.TableDefConfig;
@@ -23,6 +24,7 @@ import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
@@ -34,17 +36,28 @@ import java.util.Map;
  * @author Michael Yang
  * @author 王帅
  */
+@Slf4j
 public class TableDefGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
     private String genType;
 
+    public TableDefGenerator() {
+        this(TemplateConst.TABLE_DEF);
+        this.genType = GenTypeConst.TABLE_DEF;
+    }
+
+    public TableDefGenerator(String templatePath) {
+        this.templatePath = templatePath;
+    }
+
     @Override
     public String getGenType() {
         return genType;
     }
 
+    @Override
     public IGenerator setGenType(String genType) {
         this.genType = genType;
         return this;
@@ -61,13 +74,15 @@ public class TableDefGenerator implements IGenerator {
         return this;
     }
 
-    public TableDefGenerator() {
-        this(TemplateConst.TABLE_DEF);
-        this.genType = GenTypeConst.TABLE_DEF;
+    @Override
+    public String getTemplatePath() {
+        return templatePath;
     }
 
-    public TableDefGenerator(String templatePath) {
+    @Override
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
     @Override
@@ -101,19 +116,26 @@ public class TableDefGenerator implements IGenerator {
         params.putAll(globalConfig.getCustomConfig());
         globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, tableDefJavaFile);
 
-        System.out.println("TableDef ---> " + tableDefJavaFile);
+        log.info("TableDef ---> {}", tableDefJavaFile);
     }
 
     @Override
-    public String getTemplatePath() {
-        return templatePath;
+    public String preview(Table table, GlobalConfig globalConfig) {
+
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
+
+
+        Map<String, Object> params = new HashMap<>(4);
+        params.put("table", table);
+        params.put("packageConfig", packageConfig);
+        params.put("tableDefConfig", tableDefConfig);
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.put("entityConfig", globalConfig.getEntityConfig());
+        params.putAll(globalConfig.getCustomConfig());
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        }
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
     }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-
-    }
-
 }
