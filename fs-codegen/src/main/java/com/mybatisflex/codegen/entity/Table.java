@@ -15,6 +15,8 @@
  */
 package com.mybatisflex.codegen.entity;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.ControllerConfig;
 import com.mybatisflex.codegen.config.EntityConfig;
@@ -65,9 +67,14 @@ public class Table {
     private Set<String> primaryKeys;
 
     /**
-     * 所包含的列。
+     * 子类的的列。
      */
     private List<Column> columns = new ArrayList<>();
+    /**
+     * 父类的列。
+     */
+    private List<Column> superColumns = new ArrayList<>();
+    private List<String> superColumnNames = new ArrayList<>();
 
     /**
      * 表配置。
@@ -110,7 +117,10 @@ public class Table {
 
     public Column getPrimaryKey() {
         // 这里默认表中一定会有字段，就不做空判断了
-        return columns.stream()
+        List<Column> allColumns = new ArrayList<>();
+        allColumns.addAll(columns);
+        allColumns.addAll(superColumns);
+        return allColumns.stream()
                 .filter(Column::isPrimaryKey)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("PrimaryKey can't be null"));
@@ -178,26 +188,21 @@ public class Table {
         return false;
     }
 
-    List<String> superColumns = null;
-
     public void addColumn(Column column) {
-        if (superColumns == null) {
-            superColumns = new ArrayList<>();
+        if (CollUtil.isEmpty(superColumnNames)) {
             Class<?> superClass = entityConfig.getSuperClass(this);
             //获取所有 private字段
             if (superClass != null) {
-                Field[] fields = superClass.getDeclaredFields();
+                Field[] fields = ReflectUtil.getFields(superClass);
                 for (Field field : fields) {
                     int modifiers = field.getModifiers();
-                    if (Modifier.isPrivate(modifiers)) {
-                        superColumns.add(field.getName());
+                    if (!Modifier.isStatic(modifiers)) {
+                        superColumnNames.add(field.getName());
                     }
                 }
             }
         }
-        if (superColumns.contains(column.getProperty())) {
-            return;
-        }
+
         //主键
         if (primaryKeys != null && primaryKeys.contains(column.getName())) {
             column.setPrimaryKey(true);
@@ -205,13 +210,18 @@ public class Table {
                 column.setAutoIncrement(true);
             }
         }
-
+        // 自增
         if (column.getAutoIncrement() == null) {
             column.setAutoIncrement(false);
         }
 
         column.setColumnConfig(globalConfig.getStrategyConfig().getColumnConfig(name, column.getName()));
         column.setEntityConfig(globalConfig.getEntityConfig());
+
+        if (superColumnNames.contains(column.getProperty())) {
+            superColumns.add(column);
+            return;
+        }
 
         columns.add(column);
     }

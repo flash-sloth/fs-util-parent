@@ -46,6 +46,7 @@ public abstract class AbstractJdbcDialect implements IDialect {
 
                 column.setRawType(columnMetaData.getColumnTypeName(i));
                 column.setRawLength(columnMetaData.getColumnDisplaySize(i));
+                column.setRawScale(columnMetaData.getScale(i));
 
                 column.setAutoIncrement(columnMetaData.isAutoIncrement(i));
 

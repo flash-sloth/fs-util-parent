@@ -188,8 +188,9 @@ public class EntityConfig implements Serializable {
         return genericityType;
     }
 
-    public void setGenericityType(Class<?> genericityType) {
+    public EntityConfig setGenericityType(Class<?> genericityType) {
         this.genericityType = genericityType;
+        return this;
     }
 
     private boolean hasGenericity(Class<?> clazz) {

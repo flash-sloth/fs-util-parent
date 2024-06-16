@@ -76,6 +76,10 @@ public class Column {
      * 数据库中的字段长度，比如 varchar(32) 中的 32
      */
     private int rawLength;
+    /**
+     * 数据库中的字段精度，比如 decimal(10,2) 中的 2
+     */
+    private int rawScale;
 
     /**
      * 字段配置。
@@ -166,6 +170,14 @@ public class Column {
 
     public void setRawLength(int rawLength) {
         this.rawLength = rawLength;
+    }
+
+    public int getRawScale() {
+        return rawScale;
+    }
+
+    public void setRawScale(int rawScale) {
+        this.rawScale = rawScale;
     }
 
     public ColumnConfig getColumnConfig() {

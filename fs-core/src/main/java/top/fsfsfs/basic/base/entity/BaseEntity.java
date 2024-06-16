@@ -68,15 +68,15 @@ public class BaseEntity<T> implements Serializable {
     @Id(keyType = KeyType.Generator, value = "uid")
     @Schema(description = "主键")
     @NotNull(message = "id不能为空", groups = BaseEntity.Update.class)
-    protected T id;
+    private T id;
 
     @Schema(description = "创建时间")
     @TableField(value = CREATED_AT_FIELD, fill = FieldFill.INSERT)
-    protected LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Schema(description = "创建人ID")
     @TableField(value = CREATED_BY_FIELD, fill = FieldFill.INSERT)
-    protected T createdBy;
+    private T createdBy;
 
     /**
      * 保存验证组

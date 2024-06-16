@@ -34,11 +34,11 @@ public class SuperEntity<T> extends BaseEntity<T> {
 
     @Schema(description = "最后修改时间")
     @TableField(value = UPDATED_AT_FIELD, fill = FieldFill.INSERT_UPDATE)
-    protected LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Schema(description = "最后修改人ID")
     @TableField(value = UPDATED_BY_FIELD, fill = FieldFill.INSERT_UPDATE)
-    protected T updatedBy;
+    private T updatedBy;
 
     public SuperEntity(T id, LocalDateTime createdAt, T createdBy, LocalDateTime updatedAt, T updatedBy) {
         super(id, createdAt, createdBy);

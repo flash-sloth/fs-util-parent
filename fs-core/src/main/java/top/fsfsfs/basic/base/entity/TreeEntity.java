@@ -23,7 +23,7 @@ public class TreeEntity<T> extends SuperEntity<T> {
      * 父ID
      */
     @Schema(description = "父ID")
-    protected T parentId;
+    private T parentId;
 
     /**
      * 排序
