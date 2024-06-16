@@ -35,6 +35,17 @@ import java.util.Map;
 public class MapperXmlGenerator implements IGenerator {
 
     private String templatePath;
+    private String templateContent;
+
+    @Override
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    @Override
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+    }
 
     public MapperXmlGenerator() {
         this(TemplateConst.MAPPER_XML);

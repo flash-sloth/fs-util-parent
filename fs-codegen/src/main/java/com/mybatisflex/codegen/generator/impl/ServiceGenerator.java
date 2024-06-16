@@ -36,7 +36,17 @@ import java.util.Map;
 public class ServiceGenerator implements IGenerator {
 
     private String templatePath;
+    private String templateContent;
 
+    @Override
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    @Override
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+    }
     public ServiceGenerator() {
         this(TemplateConst.SERVICE);
     }

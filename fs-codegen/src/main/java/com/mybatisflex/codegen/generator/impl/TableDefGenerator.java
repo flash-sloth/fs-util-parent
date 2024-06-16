@@ -36,6 +36,17 @@ import java.util.Map;
 public class TableDefGenerator implements IGenerator {
 
     private String templatePath;
+    private String templateContent;
+
+    @Override
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    @Override
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+    }
 
     public TableDefGenerator() {
         this(TemplateConst.TABLE_DEF);

@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * 模板引擎。
  */
-@FunctionalInterface
+//@FunctionalInterface
 public interface ITemplate {
 
     /**
@@ -32,5 +32,31 @@ public interface ITemplate {
      * @param generateFile     生成文件位置
      */
     void generate(Map<String, Object> params, String templateFilePath, File generateFile);
+    /**
+     * 使用模板引擎生成代码。
+     *
+     * @param params           生成参数
+     * @param content 模板文件内容
+     * @param generateFile     生成文件位置
+     */
+    void generateByContent(Map<String, Object> params, String content, File generateFile);
+
+    /**
+     * 使用模板引擎预览代码。
+     *
+     * @param params           生成参数
+     * @param templateFilePath 模板文件位置
+     * @return 代码内容
+     */
+    String previewByFile(Map<String, Object> params, String templateFilePath);
+
+    /**
+     * 使用模板引擎预览代码。
+     *
+     * @param params           生成参数
+     * @param content 模板文件内容
+     * @return 代码内容
+     */
+    String previewByContent(Map<String, Object> params, String content);
 
 }

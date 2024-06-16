@@ -23,6 +23,7 @@ import com.jfinal.template.source.ISource;
 import com.jfinal.template.source.ISourceFactory;
 import com.mybatisflex.codegen.template.ITemplate;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +34,7 @@ import java.util.Map;
  *
  * @author michael
  */
+@Slf4j
 public class EnjoyTemplate implements ITemplate {
 
     private static final String engineName = "mybatis-flex";
@@ -56,6 +58,7 @@ public class EnjoyTemplate implements ITemplate {
         this.engine = engine;
     }
 
+
     @Override
     public void generate(Map<String, Object> params, String templateFilePath, File generateFile) {
         if (!generateFile.getParentFile().exists() && !generateFile.getParentFile().mkdirs()) {
@@ -65,8 +68,31 @@ public class EnjoyTemplate implements ITemplate {
         try (FileOutputStream fileOutputStream = new FileOutputStream(generateFile)) {
             engine.getTemplate(templateFilePath).render(params, fileOutputStream);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Generate file {} error:", generateFile.getAbsolutePath(), e);
         }
+    }
+
+    @Override
+    public void generateByContent(Map<String, Object> params, String content, File generateFile) {
+        if (!generateFile.getParentFile().exists() && !generateFile.getParentFile().mkdirs()) {
+            throw new IllegalStateException("Can not mkdirs by dir: " + generateFile.getParentFile());
+        }
+        // 开始生成文件
+        try (FileOutputStream fileOutputStream = new FileOutputStream(generateFile)) {
+            engine.getTemplateByString(content).render(params, fileOutputStream);
+        } catch (Exception e) {
+            log.error("Generate file {} error:", generateFile.getAbsolutePath(), e);
+        }
+    }
+
+    @Override
+    public String previewByFile(Map<String, Object> params, String templateFilePath) {
+        return engine.getTemplate(templateFilePath).renderToString(params);
+    }
+
+    @Override
+    public String previewByContent(Map<String, Object> params, String content) {
+        return engine.getTemplateByString(content).renderToString(params);
     }
 
     /**

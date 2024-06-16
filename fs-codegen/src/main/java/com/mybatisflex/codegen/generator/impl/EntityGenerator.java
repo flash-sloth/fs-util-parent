@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.generator.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
@@ -22,6 +23,7 @@ import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
@@ -33,9 +35,13 @@ import java.util.Map;
  * @author Michael Yang
  * @author 王帅
  */
+@Slf4j
 public class EntityGenerator implements IGenerator {
 
+    /** 模板路径 */
     protected String templatePath;
+    /** 模板内容 */
+    protected String templateContent;
 
     protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
     protected String ktEntityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.kotlin.tpl";
@@ -63,6 +69,62 @@ public class EntityGenerator implements IGenerator {
         genBaseClass(table, globalConfig);
     }
 
+    @Override
+    public String preview(Table table, GlobalConfig globalConfig) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        EntityConfig entityConfig = globalConfig.getEntityConfig();
+
+        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
+
+        String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
+        String entityClassName = table.buildEntityClassName();
+
+        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + globalConfig.getFileType());
+
+        // 排除忽略列
+        if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
+            table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
+        }
+
+        Map<String, Object> params = new HashMap<>(6);
+        params.put("table", table);
+        params.put("entityPackageName", packageConfig.getEntityPackage());
+        params.put("entityConfig", entityConfig);
+        params.put("entityClassName", table.buildEntityClassName());
+        params.put("packageConfig", packageConfig);
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.put("isBase", false);
+
+        params.putAll(globalConfig.getCustomConfig());
+
+        String templatePath = this.templatePath;
+
+        // 开启生成 baseClass
+        if (entityConfig.isWithBaseClassEnable()) {
+            if (globalConfig.getFileType() == GlobalConfig.FileType.KOTLIN) {
+                templatePath = this.ktEntityWithBaseTemplatePath;
+            } else {
+                templatePath = this.entityWithBaseTemplatePath;
+            }
+
+            String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+            params.put("baseClassName", baseClassName);
+
+            String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
+                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
+            params.put("baseClassPackage", baseClassPackage);
+
+            params.put("entityClassName", table.buildEntityClassName());
+        }
+
+        log.info("Entity ---> " + entityJavaFile);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        } else {
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+        }
+    }
 
     protected void genEntityClass(Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
@@ -100,7 +162,7 @@ public class EntityGenerator implements IGenerator {
         if (entityConfig.isWithBaseClassEnable()) {
             if (globalConfig.getFileType() == GlobalConfig.FileType.KOTLIN) {
                 templatePath = this.ktEntityWithBaseTemplatePath;
-            }else{
+            } else {
                 templatePath = this.entityWithBaseTemplatePath;
             }
 
@@ -108,16 +170,20 @@ public class EntityGenerator implements IGenerator {
             params.put("baseClassName", baseClassName);
 
             String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
-                ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
+                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
             params.put("baseClassPackage", baseClassPackage);
 
             params.put("entityClassName", table.buildEntityClassName());
         }
 
+        log.info("Entity ---> " + entityJavaFile);
 
-        globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, entityJavaFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, entityJavaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, entityJavaFile);
+        }
 
-        System.out.println("Entity ---> " + entityJavaFile);
     }
 
     protected void genBaseClass(Table table, GlobalConfig globalConfig) {
@@ -133,7 +199,7 @@ public class EntityGenerator implements IGenerator {
 
         String baseEntityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
         baseEntityPackagePath = StringUtil.isNotBlank(entityConfig.getWithBasePackage()) ? entityConfig.getWithBasePackage().replace(".", "")
-            : baseEntityPackagePath + "/base";
+                : baseEntityPackagePath + "/base";
 
         String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
 
@@ -157,7 +223,7 @@ public class EntityGenerator implements IGenerator {
 
         globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, baseEntityJavaFile);
 
-        System.out.println("BaseEntity ---> " + baseEntityJavaFile);
+        log.info("BaseEntity ---> " + baseEntityJavaFile);
     }
 
 
@@ -179,4 +245,11 @@ public class EntityGenerator implements IGenerator {
         this.templatePath = templatePath;
     }
 
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+    }
 }

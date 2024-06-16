@@ -36,9 +36,21 @@ public interface IGenerator {
     /**
      * 设置模板文件位置。
      *
-     * @param templatePath
+     * @param templatePath 模版路径
      */
     void setTemplatePath(String templatePath);
+    /**
+     * 获取模板内容
+     *
+     * @return 内容
+     */
+    String getTemplateContent();
+    /**
+     * 设置模板内容
+     *
+     * @param templateContent 模版内容
+     */
+    void setTemplateContent(String templateContent);
 
     /**
      * 根据模板生成文件。
@@ -48,13 +60,15 @@ public interface IGenerator {
      */
     void generate(Table table, GlobalConfig globalConfig);
 
-//    /**
-//     * 预览代码
-//     *
-//     * @param table        表内容
-//     * @param globalConfig 全局配置
-//     * @return 代码
-//     */
-//    String preview(Table table, GlobalConfig globalConfig);
+    /**
+     * 预览代码
+     *
+     * @param table        表内容
+     * @param globalConfig 全局配置
+     * @return 代码
+     */
+    default String preview(Table table, GlobalConfig globalConfig) {
+        return "";
+    }
 
 }

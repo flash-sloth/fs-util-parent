@@ -37,7 +37,17 @@ import java.util.Map;
 public class PackageInfoGenerator implements IGenerator {
 
     private String templatePath;
+    private String templateContent;
 
+    @Override
+    public String getTemplateContent() {
+        return templateContent;
+    }
+
+    @Override
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent;
+    }
     public PackageInfoGenerator() {
         this(TemplateConst.PACKAGE_INFO);
     }
