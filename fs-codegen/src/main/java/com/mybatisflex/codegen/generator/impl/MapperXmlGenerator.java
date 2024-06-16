@@ -18,6 +18,7 @@ package com.mybatisflex.codegen.generator.impl;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.MapperXmlConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
+import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
@@ -36,6 +37,17 @@ public class MapperXmlGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
+    private String genType;
+
+    @Override
+    public String getGenType() {
+        return genType;
+    }
+
+    public IGenerator setGenType(String genType) {
+        this.genType = genType;
+        return this;
+    }
 
     @Override
     public String getTemplateContent() {
@@ -43,12 +55,14 @@ public class MapperXmlGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplateContent(String templateContent) {
+    public IGenerator setTemplateContent(String templateContent) {
         this.templateContent = templateContent;
+        return this;
     }
 
     public MapperXmlGenerator() {
         this(TemplateConst.MAPPER_XML);
+        this.genType = GenTypeConst.MAPPER_XML;
     }
 
     public MapperXmlGenerator(String templatePath) {
@@ -66,7 +80,7 @@ public class MapperXmlGenerator implements IGenerator {
         MapperXmlConfig mapperXmlConfig = globalConfig.getMapperXmlConfig();
 
         File mapperXmlFile = new File(packageConfig.getMapperXmlPath() + "/" +
-            table.buildMapperXmlFileName() + ".xml");
+                table.buildMapperXmlFileName() + ".xml");
 
 
         if (mapperXmlFile.exists() && !mapperXmlConfig.isOverwriteEnable()) {
@@ -89,8 +103,9 @@ public class MapperXmlGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplatePath(String templatePath) {
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
 }

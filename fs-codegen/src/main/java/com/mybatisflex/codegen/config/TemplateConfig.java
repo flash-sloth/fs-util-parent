@@ -63,7 +63,7 @@ public class TemplateConfig implements Serializable {
      * 设置生成 Entity 模板文件的位置。
      */
     public TemplateConfig setEntity(String entity) {
-        GeneratorFactory.getGenerator(GenTypeConst.ENTITY).setTemplatePath(entity);
+        GeneratorFactory.getGenerator(GenTypeConst.ENTITY).setGenType(GenTypeConst.ENTITY).setTemplatePath(entity);
         return this;
     }
 
@@ -72,7 +72,7 @@ public class TemplateConfig implements Serializable {
      * 设置生成 Entity 模板文件的位置。
      */
     public TemplateConfig setEntityContent(String entity) {
-        GeneratorFactory.getGenerator(GenTypeConst.ENTITY).setTemplateContent(entity);
+        GeneratorFactory.getGenerator(GenTypeConst.ENTITY).setGenType(GenTypeConst.ENTITY).setTemplateContent(entity);
         return this;
     }
 
@@ -87,14 +87,15 @@ public class TemplateConfig implements Serializable {
      * 设置生成 Mapper 模板文件的位置。
      */
     public TemplateConfig setMapper(String mapper) {
-        GeneratorFactory.getGenerator(GenTypeConst.MAPPER).setTemplatePath(mapper);
+        GeneratorFactory.getGenerator(GenTypeConst.MAPPER).setGenType(GenTypeConst.MAPPER).setTemplatePath(mapper);
         return this;
     }
+
     /**
      * 设置生成 Mapper 模板文件的位置。
      */
     public TemplateConfig setMapperContent(String mapper) {
-        GeneratorFactory.getGenerator(GenTypeConst.MAPPER).setTemplateContent(mapper);
+        GeneratorFactory.getGenerator(GenTypeConst.MAPPER).setGenType(GenTypeConst.MAPPER).setTemplateContent(mapper);
         return this;
     }
 
@@ -109,14 +110,15 @@ public class TemplateConfig implements Serializable {
      * 设置生成 Service 模板文件的位置。
      */
     public TemplateConfig setService(String service) {
-        GeneratorFactory.getGenerator(GenTypeConst.SERVICE).setTemplatePath(service);
+        GeneratorFactory.getGenerator(GenTypeConst.SERVICE).setGenType(GenTypeConst.SERVICE).setTemplatePath(service);
         return this;
     }
+
     /**
      * 设置生成 Service 模板文件的位置。
      */
     public TemplateConfig setServiceContent(String service) {
-        GeneratorFactory.getGenerator(GenTypeConst.SERVICE).setTemplateContent(service);
+        GeneratorFactory.getGenerator(GenTypeConst.SERVICE).setGenType(GenTypeConst.SERVICE).setTemplateContent(service);
         return this;
     }
 
@@ -131,14 +133,15 @@ public class TemplateConfig implements Serializable {
      * 设置生成 ServiceImpl 模板文件的位置。
      */
     public TemplateConfig setServiceImpl(String serviceImpl) {
-        GeneratorFactory.getGenerator(GenTypeConst.SERVICE_IMPL).setTemplatePath(serviceImpl);
+        GeneratorFactory.getGenerator(GenTypeConst.SERVICE_IMPL).setGenType(GenTypeConst.SERVICE_IMPL).setTemplatePath(serviceImpl);
         return this;
     }
+
     /**
      * 设置生成 ServiceImpl 模板文件的位置。
      */
     public TemplateConfig setServiceImplContent(String serviceImpl) {
-        GeneratorFactory.getGenerator(GenTypeConst.SERVICE_IMPL).setTemplateContent(serviceImpl);
+        GeneratorFactory.getGenerator(GenTypeConst.SERVICE_IMPL).setGenType(GenTypeConst.SERVICE_IMPL).setTemplateContent(serviceImpl);
         return this;
     }
 
@@ -153,14 +156,15 @@ public class TemplateConfig implements Serializable {
      * 设置生成 Controller 模板文件的位置。
      */
     public TemplateConfig setController(String controller) {
-        GeneratorFactory.getGenerator(GenTypeConst.CONTROLLER).setTemplatePath(controller);
+        GeneratorFactory.getGenerator(GenTypeConst.CONTROLLER).setGenType(GenTypeConst.CONTROLLER).setTemplatePath(controller);
         return this;
     }
+
     /**
      * 设置生成 Controller 模板文件的位置。
      */
     public TemplateConfig setControllerContent(String controller) {
-        GeneratorFactory.getGenerator(GenTypeConst.CONTROLLER).setTemplateContent(controller);
+        GeneratorFactory.getGenerator(GenTypeConst.CONTROLLER).setGenType(GenTypeConst.CONTROLLER).setTemplateContent(controller);
         return this;
     }
 
@@ -175,7 +179,7 @@ public class TemplateConfig implements Serializable {
      * 设置生成 TableDef 模板文件的位置。
      */
     public TemplateConfig setTableDef(String tableDef) {
-        GeneratorFactory.getGenerator(GenTypeConst.TABLE_DEF).setTemplatePath(tableDef);
+        GeneratorFactory.getGenerator(GenTypeConst.TABLE_DEF).setGenType(GenTypeConst.TABLE_DEF).setTemplatePath(tableDef);
         return this;
     }
 
@@ -190,14 +194,15 @@ public class TemplateConfig implements Serializable {
      * 设置生成 MapperXml 模板文件的位置。
      */
     public TemplateConfig setMapperXml(String mapperXml) {
-        GeneratorFactory.getGenerator(GenTypeConst.MAPPER_XML).setTemplatePath(mapperXml);
+        GeneratorFactory.getGenerator(GenTypeConst.MAPPER_XML).setGenType(GenTypeConst.MAPPER_XML).setTemplatePath(mapperXml);
         return this;
     }
+
     /**
      * 设置生成 MapperXml 模板文件的位置。
      */
     public TemplateConfig setMapperXmlContent(String mapperXml) {
-        GeneratorFactory.getGenerator(GenTypeConst.MAPPER_XML).setTemplateContent(mapperXml);
+        GeneratorFactory.getGenerator(GenTypeConst.MAPPER_XML).setGenType(GenTypeConst.MAPPER_XML).setTemplateContent(mapperXml);
         return this;
     }
 

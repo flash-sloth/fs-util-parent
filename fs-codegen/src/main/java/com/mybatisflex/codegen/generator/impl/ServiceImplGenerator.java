@@ -18,6 +18,7 @@ package com.mybatisflex.codegen.generator.impl;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceImplConfig;
+import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
@@ -37,6 +38,17 @@ public class ServiceImplGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
+    private String genType;
+
+    @Override
+    public String getGenType() {
+        return genType;
+    }
+
+    public IGenerator setGenType(String genType) {
+        this.genType = genType;
+        return this;
+    }
 
     @Override
     public String getTemplateContent() {
@@ -44,11 +56,13 @@ public class ServiceImplGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplateContent(String templateContent) {
+    public IGenerator setTemplateContent(String templateContent) {
         this.templateContent = templateContent;
+        return this;
     }
     public ServiceImplGenerator() {
         this(TemplateConst.SERVICE_IMPL);
+        this.genType = GenTypeConst.SERVICE_IMPL;
     }
 
     public ServiceImplGenerator(String templatePath) {
@@ -94,8 +108,9 @@ public class ServiceImplGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplatePath(String templatePath) {
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
 }

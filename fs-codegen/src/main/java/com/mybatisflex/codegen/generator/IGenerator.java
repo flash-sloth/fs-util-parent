@@ -25,6 +25,19 @@ import com.mybatisflex.codegen.entity.Table;
  * @author 王帅
  */
 public interface IGenerator {
+    /**
+     *  生成器类型
+     *
+     * @param genType 生成器类型
+     */
+    IGenerator setGenType(String genType);
+
+    /**
+     *  生成器类型
+     *
+     * @return 生成器类型
+     */
+    String getGenType();
 
     /**
      * 获取模板文件位置。
@@ -38,19 +51,21 @@ public interface IGenerator {
      *
      * @param templatePath 模版路径
      */
-    void setTemplatePath(String templatePath);
+    IGenerator setTemplatePath(String templatePath);
+
     /**
      * 获取模板内容
      *
      * @return 内容
      */
     String getTemplateContent();
+
     /**
      * 设置模板内容
      *
      * @param templateContent 模版内容
      */
-    void setTemplateContent(String templateContent);
+    IGenerator setTemplateContent(String templateContent);
 
     /**
      * 根据模板生成文件。

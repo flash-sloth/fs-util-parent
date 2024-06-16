@@ -21,6 +21,7 @@ import com.mybatisflex.codegen.dialect.IDialect;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
 import com.mybatisflex.codegen.generator.IGenerator;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -29,7 +30,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +41,7 @@ import java.util.stream.Collectors;
  *
  * @author michael
  */
+@Slf4j
 public class Generator {
 
     protected DataSource dataSource;
@@ -60,10 +65,10 @@ public class Generator {
 
     public void generate(List<Table> tables) {
         if (tables == null || tables.isEmpty()) {
-            System.err.printf("table %s not found.%n", globalConfig.getGenerateTables());
+            log.error("table {} not found.", globalConfig.getGenerateTables());
             return;
         } else {
-            System.out.printf("find tables: %s%n", tables.stream().map(Table::getName).collect(Collectors.toSet()));
+            log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
         }
 
         for (Table table : tables) {
@@ -72,8 +77,34 @@ public class Generator {
                 generator.generate(table, globalConfig);
             }
         }
-        System.out.println("Code is generated successfully.");
+        log.info("Code is generated successfully.");
     }
+
+    public Map<String, Map<String, String>> preview() {
+        return preview(getTables());
+    }
+
+    public Map<String, Map<String, String>> preview(List<Table> tables) {
+        if (tables == null || tables.isEmpty()) {
+            log.error("table {} not found.", globalConfig.getGenerateTables());
+            return Collections.emptyMap();
+        } else {
+            log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
+        }
+
+        Map<String, Map<String, String>> tableMap = new HashMap(tables.size());
+        for (Table table : tables) {
+            Collection<IGenerator> generators = GeneratorFactory.getGenerators();
+            Map<String, String> codeMap = new HashMap(generators.size());
+            for (IGenerator generator : generators) {
+                codeMap.put(generator.getGenType(), generator.preview(table, globalConfig));
+            }
+            tableMap.put(table.getName(), codeMap);
+        }
+        log.info("Code is generated successfully.");
+        return tableMap;
+    }
+
 
 
     public List<Table> getTables() {

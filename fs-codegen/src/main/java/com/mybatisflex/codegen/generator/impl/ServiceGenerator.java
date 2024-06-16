@@ -18,6 +18,7 @@ package com.mybatisflex.codegen.generator.impl;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceConfig;
+import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
@@ -37,6 +38,17 @@ public class ServiceGenerator implements IGenerator {
 
     private String templatePath;
     private String templateContent;
+    private String genType;
+
+    @Override
+    public String getGenType() {
+        return genType;
+    }
+
+    public IGenerator setGenType(String genType) {
+        this.genType = genType;
+        return this;
+    }
 
     @Override
     public String getTemplateContent() {
@@ -44,11 +56,14 @@ public class ServiceGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplateContent(String templateContent) {
+    public IGenerator setTemplateContent(String templateContent) {
         this.templateContent = templateContent;
+        return this;
     }
+
     public ServiceGenerator() {
         this(TemplateConst.SERVICE);
+        this.genType = GenTypeConst.SERVICE;
     }
 
     public ServiceGenerator(String templatePath) {
@@ -69,7 +84,7 @@ public class ServiceGenerator implements IGenerator {
 
         String servicePackagePath = packageConfig.getServicePackage().replace(".", "/");
         File serviceJavaFile = new File(sourceDir, servicePackagePath + "/" +
-            table.buildServiceClassName() + globalConfig.getFileType());
+                table.buildServiceClassName() + globalConfig.getFileType());
 
 
         if (serviceJavaFile.exists() && !serviceConfig.isOverwriteEnable()) {
@@ -94,8 +109,9 @@ public class ServiceGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplatePath(String templatePath) {
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
 }

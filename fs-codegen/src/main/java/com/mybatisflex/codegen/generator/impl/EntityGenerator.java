@@ -19,6 +19,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
+import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
@@ -42,6 +43,18 @@ public class EntityGenerator implements IGenerator {
     protected String templatePath;
     /** 模板内容 */
     protected String templateContent;
+    private String genType;
+
+    @Override
+    public String getGenType() {
+        return genType;
+    }
+    @Override
+    public IGenerator setGenType(String genType) {
+        this.genType = genType;
+        return this;
+    }
+
 
     protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
     protected String ktEntityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.kotlin.tpl";
@@ -49,6 +62,7 @@ public class EntityGenerator implements IGenerator {
 
     public EntityGenerator() {
         this(TemplateConst.ENTITY);
+        this.genType = GenTypeConst.ENTITY;
     }
 
     public EntityGenerator(String templatePath) {
@@ -241,15 +255,17 @@ public class EntityGenerator implements IGenerator {
     }
 
     @Override
-    public void setTemplatePath(String templatePath) {
+    public IGenerator setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
+        return this;
     }
 
     public String getTemplateContent() {
         return templateContent;
     }
 
-    public void setTemplateContent(String templateContent) {
+    public IGenerator setTemplateContent(String templateContent) {
         this.templateContent = templateContent;
+        return this;
     }
 }
