@@ -34,6 +34,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 #if(entityConfig.getSuperClass())
 import lombok.EqualsAndHashCode;
 #end
@@ -54,6 +55,7 @@ import lombok.EqualsAndHashCode;
 #else
 @Data
 @Builder
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 #if(entityConfig.getSuperClass())

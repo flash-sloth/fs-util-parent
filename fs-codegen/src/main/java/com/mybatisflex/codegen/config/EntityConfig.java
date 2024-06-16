@@ -52,8 +52,10 @@ public class EntityConfig implements Serializable {
      */
     private Class<?> superClass;
 
-
+    /** Entity 类的父类工厂 */
     private Function<Table, Class<?>> superClassFactory;
+    /** 父类泛型的类型 */
+    private Class<?> genericityType;
 
     /**
      * 是否覆盖之前生成的文件。
@@ -182,17 +184,23 @@ public class EntityConfig implements Serializable {
         return this;
     }
 
-    private boolean hasGenericity(Class<?> clazz){
-        if (clazz == null){
+    public Class<?> getGenericityType() {
+        return genericityType;
+    }
+
+    public void setGenericityType(Class<?> genericityType) {
+        this.genericityType = genericityType;
+    }
+
+    private boolean hasGenericity(Class<?> clazz) {
+        if (clazz == null) {
             return false;
         }
         TypeVariable<? extends Class<?>>[] typeParameters = clazz.getTypeParameters();
         if (typeParameters.length > 1) {
             throw new UnsupportedOperationException("暂不支持父类泛型数量 >1 的代码生成");
-        }else if (typeParameters.length > 0 ){
-            return true;
-        }else {
-            return false;
+        } else {
+            return typeParameters.length > 0;
         }
     }
 
@@ -381,7 +389,7 @@ public class EntityConfig implements Serializable {
     }
 
     public boolean isSuperClassGenericity(Table table) {
-        if (this.superClassFactory != null){
+        if (this.superClassFactory != null) {
             return hasGenericity(superClassFactory.apply(table));
         }
         return superClassGenericity;

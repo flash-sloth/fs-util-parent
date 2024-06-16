@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.entity;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.ControllerConfig;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
@@ -110,9 +111,9 @@ public class Table {
     public Column getPrimaryKey() {
         // 这里默认表中一定会有字段，就不做空判断了
         return columns.stream()
-            .filter(Column::isPrimaryKey)
-            .findFirst()
-            .orElseThrow(() -> new NullPointerException("PrimaryKey can't be null"));
+                .filter(Column::isPrimaryKey)
+                .findFirst()
+                .orElseThrow(() -> new NullPointerException("PrimaryKey can't be null"));
     }
 
     public Set<String> getPrimaryKeys() {
@@ -138,7 +139,7 @@ public class Table {
         ArrayList<Column> arrayList = new ArrayList<>(columns);
         // 生成字段排序
         arrayList.sort(Comparator.comparingInt((Column c) -> c.getProperty().length())
-            .thenComparing(Column::getProperty));
+                .thenComparing(Column::getProperty));
         return arrayList;
     }
 
@@ -176,10 +177,11 @@ public class Table {
         }
         return false;
     }
+
     List<String> superColumns = null;
 
     public void addColumn(Column column) {
-        if (superColumns == null){
+        if (superColumns == null) {
             superColumns = new ArrayList<>();
             Class<?> superClass = entityConfig.getSuperClass(this);
             //获取所有 private字段
@@ -187,13 +189,13 @@ public class Table {
                 Field[] fields = superClass.getDeclaredFields();
                 for (Field field : fields) {
                     int modifiers = field.getModifiers();
-                    if(Modifier.isPrivate(modifiers)){
+                    if (Modifier.isPrivate(modifiers)) {
                         superColumns.add(field.getName());
                     }
                 }
             }
         }
-        if (superColumns.contains(column.getProperty())){
+        if (superColumns.contains(column.getProperty())) {
             return;
         }
         //主键
@@ -345,8 +347,8 @@ public class Table {
 
         if (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
             tableAnnotation.append(", comment = \"")
-                .append(this.comment.replace("\n", "").replace("\"", "\\\"").trim())
-                .append("\"");
+                    .append(this.comment.replace("\n", "").replace("\"", "\\\"").trim())
+                    .append("\"");
         }
 
         // @Table(value = "sys_user") -> @Table("sys_user")
@@ -368,7 +370,15 @@ public class Table {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         Class<?> superClass = entityConfig.getSuperClass(this);
         if (superClass != null) {
-            return " extends " + superClass.getSimpleName()+(entityConfig.isSuperClassGenericity(this)?("<"+buildEntityClassName()+(isBase?entityConfig.getWithBaseClassSuffix():"")+">"):"");
+            String type = "";
+            if (entityConfig.isSuperClassGenericity(this)) {
+                if (entityConfig.getGenericityType() == null) {
+                    type = StrUtil.format("<{}{}>", buildEntityClassName(), isBase ? entityConfig.getWithBaseClassSuffix() : "");
+                } else {
+                    type = StrUtil.format("<{}>", entityConfig.getGenericityType().getSimpleName());
+                }
+            }
+            return " extends " + superClass.getSimpleName() + type;
         } else {
             return "";
         }
@@ -381,24 +391,25 @@ public class Table {
         Class<?>[] entityInterfaces = globalConfig.getEntityConfig().getImplInterfaces();
         if (entityInterfaces != null && entityInterfaces.length > 0) {
             return " implements " + StringUtil.join(", ", Arrays.stream(entityInterfaces)
-                .map(Class::getSimpleName).collect(Collectors.toList()));
+                    .map(Class::getSimpleName).collect(Collectors.toList()));
         } else {
             return "";
         }
     }
+
     /**
      * 构建 kt 继承
      */
-    public String buildKtExtends(boolean isBase){
+    public String buildKtExtends(boolean isBase) {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         Class<?> superClass = entityConfig.getSuperClass(this);
         List<String> s = new ArrayList<>();
         if (superClass != null) {
             String name = superClass.getSimpleName();
-            if (entityConfig.isSuperClassGenericity(this)){
-                name+="<"+buildEntityClassName()+(isBase?entityConfig.getWithBaseClassSuffix():"")+">";
+            if (entityConfig.isSuperClassGenericity(this)) {
+                name += "<" + buildEntityClassName() + (isBase ? entityConfig.getWithBaseClassSuffix() : "") + ">";
             }
-            name+="()";
+            name += "()";
             s.add(name);
         }
         Class<?>[] entityInterfaces = globalConfig.getEntityConfig().getImplInterfaces();
@@ -407,10 +418,10 @@ public class Table {
                 s.add(inter.getSimpleName());
             }
         }
-        if (s.isEmpty()){
+        if (s.isEmpty()) {
             return "";
         }
-        return " :"+String.join(",", s);
+        return " :" + String.join(",", s);
     }
 
     // ===== 构建相关类名 =====
@@ -441,8 +452,8 @@ public class Table {
         String entityJavaFileName = getEntityJavaFileName();
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         return entityConfig.getClassPrefix()
-            + entityJavaFileName
-            + entityConfig.getClassSuffix();
+                + entityJavaFileName
+                + entityConfig.getClassSuffix();
     }
 
     /**
@@ -452,8 +463,8 @@ public class Table {
         String tableDefJavaFileName = getEntityJavaFileName();
         TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
         return tableDefConfig.getClassPrefix()
-            + tableDefJavaFileName
-            + tableDefConfig.getClassSuffix();
+                + tableDefJavaFileName
+                + tableDefConfig.getClassSuffix();
     }
 
     /**
@@ -463,8 +474,8 @@ public class Table {
         String entityJavaFileName = getEntityJavaFileName();
         MapperConfig mapperConfig = globalConfig.getMapperConfig();
         return mapperConfig.getClassPrefix()
-            + entityJavaFileName
-            + mapperConfig.getClassSuffix();
+                + entityJavaFileName
+                + mapperConfig.getClassSuffix();
     }
 
     /**
@@ -474,8 +485,8 @@ public class Table {
         String entityJavaFileName = getEntityJavaFileName();
         ServiceConfig serviceConfig = globalConfig.getServiceConfig();
         return serviceConfig.getClassPrefix()
-            + entityJavaFileName
-            + serviceConfig.getClassSuffix();
+                + entityJavaFileName
+                + serviceConfig.getClassSuffix();
     }
 
     /**
@@ -485,8 +496,8 @@ public class Table {
         String entityJavaFileName = getEntityJavaFileName();
         ServiceImplConfig serviceImplConfig = globalConfig.getServiceImplConfig();
         return serviceImplConfig.getClassPrefix()
-            + entityJavaFileName
-            + serviceImplConfig.getClassSuffix();
+                + entityJavaFileName
+                + serviceImplConfig.getClassSuffix();
     }
 
     /**
@@ -496,8 +507,8 @@ public class Table {
         String entityJavaFileName = getEntityJavaFileName();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
         return controllerConfig.getClassPrefix()
-            + entityJavaFileName
-            + controllerConfig.getClassSuffix();
+                + entityJavaFileName
+                + controllerConfig.getClassSuffix();
     }
 
     /**
@@ -515,19 +526,19 @@ public class Table {
         String tableDefJavaFileName = getEntityJavaFileName();
         MapperXmlConfig mapperXmlConfig = globalConfig.getMapperXmlConfig();
         return mapperXmlConfig.getFilePrefix()
-            + tableDefJavaFileName
-            + mapperXmlConfig.getFileSuffix();
+                + tableDefJavaFileName
+                + mapperXmlConfig.getFileSuffix();
     }
 
     @Override
     public String toString() {
         return "Table{" +
-            "schema'" + schema + '\'' +
-            "name='" + name + '\'' +
-            ", remarks='" + comment + '\'' +
-            ", primaryKeys='" + primaryKeys + '\'' +
-            ", columns=" + columns +
-            '}';
+                "schema'" + schema + '\'' +
+                "name='" + name + '\'' +
+                ", remarks='" + comment + '\'' +
+                ", primaryKeys='" + primaryKeys + '\'' +
+                ", columns=" + columns +
+                '}';
     }
 
 }
