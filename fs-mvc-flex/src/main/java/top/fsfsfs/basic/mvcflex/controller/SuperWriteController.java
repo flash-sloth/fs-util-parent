@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.mvc.controller;
+package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.util.TypeUtil;
 import top.fsfsfs.basic.mvcflex.controller.DeleteController;

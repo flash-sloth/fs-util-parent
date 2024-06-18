@@ -1,9 +1,22 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.util.TypeUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import top.fsfsfs.basic.annotation.log.WebLog;
+import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
+import top.fsfsfs.util.utils.BeanPlusUtil;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * SuperNoPoiController
@@ -48,5 +61,48 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
         return this.entityClass;
     }
 
+
+    /**
+     * 单体查询
+     *
+     * @param id 主键id
+     * @return 查询结果
+     */
+    @Parameters({
+            @Parameter(name = "id", description = "主键", schema = @Schema(type = "long"), in = ParameterIn.PATH),
+    })
+    @Operation(summary = "单体查询(优先查缓存)", description = "单体查询(优先查缓存)")
+    @GetMapping("/getByIdCache/{id}")
+    @WebLog("'单体查询(优先查缓存):' + #id")
+    public R<ResultVO> getByIdCache(@PathVariable Id id) {
+        Entity entity = getSuperService().getByIdCache(id);
+        return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
+    }
+
+    /**
+     * 刷新缓存
+     *
+     * @return 是否成功
+     */
+    @Operation(summary = "刷新缓存", description = "刷新缓存")
+    @PostMapping("refreshCache")
+    @WebLog("'刷新缓存'")
+    public R<Boolean> refreshCache(@RequestBody List<Id> ids) {
+        getSuperService().refreshCache(ids);
+        return success(true);
+    }
+
+    /**
+     * 清理缓存
+     *
+     * @return 是否成功
+     */
+    @Operation(summary = "清理缓存", description = "清理缓存")
+    @PostMapping("clearCache")
+    @WebLog("'清理缓存'")
+    public R<Boolean> clearCache(@RequestBody List<Id> ids) {
+        getSuperService().clearCache(ids);
+        return success(true);
+    }
 
 }

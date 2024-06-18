@@ -2,7 +2,7 @@ package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.lang.tree.TreeNode;
 import top.fsfsfs.basic.base.entity.BaseEntity;
-import top.fsfsfs.basic.mvcflex.service.SuperCacheService;
+import top.fsfsfs.basic.mvcflex.service.SuperService;
 
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperTreeController<S extends SuperCacheService<Entity>,
+public abstract class SuperTreeController<S extends SuperService<Entity>,
         Id extends Serializable, Entity extends BaseEntity<Id>, VO, QueryVO, ResultVO extends TreeNode<Id>>
         extends SuperController<S, Id, Entity, VO, QueryVO, ResultVO>
         implements TreeController<Id, Entity, QueryVO, ResultVO> {

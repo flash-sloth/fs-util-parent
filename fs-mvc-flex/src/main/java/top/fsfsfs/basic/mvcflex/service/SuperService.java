@@ -1,8 +1,15 @@
 package top.fsfsfs.basic.mvcflex.service;
 
 import com.mybatisflex.core.service.IService;
+import org.springframework.lang.NonNull;
+import top.fsfsfs.basic.model.cache.CacheKey;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * 业务层
@@ -46,4 +53,86 @@ public interface SuperService<Entity> extends IService<Entity> {
      */
     <VO> Entity updateVoById(VO entity);
 
+
+    /**
+     * 根据id 先查缓存，再查db
+     *
+     * @param id 主键
+     * @return 对象
+     */
+    Entity getByIdCache(Serializable id);
+
+    /**
+     * 根据 key 查询缓存中存放的id，缓存不存在根据loader加载并写入数据，然后根据查询出来的id查询 实体
+     *
+     * @param key    缓存key
+     * @param loader 加载器
+     * @return 对象
+     */
+    Entity getByKey(CacheKey key, Function<CacheKey, Object> loader);
+
+    /**
+     * 根据id 批量查询缓存，并将loader方法的返回值写入缓存
+     *
+     * @param ids    主键id
+     * @param loader 缓存中不存在的数据，通过此回调去数据库查询
+     * @return 对象集合
+     */
+    List<Entity> findByIds(@NonNull Collection<? extends Serializable> ids, Function<Collection<? extends Serializable>, Collection<Entity>> loader);
+
+    /**
+     * 根据id 批量查询缓存
+     *
+     * @param keyIdList    id集合
+     * @param cacheBuilder 缓存key构造器
+     * @param loader       加载数据的回调方法
+     * @param <E>          查询的对象
+     * @return
+     */
+    <E> Set<E> findCollectByIds(List<? extends Serializable> keyIdList, Function<Serializable, CacheKey> cacheBuilder, Function<Serializable, List<E>> loader);
+
+    /**
+     * 刷新缓存
+     *
+     * @param ids 主键
+     */
+    <Id> void refreshCache(List<Id> ids);
+
+    /**
+     * 清理缓存
+     *
+     * @param ids 主键
+     */
+    <Id> void clearCache(List<Id> ids);
+
+
+    /**
+     * 清理缓存
+     *
+     * @param ids
+     */
+    default void delCache(Serializable... ids) {
+        delCache(Arrays.asList(ids));
+    }
+
+    /**
+     * 清理缓存
+     *
+     * @param idList
+     */
+    void delCache(Collection<? extends Serializable> idList);
+
+    /**
+     * 清理缓存
+     *
+     * @param model
+     */
+    void delCache(Entity model);
+
+    /**
+     * 设置缓存
+     *
+     * @param model
+     */
+    void setCache(Entity model);
 }
