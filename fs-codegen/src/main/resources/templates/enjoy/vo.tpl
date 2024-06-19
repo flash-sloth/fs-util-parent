@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
 #end
 
 /**
- * #(table.getComment()) 实体类。
+ * #(table.getComment()) VO类（通常用作Controller出参）。
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
@@ -60,7 +60,7 @@ public class #(voClassName) #(voConfig.buildExtends(globalConfig))#(voConfig.bui
     #end
     private static final long serialVersionUID = 1L;
 
-#for(column : table.columns)
+#for(column : table.allColumns)
     #set(comment = javadocConfig.formatColumnComment(column.comment))
     #if(isNotBlank(comment))
     /**
@@ -82,7 +82,7 @@ public class #(voClassName) #(voConfig.buildExtends(globalConfig))#(voConfig.bui
 #end
 #if(!withLombok)
 
-    #for(column: table.columns)
+    #for(column: table.allColumns)
     public #(column.propertySimpleType) #(column.getterMethod())() {
         return #(column.property);
     }

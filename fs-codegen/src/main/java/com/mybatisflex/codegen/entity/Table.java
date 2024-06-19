@@ -78,6 +78,10 @@ public class Table {
      */
     private List<Column> columns = new ArrayList<>();
     /**
+     * 所有列。
+     */
+    private List<Column> allColumns = new ArrayList<>();
+    /**
      * 父类的列。
      */
     private List<Column> superColumns = new ArrayList<>();
@@ -153,6 +157,9 @@ public class Table {
     }
     public List<Column> getSuperColumns() {
         return superColumns;
+    }
+    public List<Column> getAllColumns() {
+        return allColumns;
     }
 
     public List<Column> getSortedColumns() {
@@ -230,10 +237,12 @@ public class Table {
 
         if (superColumnNames.contains(column.getProperty())) {
             superColumns.add(column);
+            allColumns.add(column);
             return;
         }
 
         columns.add(column);
+        allColumns.add(column);
     }
 
     public GlobalConfig getGlobalConfig() {

@@ -290,12 +290,8 @@ public class VoConfig implements Serializable {
             }
         }
 
-        List<Column> columns = table.getColumns();
-        List<Column> superColumns = table.getSuperColumns();
+        List<Column> columns = table.getAllColumns();
         for (Column column : columns) {
-            imports.addAll(column.getImportClasses());
-        }
-        for (Column column : superColumns) {
             imports.addAll(column.getImportClasses());
         }
 
