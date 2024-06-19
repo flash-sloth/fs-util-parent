@@ -101,56 +101,56 @@ public abstract class SuperServiceImpl<M extends BaseMapper<Entity>, Entity exte
     /**
      * 保存之前处理参数等操作
      *
-     * @param saveVO 保存VO
+     * @param save 保存参数
      */
-    protected <VO> Entity saveBefore(VO saveVO) {
-        return BeanUtil.toBean(saveVO, getEntityClass());
+    protected <DTO> Entity saveBefore(DTO save) {
+        return BeanUtil.toBean(save, getEntityClass());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <VO> Entity saveVo(VO saveVO) {
-        Entity entity = saveBefore(saveVO);
+    public <DTO> Entity saveDto(DTO save) {
+        Entity entity = saveBefore(save);
         save(entity);
-        saveAfter(saveVO, entity);
+        saveAfter(save, entity);
         return entity;
     }
 
     /**
      * 保存之后设置参数值，淘汰缓存等操作
      *
-     * @param saveVO 保存VO
+     * @param save 保存参数
      * @param entity 实体
      */
-    protected <VO> void saveAfter(VO saveVO, Entity entity) {
+    protected <DTO> void saveAfter(DTO save, Entity entity) {
     }
 
     /**
      * 修改之前处理参数等操作
      *
-     * @param updateVO 修改VO
+     * @param updateDto 修改对象
      */
-    protected <VO> Entity updateBefore(VO updateVO) {
-        return BeanUtil.toBean(updateVO, getEntityClass());
+    protected <DTO> Entity updateBefore(DTO updateDto) {
+        return BeanUtil.toBean(updateDto, getEntityClass());
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <VO> Entity updateVoById(VO updateVO) {
-        Entity entity = updateBefore(updateVO);
+    public <DTO> Entity updateDtoById(DTO updateDto) {
+        Entity entity = updateBefore(updateDto);
         updateById(entity);
-        updateAfter(updateVO, entity);
+        updateAfter(updateDto, entity);
         return entity;
     }
 
     /**
      * 修改之后设置参数值，淘汰缓存等操作
      *
-     * @param updateVO 修改VO
+     * @param updateDto 修改对象
      * @param entity   实体
      */
-    protected <VO> void updateAfter(VO updateVO, Entity entity) {
+    protected <DTO> void updateAfter(DTO updateDto, Entity entity) {
     }
 
     @Override

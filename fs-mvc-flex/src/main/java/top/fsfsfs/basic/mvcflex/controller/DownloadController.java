@@ -3,6 +3,7 @@ package top.fsfsfs.basic.mvcflex.controller;
 import cn.hutool.core.util.URLUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
  * @author tangyh
  * @since 2020年03月07日22:02:16
  */
-public interface DownloadController<Entity> extends BaseController<Entity> {
+public interface DownloadController<Entity extends BaseEntity<?>> extends BaseController<Entity> {
 
     /**
      * 生成zip文件

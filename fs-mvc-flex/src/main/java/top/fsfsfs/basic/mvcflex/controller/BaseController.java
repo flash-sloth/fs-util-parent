@@ -1,6 +1,7 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
 import top.fsfsfs.basic.base.R;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.exception.code.BaseExceptionCode;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
@@ -13,7 +14,7 @@ import top.fsfsfs.basic.utils.ContextUtil;
  * @author tangyh
  * @since 2020年03月07日21:56:32
  */
-public interface BaseController<Entity> {
+public interface BaseController<Entity extends BaseEntity<?>> {
 
     /**
      * 获取Service

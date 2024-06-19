@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.mvcflex.request.PageParams;
 import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
@@ -21,19 +22,19 @@ import java.util.List;
  * 分页控制器
  *
  * @param <Entity>    实体
- * @param <QueryVO> 分页参数
+ * @param <Query> 分页参数
+ * @param <VO> 返回参数
  * @author tangyh
  * @since 2020年03月07日22:06:35
  */
-public interface PageController<Entity, QueryVO, ResultVO>
-        extends BaseController<Entity> {
+public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends BaseController<Entity> {
 
     /**
      * 获取返回VO的类型
      *
      * @return 实体的类型
      */
-    Class<ResultVO> getResultVoClass();
+    Class<VO> getResultVoClass();
 
     /**
      * 处理查询参数
@@ -43,7 +44,7 @@ public interface PageController<Entity, QueryVO, ResultVO>
      * @since 2021/7/3 3:25 下午
      * @create [2021/7/3 3:25 下午 ] [tangyh] [初始创建]
      */
-    default void handlerParams(PageParams<QueryVO> params) {
+    default void handlerParams(PageParams<Query> params) {
     }
 
     /**
@@ -54,12 +55,12 @@ public interface PageController<Entity, QueryVO, ResultVO>
      * @param params 分页参数
      * @return 分页信息
      */
-    default Page<ResultVO> query(PageParams<QueryVO> params) {
+    default Page<VO> query(PageParams<Query> params) {
         // 处理查询参数，如：覆盖前端传递的 current、size、sort 等参数 以及 model 中的参数 【提供给子类重写】【无默认实现】
         handlerParams(params);
 
         // 构建分页参数(current、size)和排序字段等
-        Page<ResultVO> page = Page.of(params.getCurrent(), params.getSize());
+        Page<VO> page = Page.of(params.getCurrent(), params.getSize());
 
         // 根据前端传递的参数，构建查询条件【提供给子类重写】【有默认实现】
         QueryWrapper wrapper = handlerWrapper(params);
@@ -78,7 +79,7 @@ public interface PageController<Entity, QueryVO, ResultVO>
      * @param params 分页参数
      * @return 查询构造器
      */
-    default QueryWrapper handlerWrapper(PageParams<QueryVO> params) {
+    default QueryWrapper handlerWrapper(PageParams<Query> params) {
         QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
 
         List<String> sortArr = StrUtil.split(params.getSort(), StrPool.COMMA);
@@ -94,7 +95,6 @@ public interface PageController<Entity, QueryVO, ResultVO>
         }
         return wrapper;
     }
-
 
 
     /**
@@ -113,7 +113,7 @@ public interface PageController<Entity, QueryVO, ResultVO>
      *
      * @param page 分页对象
      */
-    default void handlerResult(Page<ResultVO> page) {
+    default void handlerResult(Page<VO> page) {
         EchoService echoService = getEchoService();
         if (echoService != null) {
             echoService.action(page);
@@ -129,8 +129,8 @@ public interface PageController<Entity, QueryVO, ResultVO>
     @Operation(summary = "分页列表查询")
     @PostMapping(value = "/page")
     @WebLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
-    default R<Page<ResultVO>> page(@RequestBody @Validated PageParams<QueryVO> params) {
-        Page<ResultVO> page = query(params);
+    default R<Page<VO>> page(@RequestBody @Validated PageParams<Query> params) {
+        Page<VO> page = query(params);
         return success(page);
     }
 }

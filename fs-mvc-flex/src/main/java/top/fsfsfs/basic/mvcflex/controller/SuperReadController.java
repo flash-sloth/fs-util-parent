@@ -2,6 +2,7 @@ package top.fsfsfs.basic.mvcflex.controller;
 
 
 import cn.hutool.core.util.TypeUtil;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 
 import java.io.Serializable;
@@ -21,19 +22,19 @@ import java.io.Serializable;
  * @param <S>         Service
  * @param <Id>        主键
  * @param <Entity>    实体
- * @param <QueryVO> 分页参数
- * @param <ResultVO>  实体返回VO
+ * @param <Query> 分页参数
+ * @param <VO>  实体返回VO
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperReadController<S extends SuperService<Entity>, Id extends Serializable, Entity, QueryVO, ResultVO>
+public abstract class SuperReadController<S extends SuperService<Entity>, Id extends Serializable, Entity extends BaseEntity<Id>, Query, VO>
         extends SuperSimpleController<S, Entity>
-        implements QueryController<Id, Entity, QueryVO, ResultVO> {
+        implements QueryController<Id, Entity, Query, VO> {
 
-    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 4);
+    protected Class<VO> resultVoClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 4);
 
     @Override
-    public Class<ResultVO> getResultVoClass() {
+    public Class<VO> getResultVoClass() {
         return this.resultVoClass;
     }
 

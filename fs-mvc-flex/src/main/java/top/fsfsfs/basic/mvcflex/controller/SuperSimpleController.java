@@ -2,6 +2,7 @@ package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.util.TypeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 
 /**
@@ -15,7 +16,7 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
  * @author tangyh
  * @since 2020年03月07日22:08:27
  */
-public abstract class SuperSimpleController<S extends SuperService<Entity>, Entity>
+public abstract class SuperSimpleController<S extends SuperService<Entity>, Entity extends BaseEntity<?>>
         implements BaseController<Entity> {
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

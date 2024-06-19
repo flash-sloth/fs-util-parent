@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.util.utils.BeanPlusUtil;
 
@@ -35,22 +36,22 @@ import java.util.List;
  * @param <S>      Service
  * @param <Id>     主键
  * @param <Entity> 实体
- * @param <VO> 保存和修改方法入参VO
- * @param <QueryVO> 查询方法入参VO
- * @param <ResultVO> 查询方法出参VO
+ * @param <DTO> 保存和修改方法入参VO
+ * @param <Query> 查询方法入参VO
+ * @param <VO> 查询方法出参VO
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperController<S extends SuperService<Entity>, Id extends Serializable, Entity, VO, QueryVO, ResultVO>
+public abstract class SuperController<S extends SuperService<Entity>, Id extends Serializable, Entity extends BaseEntity<Id>, DTO, Query, VO>
         extends SuperSimpleController<S, Entity>
-        implements SaveController<Id, Entity, VO>,
-        UpdateController<Entity, VO>,
+        implements SaveController<Id, Entity, DTO>,
+        UpdateController<Id, Entity, DTO>,
         DeleteController<Id, Entity>,
-        QueryController<Id, Entity, QueryVO, ResultVO> {
-    protected Class<ResultVO> resultVoClass = (Class<ResultVO>) TypeUtil.getTypeArgument(this.getClass(), 5);
+        QueryController<Id, Entity, Query, VO> {
+    protected Class<VO> resultVoClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 5);
 
     @Override
-    public Class<ResultVO> getResultVoClass() {
+    public Class<VO> getResultVoClass() {
         return resultVoClass;
     }
 
@@ -74,7 +75,7 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
     @Operation(summary = "单体查询(优先查缓存)", description = "单体查询(优先查缓存)")
     @GetMapping("/getByIdCache/{id}")
     @WebLog("'单体查询(优先查缓存):' + #id")
-    public R<ResultVO> getByIdCache(@PathVariable Id id) {
+    public R<VO> getByIdCache(@PathVariable Id id) {
         Entity entity = getSuperService().getByIdCache(id);
         return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
     }

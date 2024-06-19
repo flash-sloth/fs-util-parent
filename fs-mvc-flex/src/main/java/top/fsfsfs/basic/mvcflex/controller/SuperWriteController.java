@@ -1,10 +1,7 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.util.TypeUtil;
-import top.fsfsfs.basic.mvcflex.controller.DeleteController;
-import top.fsfsfs.basic.mvcflex.controller.SaveController;
-import top.fsfsfs.basic.mvcflex.controller.SuperSimpleController;
-import top.fsfsfs.basic.mvcflex.controller.UpdateController;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 
 import java.io.Serializable;
@@ -26,10 +23,10 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2020年03月06日11:06:46
  */
-public abstract class SuperWriteController<S extends SuperService<Entity>, Id extends Serializable, Entity, VO>
+public abstract class SuperWriteController<S extends SuperService<Entity>, Id extends Serializable, Entity extends BaseEntity<Id>, VO>
         extends SuperSimpleController<S, Entity>
         implements SaveController<Id, Entity, VO>,
-        UpdateController<Entity, VO>,
+        UpdateController<Id, Entity, VO>,
         DeleteController<Id, Entity> {
     protected Class<Entity> entityClass = (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 2);
 

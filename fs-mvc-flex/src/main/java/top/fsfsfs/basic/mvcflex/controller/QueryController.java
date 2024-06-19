@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
 import top.fsfsfs.util.utils.BeanPlusUtil;
@@ -27,13 +28,13 @@ import java.util.List;
  *
  * @param <Entity>    实体
  * @param <Id>        主键
- * @param <QueryVO> 分页参数
- * @param <ResultVO>  实体返回VO
+ * @param <Query> 分页参数
+ * @param <VO>  实体返回VO
  * @author tangyh
  * @since 2020年03月07日22:06:35
  */
-public interface QueryController<Id extends Serializable, Entity, QueryVO, ResultVO>
-        extends PageController<Entity, QueryVO, ResultVO> {
+public interface QueryController<Id extends Serializable, Entity extends BaseEntity<Id>, Query, VO>
+        extends PageController<Entity, Query, VO> {
 
     /**
      * 单体查询
@@ -47,7 +48,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     @Operation(summary = "单体查询", description = "单体查询")
     @GetMapping("/{id}")
     @WebLog("'单体查询:' + #id")
-    default R<ResultVO> get(@PathVariable Id id) {
+    default R<VO> get(@PathVariable Id id) {
         Entity entity = getSuperService().getById(id);
         return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
     }
@@ -61,9 +62,9 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     @Operation(summary = "查询单体详情")
     @GetMapping("/detail")
     @WebLog("'查询单体详情:' + #id")
-    default R<ResultVO> getDetail(@RequestParam("id") Id id) {
+    default R<VO> getDetail(@RequestParam("id") Id id) {
         Entity entity = getSuperService().getById(id);
-        ResultVO resultVO = BeanPlusUtil.toBean(entity, getResultVoClass());
+        VO resultVO = BeanPlusUtil.toBean(entity, getResultVoClass());
         EchoService echoService = getEchoService();
         if (echoService != null) {
             echoService.action(resultVO);
@@ -80,7 +81,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     @Operation(summary = "批量查询", description = "批量查询")
     @PostMapping("/list")
     @WebLog("批量查询")
-    default R<List<ResultVO>> list(@RequestBody QueryVO data) {
+    default R<List<VO>> list(@RequestBody Query data) {
         Entity entity = BeanPlusUtil.toBean(data, getEntityClass());
         QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
         List<Entity> list = getSuperService().list(wrapper);
@@ -97,7 +98,7 @@ public interface QueryController<Id extends Serializable, Entity, QueryVO, Resul
     @Operation(summary = "根据Id批量查询", description = "根据Id批量查询")
     @PostMapping("/listByIds")
     @WebLog("根据Id批量查询")
-    default R<List<ResultVO>> listByIds(@RequestBody List<Id> ids) {
+    default R<List<VO>> listByIds(@RequestBody List<Id> ids) {
         if (CollUtil.isEmpty(ids)) {
             return R.success(Collections.emptyList());
         }

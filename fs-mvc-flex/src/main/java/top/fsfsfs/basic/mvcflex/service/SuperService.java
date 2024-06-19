@@ -2,6 +2,7 @@ package top.fsfsfs.basic.mvcflex.service;
 
 import com.mybatisflex.core.service.IService;
 import org.springframework.lang.NonNull;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.model.cache.CacheKey;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.function.Function;
  * @author tangyh
  * @since 2020年03月03日20:49:03
  */
-public interface SuperService<Entity> extends IService<Entity> {
+public interface SuperService<Entity extends BaseEntity<?>> extends IService<Entity> {
 
     /**
      * 获取实体的类型
@@ -39,19 +40,19 @@ public interface SuperService<Entity> extends IService<Entity> {
     /**
      * 插入一条记录（选择字段，策略插入）
      *
-     * @param entity 实体对象
+     * @param dto 保存对象
      * @return 是否插入成功
      */
-    <VO> Entity saveVo(VO entity);
+    <DTO> Entity saveDto(DTO dto);
 
 
     /**
      * 根据 ID 修改实体中非空的字段
      *
-     * @param entity 实体对象
+     * @param dto 修改对象
      * @return 是否修改成功
      */
-    <VO> Entity updateVoById(VO entity);
+    <DTO> Entity updateDtoById(DTO dto);
 
 
     /**
