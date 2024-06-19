@@ -47,6 +47,7 @@ public class GlobalConfig implements Serializable {
     public GlobalConfig() {
         this(FileType.JAVA);
     }
+
     private final JavadocConfig javadocConfig;
     private final PackageConfig packageConfig;
     private final StrategyConfig strategyConfig;
@@ -55,6 +56,9 @@ public class GlobalConfig implements Serializable {
     // === 可选配置 ===
 
     private EntityConfig entityConfig;
+    private VoConfig voConfig;
+    private DtoConfig dtoConfig;
+    private QueryConfig queryConfig;
     private MapperConfig mapperConfig;
     private ServiceConfig serviceConfig;
     private ServiceImplConfig serviceImplConfig;
@@ -68,6 +72,9 @@ public class GlobalConfig implements Serializable {
     // === 是否启用生成 ===
 
     private boolean entityGenerateEnable;
+    private boolean voGenerateEnable;
+    private boolean dtoGenerateEnable;
+    private boolean queryGenerateEnable;
     private boolean mapperGenerateEnable;
     private boolean serviceGenerateEnable;
     private boolean serviceImplGenerateEnable;
@@ -84,7 +91,7 @@ public class GlobalConfig implements Serializable {
         this.strategyConfig = new StrategyConfig();
         this.templateConfig = new TemplateConfig();
         this.setTemplatePath();
-        if(fileType == FileType.KOTLIN) {
+        if (fileType == FileType.KOTLIN) {
             JdbcTypeMapping.registerMapping("java.lang.Integer", "Int");
         }
     }
@@ -147,6 +154,26 @@ public class GlobalConfig implements Serializable {
         return entityConfig;
     }
 
+    public VoConfig getVoConfig() {
+        if (voConfig == null) {
+            voConfig = new VoConfig();
+        }
+        return voConfig;
+    }
+    public DtoConfig getDtoConfig() {
+        if (dtoConfig == null) {
+            dtoConfig = new DtoConfig();
+        }
+        return dtoConfig;
+    }
+
+    public QueryConfig getQueryConfig() {
+        if (queryConfig == null) {
+            queryConfig = new QueryConfig();
+        }
+        return queryConfig;
+    }
+
     public MapperConfig getMapperConfig() {
         if (mapperConfig == null) {
             mapperConfig = new MapperConfig();
@@ -196,6 +223,19 @@ public class GlobalConfig implements Serializable {
         return getEntityConfig();
     }
 
+    public VoConfig enableVo() {
+        voGenerateEnable = true;
+        return getVoConfig();
+    }
+    public DtoConfig enableDto() {
+        dtoGenerateEnable = true;
+        return getDtoConfig();
+    }
+    public QueryConfig enableQuery() {
+        queryGenerateEnable = true;
+        return getQueryConfig();
+    }
+
     public MapperConfig enableMapper() {
         mapperGenerateEnable = true;
         return getMapperConfig();
@@ -234,6 +274,16 @@ public class GlobalConfig implements Serializable {
 
     public void disableEntity() {
         entityGenerateEnable = false;
+    }
+
+    public void disableVo() {
+        voGenerateEnable = false;
+    }
+    public void disableDto() {
+        dtoGenerateEnable = false;
+    }
+    public void disableQuery() {
+        queryGenerateEnable = false;
     }
 
     public void disableMapper() {
@@ -362,6 +412,49 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
+     * @see JavadocConfig#getVoPackage()
+     */
+    public String getVoPackageComment() {
+        return getJavadocConfig().getVoPackage();
+    }
+
+    /**
+     * @see JavadocConfig#setVoPackage(String)
+     */
+    public void setVoPackageComment(String voPackageComment) {
+        getJavadocConfig().setVoPackage(voPackageComment);
+    }
+
+
+    /**
+     * @see JavadocConfig#getQueryPackage()
+     */
+    public String getQueryPackageComment() {
+        return getJavadocConfig().getQueryPackage();
+    }
+
+    /**
+     * @see JavadocConfig#setQueryPackage(String)
+     */
+    public void setQueryPackageComment(String queryPackageComment) {
+        getJavadocConfig().setQueryPackage(queryPackageComment);
+    }
+
+    /**
+     * @see JavadocConfig#getDtoPackage()
+     */
+    public String getDtoPackageComment() {
+        return getJavadocConfig().getDtoPackage();
+    }
+
+    /**
+     * @see JavadocConfig#setVoPackage(String)
+     */
+    public void setDtoPackageComment(String dtoPackageComment) {
+        getJavadocConfig().setDtoPackage(dtoPackageComment);
+    }
+
+    /**
      * @see JavadocConfig#getMapperPackage()
      */
     public String getMapperPackageComment() {
@@ -471,6 +564,48 @@ public class GlobalConfig implements Serializable {
      */
     public void setEntityPackage(String entityPackage) {
         getPackageConfig().setEntityPackage(entityPackage);
+    }
+
+    /**
+     * @see PackageConfig#getVoPackage()
+     */
+    public String getVoPackage() {
+        return getPackageConfig().getVoPackage();
+    }
+
+    /**
+     * @see PackageConfig#setVoPackage(String)
+     */
+    public void setVoPackage(String voPackage) {
+        getPackageConfig().setVoPackage(voPackage);
+    }
+
+    /**
+     * @see PackageConfig#getQueryPackage()
+     */
+    public String getQueryPackage() {
+        return getPackageConfig().getQueryPackage();
+    }
+
+    /**
+     * @see PackageConfig#setQueryPackage(String)
+     */
+    public void setQueryPackage(String queryPackage) {
+        getPackageConfig().setQueryPackage(queryPackage);
+    }
+
+    /**
+     * @see PackageConfig#getDtoPackage()
+     */
+    public String getDtoPackage() {
+        return getPackageConfig().getDtoPackage();
+    }
+
+    /**
+     * @see PackageConfig#setDtoPackage(String)
+     */
+    public void setDtoPackage(String dtoPackage) {
+        getPackageConfig().setDtoPackage(dtoPackage);
     }
 
     /**
@@ -856,6 +991,40 @@ public class GlobalConfig implements Serializable {
      */
     public void setEntityGenerateEnable(boolean entityGenerateEnable) {
         this.entityGenerateEnable = entityGenerateEnable;
+    }
+    public boolean isVoGenerateEnable() {
+        return voGenerateEnable;
+    }
+
+    /**
+     * @see #enableVo()
+     * @see #disableVo()
+     */
+    public void setVoGenerateEnable(boolean voGenerateEnable) {
+        this.voGenerateEnable = voGenerateEnable;
+    }
+    public boolean isDtoGenerateEnable() {
+        return dtoGenerateEnable;
+    }
+
+    /**
+     * @see #enableDto()
+     * @see #disableDto()
+     */
+    public void setDtoGenerateEnable(boolean dtoGenerateEnable) {
+        this.dtoGenerateEnable = dtoGenerateEnable;
+    }
+
+    public boolean isQueryGenerateEnable() {
+        return queryGenerateEnable;
+    }
+
+    /**
+     * @see #enableQuery()
+     * @see #disableQuery()
+     */
+    public void setQueryGenerateEnable(boolean queryGenerateEnable) {
+        this.queryGenerateEnable = queryGenerateEnable;
     }
 
     /**

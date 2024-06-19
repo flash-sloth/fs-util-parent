@@ -61,6 +61,19 @@ public class JavadocConfig implements Serializable {
     private String entityPackage = "实体类层（Entity）软件包。";
 
     /**
+     * VO 包注释。
+     */
+    private String voPackage = "VO类层（Vo：Controller层出参）软件包。";
+    /**
+     * DTO 包注释。
+     */
+    private String dtoPackage = "DTO类层（Dto：Controller层写入方法入参）软件包。";
+    /**
+     * Query 包注释。
+     */
+    private String queryPackage = "Query类层（Query：Controller层入参）软件包。";
+
+    /**
      * Mapper 包注释。
      */
     private String mapperPackage = "映射层（Mapper）软件包。";
@@ -179,6 +192,51 @@ public class JavadocConfig implements Serializable {
      */
     public JavadocConfig setEntityPackage(String entityPackage) {
         this.entityPackage = entityPackage;
+        return this;
+    }
+
+    /**
+     * 获取VO层包注释。
+     */
+    public String getVoPackage() {
+        return voPackage;
+    }
+
+    /**
+     * 设置VO层包注释。
+     */
+    public JavadocConfig setVoPackage(String voPackage) {
+        this.voPackage = voPackage;
+        return this;
+    }
+
+    /**
+     * 获取DTO层包注释。
+     */
+    public String getDtoPackage() {
+        return dtoPackage;
+    }
+
+    /**
+     * 设置VO层包注释。
+     */
+    public JavadocConfig setDtoPackage(String dtoPackage) {
+        this.dtoPackage = dtoPackage;
+        return this;
+    }
+
+    /**
+     * 获取Qyery层包注释。
+     */
+    public String getQueryPackage() {
+        return queryPackage;
+    }
+
+    /**
+     * 设置Qyery层包注释。
+     */
+    public JavadocConfig setQueryPackage(String queryPackage) {
+        this.queryPackage = queryPackage;
         return this;
     }
 

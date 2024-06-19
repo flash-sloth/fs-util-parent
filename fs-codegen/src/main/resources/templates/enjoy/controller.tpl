@@ -5,6 +5,9 @@
 #set(serviceVarName = firstCharToLowerCase(table.buildServiceClassName()))
 package #(packageConfig.controllerPackage);
 
+#for(importClass : table.buildControllerImports())
+import #(importClass);
+#end
 import com.mybatisflex.core.paginate.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +57,7 @@ import java.util.List;
 @Tag(name = "#(tableComment)接口")
 #end
 @RequestMapping("#(table.buildControllerRequestMappingPrefix())/#(firstCharToLowerCase(entityClassName))")
-public class #(table.buildControllerClassName()) #if(controllerConfig.superClass)extends #(controllerConfig.buildSuperClassName()) #end {
+public class #(table.buildControllerClassName()) #if(controllerConfig.superClass)extends #(controllerConfig.buildSuperClassName(table)) #end {
 
     @Autowired
     private #(table.buildServiceClassName()) #(serviceVarName);

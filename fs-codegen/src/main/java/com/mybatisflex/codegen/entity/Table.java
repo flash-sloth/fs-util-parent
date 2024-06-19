@@ -19,25 +19,32 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.ControllerConfig;
+import com.mybatisflex.codegen.config.DtoConfig;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.MapperConfig;
 import com.mybatisflex.codegen.config.MapperXmlConfig;
+import com.mybatisflex.codegen.config.PackageConfig;
+import com.mybatisflex.codegen.config.QueryConfig;
 import com.mybatisflex.codegen.config.ServiceConfig;
 import com.mybatisflex.codegen.config.ServiceImplConfig;
 import com.mybatisflex.codegen.config.TableConfig;
 import com.mybatisflex.codegen.config.TableDefConfig;
+import com.mybatisflex.codegen.config.VoConfig;
 import com.mybatisflex.core.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.TypeVariable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -301,6 +308,41 @@ public class Table {
         return imports.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
     }
 
+    public List<String> buildControllerImports() {
+        Set<String> imports = new HashSet<>();
+        String entityClassName = buildEntityClassName();
+        String voClassName = buildVoClassName();
+        String dtoClassName = buildDtoClassName();
+        String queryClassName = buildQueryClassName();
+        String serviceClassName = buildServiceClassName();
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        ControllerConfig controllerConfig = globalConfig.getControllerConfig();
+        Class<?> superClass = controllerConfig.getSuperClass();
+        if (superClass == null) {
+            return Collections.emptyList();
+        }
+
+        TypeVariable<? extends Class<?>>[] typeParameters = superClass.getTypeParameters();
+
+        for (TypeVariable<? extends Class<?>> typeParameter : typeParameters) {
+
+            switch (typeParameter.getTypeName()) {
+                case "Id" -> imports.add(null);
+                case "Entity" ->
+                        imports.add(StrUtil.format("{}.{}", packageConfig.getEntityPackage(), entityClassName));
+                case "VO" -> imports.add(StrUtil.format("{}.{}", packageConfig.getVoPackage(), voClassName));
+                case "Query" -> imports.add(StrUtil.format("{}.{}", packageConfig.getQueryPackage(), queryClassName));
+                case "DTO" -> imports.add(StrUtil.format("{}.{}", packageConfig.getDtoPackage(), dtoClassName));
+                default -> imports.add(StrUtil.format("{}.{}", packageConfig.getServicePackage(), serviceClassName));
+            }
+        }
+
+        imports.add(superClass.getName());
+
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+
+    }
+
     /**
      * 构建 @Table(...) 注解。
      */
@@ -465,6 +507,39 @@ public class Table {
                 + entityJavaFileName
                 + entityConfig.getClassSuffix();
     }
+
+    /**
+     * 构建 Vo 的 Class 名称。
+     */
+    public String buildVoClassName() {
+        String entityJavaFileName = getEntityJavaFileName();
+        VoConfig voConfig = globalConfig.getVoConfig();
+        return voConfig.getClassPrefix()
+                + entityJavaFileName
+                + voConfig.getClassSuffix();
+    }
+    /**
+     * 构建 Dto 的 Class 名称。
+     */
+    public String buildDtoClassName() {
+        String entityJavaFileName = getEntityJavaFileName();
+        DtoConfig voConfig = globalConfig.getDtoConfig();
+        return voConfig.getClassPrefix()
+                + entityJavaFileName
+                + voConfig.getClassSuffix();
+    }
+
+    /**
+     * 构建 Dto 的 Class 名称。
+     */
+    public String buildQueryClassName() {
+        String entityJavaFileName = getEntityJavaFileName();
+        QueryConfig voConfig = globalConfig.getQueryConfig();
+        return voConfig.getClassPrefix()
+                + entityJavaFileName
+                + voConfig.getClassSuffix();
+    }
+
 
     /**
      * 构建 tableDef 的 Class 名称。

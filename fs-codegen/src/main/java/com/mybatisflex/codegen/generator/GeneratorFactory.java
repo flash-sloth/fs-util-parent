@@ -39,6 +39,7 @@ public class GeneratorFactory {
         registerGenerator(GenTypeConst.CONTROLLER, new ControllerGenerator());
         registerGenerator(GenTypeConst.TABLE_DEF, new TableDefGenerator());
         registerGenerator(GenTypeConst.MAPPER_XML, new MapperXmlGenerator());
+        registerGenerator(GenTypeConst.VO, new VoGenerator());
 //        registerGenerator(GenTypeConst.PACKAGE_INFO, new PackageInfoGenerator());
     }
 

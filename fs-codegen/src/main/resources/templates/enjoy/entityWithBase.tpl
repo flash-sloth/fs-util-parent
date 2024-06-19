@@ -52,7 +52,7 @@ import java.io.Serial;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 #end
 #end
 #if(withSwagger && swaggerVersion.getName() == "FOX")

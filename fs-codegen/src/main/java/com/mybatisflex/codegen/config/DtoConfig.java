@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022-2023, Mybatis-Flex (fuhai999@gmail.com).
+ *  Copyright (c) 2022-2023, flash-sloth
  *  <p>
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,20 +15,28 @@
  */
 package com.mybatisflex.codegen.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.entity.Table;
+import com.mybatisflex.core.util.StringUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.TypeVariable;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * 生成 Entity 的配置。
+ * 生成 Vo 的配置。
  *
- * @author 王帅
- * @since 2023-05-15
+ * @author tangyh
+ * @since 2024年06月18日15:51:07
  */
 @SuppressWarnings("unused")
-public class EntityConfig implements Serializable {
+public class DtoConfig implements Serializable {
 
     private static final long serialVersionUID = -6790274333595436008L;
 
@@ -38,22 +46,20 @@ public class EntityConfig implements Serializable {
     private String sourceDir;
 
     /**
-     * Entity 类的前缀。
+     * VO 类的前缀。
      */
     private String classPrefix = "";
 
     /**
-     * Entity 类的后缀。
+     * VO 类的后缀。
      */
-    private String classSuffix = "";
+    private String classSuffix = "Dto";
 
     /**
-     * Entity 类的父类，可以自定义一些 BaseEntity 类。
+     * VO 类的父类，可以自定义一些 BaseEntity 类。
      */
     private Class<?> superClass;
 
-    /** Entity 类的父类工厂 */
-    private Function<Table, Class<?>> superClassFactory;
     /** 父类泛型的类型 */
     private Class<?> genericityType;
 
@@ -63,7 +69,7 @@ public class EntityConfig implements Serializable {
     private boolean overwriteEnable;
 
     /**
-     * Entity 默认实现的接口。
+     * VO 默认实现的接口。
      */
     private Class<?>[] implInterfaces = {Serializable.class};
 
@@ -83,46 +89,10 @@ public class EntityConfig implements Serializable {
     private SwaggerVersion swaggerVersion;
 
     /**
-     * Entity 是否启用 Active Record 功能。
-     */
-    private boolean withActiveRecord;
-
-    /**
-     * 实体类数据源。
-     */
-    private String dataSource;
-
-    /**
      * 项目jdk版本
      */
     private int jdkVersion;
 
-    /**
-     * 当开启这个配置后，Entity 会生成两个类，比如 Account 表会生成 Account.java 以及 AccountBase.java
-     * 这样的好处是，自动生成的 getter setter 字段等都在 Base 类里，而开发者可以在 Account.java 中添加自己的业务代码
-     * 此时，当有数据库表结构发生变化，需要再次生成代码时，不会覆盖掉 Account.java 中的业务代码（只会覆盖 AccountBase 中的 Getter Setter）
-     */
-    private boolean withBaseClassEnable = false;
-
-    /**
-     * Base 类的后缀
-     */
-    private String withBaseClassSuffix = "Base";
-
-    /**
-     * Base 类所在的包，默认情况下是在 entity 包下，添加一个 base 文件夹。
-     */
-    private String withBasePackage;
-
-    /**
-     * 是否支持把 comment 添加到 @column 注解里
-     */
-    private boolean columnCommentEnable;
-
-    /**
-     * 是否总是生成 @Column 注解。
-     */
-    private boolean alwaysGenColumnAnnotation;
 
     /**
      * 继承的父类是否添加泛型
@@ -133,7 +103,7 @@ public class EntityConfig implements Serializable {
         return sourceDir;
     }
 
-    public EntityConfig setSourceDir(String sourceDir) {
+    public DtoConfig setSourceDir(String sourceDir) {
         this.sourceDir = sourceDir;
         return this;
     }
@@ -148,7 +118,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置类前缀。
      */
-    public EntityConfig setClassPrefix(String classPrefix) {
+    public DtoConfig setClassPrefix(String classPrefix) {
         this.classPrefix = classPrefix;
         return this;
     }
@@ -163,7 +133,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置类后缀。
      */
-    public EntityConfig setClassSuffix(String classSuffix) {
+    public DtoConfig setClassSuffix(String classSuffix) {
         this.classSuffix = classSuffix;
         return this;
     }
@@ -178,7 +148,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置父类。
      */
-    public EntityConfig setSuperClass(Class<?> superClass) {
+    public DtoConfig setSuperClass(Class<?> superClass) {
         this.superClass = superClass;
         superClassGenericity = hasGenericity(superClass);
         return this;
@@ -188,7 +158,7 @@ public class EntityConfig implements Serializable {
         return genericityType;
     }
 
-    public EntityConfig setGenericityType(Class<?> genericityType) {
+    public DtoConfig setGenericityType(Class<?> genericityType) {
         this.genericityType = genericityType;
         return this;
     }
@@ -207,19 +177,7 @@ public class EntityConfig implements Serializable {
 
 
     public Class<?> getSuperClass(Table table) {
-        if (superClassFactory != null) {
-            return superClassFactory.apply(table);
-        }
         return superClass;
-    }
-
-    public Function<Table, Class<?>> getSuperClassFactory() {
-        return superClassFactory;
-    }
-
-    public EntityConfig setSuperClassFactory(Function<Table, Class<?>> superClassFactory) {
-        this.superClassFactory = superClassFactory;
-        return this;
     }
 
     /**
@@ -232,7 +190,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置是否覆盖原有文件。
      */
-    public EntityConfig setOverwriteEnable(boolean overwriteEnable) {
+    public DtoConfig setOverwriteEnable(boolean overwriteEnable) {
         this.overwriteEnable = overwriteEnable;
         return this;
     }
@@ -247,7 +205,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置实现接口。
      */
-    public EntityConfig setImplInterfaces(Class<?>... implInterfaces) {
+    public DtoConfig setImplInterfaces(Class<?>... implInterfaces) {
         this.implInterfaces = implInterfaces;
         return this;
     }
@@ -262,7 +220,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置是否使用 Lombok。
      */
-    public EntityConfig setWithLombok(boolean withLombok) {
+    public DtoConfig setWithLombok(boolean withLombok) {
         this.withLombok = withLombok;
         return this;
     }
@@ -277,7 +235,7 @@ public class EntityConfig implements Serializable {
     /**
      * 设置是否启用 Swagger。
      */
-    public EntityConfig setWithSwagger(boolean withSwagger) {
+    public DtoConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
         this.swaggerVersion = SwaggerVersion.FOX;
         return this;
@@ -293,39 +251,9 @@ public class EntityConfig implements Serializable {
     /**
      * 设置 Swagger 版本
      */
-    public EntityConfig setSwaggerVersion(SwaggerVersion swaggerVersion) {
+    public DtoConfig setSwaggerVersion(SwaggerVersion swaggerVersion) {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
-        return this;
-    }
-
-    /**
-     * 是否启用 Active Record。
-     */
-    public boolean isWithActiveRecord() {
-        return withActiveRecord;
-    }
-
-    /**
-     * 设置是否启用 Active Record。
-     */
-    public EntityConfig setWithActiveRecord(boolean withActiveRecord) {
-        this.withActiveRecord = withActiveRecord;
-        return this;
-    }
-
-    /**
-     * 获取实体类数据源。
-     */
-    public String getDataSource() {
-        return dataSource;
-    }
-
-    /**
-     * 设置实体类数据源。
-     */
-    public EntityConfig setDataSource(String dataSource) {
-        this.dataSource = dataSource;
         return this;
     }
 
@@ -339,65 +267,27 @@ public class EntityConfig implements Serializable {
     /**
      * 设置项目jdk版本
      */
-    public EntityConfig setJdkVersion(int jdkVersion) {
+    public DtoConfig setJdkVersion(int jdkVersion) {
         this.jdkVersion = jdkVersion;
         return this;
     }
 
-    public boolean isWithBaseClassEnable() {
-        return withBaseClassEnable;
-    }
-
-    public EntityConfig setWithBaseClassEnable(boolean withBaseClassEnable) {
-        this.withBaseClassEnable = withBaseClassEnable;
-        return this;
-    }
-
-    public String getWithBaseClassSuffix() {
-        return withBaseClassSuffix;
-    }
-
-    public EntityConfig setWithBaseClassSuffix(String withBaseClassSuffix) {
-        this.withBaseClassSuffix = withBaseClassSuffix;
-        return this;
-    }
-
-    public String getWithBasePackage() {
-        return withBasePackage;
-    }
-
-    public EntityConfig setWithBasePackage(String withBasePackage) {
-        this.withBasePackage = withBasePackage;
-        return this;
-    }
-
-    public boolean isColumnCommentEnable() {
-        return columnCommentEnable;
-    }
-
-    public EntityConfig setColumnCommentEnable(boolean columnCommentEnable) {
-        this.columnCommentEnable = columnCommentEnable;
-        return this;
-    }
-
-    public boolean isAlwaysGenColumnAnnotation() {
-        return alwaysGenColumnAnnotation;
-    }
-
-    public EntityConfig setAlwaysGenColumnAnnotation(boolean alwaysGenColumnAnnotation) {
-        this.alwaysGenColumnAnnotation = alwaysGenColumnAnnotation;
-        return this;
-    }
-
-    public boolean isSuperClassGenericity(Table table) {
-        if (this.superClassFactory != null) {
-            return hasGenericity(superClassFactory.apply(table));
-        }
+    public boolean isSuperClassGenericity() {
         return superClassGenericity;
     }
 
-    public enum SwaggerVersion {
+    public List<String> buildImports() {
+        Set<String> imports = new HashSet<>();
+        if (superClass != null) {
+            imports.add(superClass.getName());
+        }
+        imports.add(Serializable.class.getName());
 
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+    }
+
+    public enum SwaggerVersion {
+        /** FOX */
         FOX("FOX"),
         DOC("DOC");
 
@@ -414,4 +304,37 @@ public class EntityConfig implements Serializable {
     }
 
 
+    /**
+     * 构建 extends 继承。
+     */
+    public String buildExtends(GlobalConfig globalConfig) {
+        DtoConfig voConfig = globalConfig.getDtoConfig();
+        Class<?> superClass = voConfig.getSuperClass();
+        if (superClass != null) {
+            String type = "";
+            if (voConfig.isSuperClassGenericity()) {
+                if (voConfig.getGenericityType() == null) {
+                    type = StrUtil.format("<{}>", Long.class.getSimpleName());
+                } else {
+                    type = StrUtil.format("<{}>", voConfig.getGenericityType().getSimpleName());
+                }
+            }
+            return " extends " + superClass.getSimpleName() + type;
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * 构建 implements 实现。
+     */
+    public String buildImplements(GlobalConfig globalConfig) {
+        Class<?>[] entityInterfaces = globalConfig.getEntityConfig().getImplInterfaces();
+        if (entityInterfaces != null && entityInterfaces.length > 0) {
+            return " implements " + StringUtil.join(", ", Arrays.stream(entityInterfaces)
+                    .map(Class::getSimpleName).collect(Collectors.toList()));
+        } else {
+            return "";
+        }
+    }
 }

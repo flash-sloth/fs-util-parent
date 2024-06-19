@@ -1,22 +1,19 @@
-#set(withLombok = entityConfig.isWithLombok())
-#set(withSwagger = entityConfig.isWithSwagger())
-#set(swaggerVersion = entityConfig.getSwaggerVersion())
-#set(withActiveRecord = entityConfig.isWithActiveRecord())
-#set(jdkVersion = entityConfig.getJdkVersion())
-package #(entityPackageName);
+#set(withLombok = voConfig.isWithLombok())
+#set(withSwagger = voConfig.isWithSwagger())
+#set(swaggerVersion = voConfig.getSwaggerVersion())
+#set(jdkVersion = voConfig.getJdkVersion())
+package #(voPackageName);
 
-#for(importClass : table.buildImports(isBase))
+#for(importClass : voConfig.buildImports())
 import #(importClass);
 #end
-#if(withActiveRecord)
-import com.mybatisflex.core.activerecord.Model;
-#end
+
 
 #if(jdkVersion >= 14)
 import java.io.Serial;
 #end
 
-#if(!isBase)
+
 #if(withSwagger && swaggerVersion.getName() == "FOX")
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,20 +22,16 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 #end
 #if(withLombok)
-#if(withActiveRecord)
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-#else
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
-#if(entityConfig.getSuperClass())
+#if(voConfig.getSuperClass())
 import lombok.EqualsAndHashCode;
 #end
 #end
-#end
+
 
 /**
  * #(table.getComment()) 实体类。
@@ -47,18 +40,13 @@ import lombok.EqualsAndHashCode;
  * @since #(javadocConfig.getSince())
  */
 #if(withLombok)
-#if(withActiveRecord)
 @Accessors(chain = true)
-@Data(staticConstructor = "create")
-@EqualsAndHashCode(callSuper = true)
-#else
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-#if(entityConfig.getSuperClass())
+#if(voConfig.getSuperClass())
 @EqualsAndHashCode(callSuper = true)
-#end
 #end
 #end
 #if(withSwagger && swaggerVersion.getName() == "FOX")
@@ -67,8 +55,8 @@ import lombok.EqualsAndHashCode;
 #if(withSwagger && swaggerVersion.getName() == "DOC")
 @Schema(description = "#(table.getComment())")
 #end
-#(table.buildTableAnnotation()) #end
-public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClassName)>#else#(table.buildExtends(isBase))#(table.buildImplements())#end  {
+#(table.buildTableAnnotation())
+public class #(voClassName) #(voConfig.buildExtends(globalConfig))#(voConfig.buildImplements(globalConfig)) {
 
     #if(jdkVersion >= 14)
     @Serial
@@ -96,27 +84,16 @@ public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClass
 
 #end
 #if(!withLombok)
-    #if(withActiveRecord)
-    public static #(entityClassName) create() {
-        return new #(entityClassName)();
-    }
 
-    #end
     #for(column: table.columns)
     public #(column.propertySimpleType) #(column.getterMethod())() {
         return #(column.property);
     }
 
-    #if(withActiveRecord)
-    public #(entityClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
+    public #(voClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
         this.#(column.property) = #(column.property);
         return this;
     }
-    #else
-    public void #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
-        this.#(column.property) = #(column.property);
-    }
-    #end
 
     #end
 #end}

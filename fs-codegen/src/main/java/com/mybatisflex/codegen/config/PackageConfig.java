@@ -39,6 +39,18 @@ public class PackageConfig implements Serializable {
      * 根包。
      */
     private String basePackage = "com.mybatisflex";
+    /**
+     * Vo 所在包。
+     */
+    private String voPackage;
+    /**
+     * Dto 所在包。
+     */
+    private String dtoPackage;
+    /**
+     * Query 所在包。
+     */
+    private String queryPackage;
 
     /**
      * Entity 所在包。
@@ -122,6 +134,57 @@ public class PackageConfig implements Serializable {
      */
     public PackageConfig setEntityPackage(String entityPackage) {
         this.entityPackage = entityPackage;
+        return this;
+    }
+    /**
+     * 获取VO层包路径。
+     */
+    public String getVoPackage() {
+        if (StringUtil.isBlank(voPackage)) {
+            return basePackage.concat(".vo");
+        }
+        return voPackage;
+    }
+
+    /**
+     * 设置VO层包路径。
+     */
+    public PackageConfig setVoPackage(String voPackage) {
+        this.voPackage = voPackage;
+        return this;
+    }
+    /**
+     * 获取DTO层包路径。
+     */
+    public String getDtoPackage() {
+        if (StringUtil.isBlank(dtoPackage)) {
+            return basePackage.concat(".dto");
+        }
+        return dtoPackage;
+    }
+
+    /**
+     * 设置DTO层包路径。
+     */
+    public PackageConfig setDtoPackage(String dtoPackage) {
+        this.dtoPackage = dtoPackage;
+        return this;
+    }
+    /**
+     * 获取Query层包路径。
+     */
+    public String getQueryPackage() {
+        if (StringUtil.isBlank(queryPackage)) {
+            return basePackage.concat(".query");
+        }
+        return queryPackage;
+    }
+
+    /**
+     * 设置Query层包路径。
+     */
+    public PackageConfig setQueryPackage(String queryPackage) {
+        this.queryPackage = queryPackage;
         return this;
     }
 

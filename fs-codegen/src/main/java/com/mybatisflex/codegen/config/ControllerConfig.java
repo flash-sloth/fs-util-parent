@@ -15,7 +15,11 @@
  */
 package com.mybatisflex.codegen.config;
 
+import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.codegen.entity.Table;
+
 import java.io.Serializable;
+import java.lang.reflect.TypeVariable;
 
 /**
  * 生成 Controller 的配置。
@@ -64,7 +68,37 @@ public class ControllerConfig implements Serializable {
         return superClass.getName();
     }
 
-    public String buildSuperClassName() {
+    public String buildSuperClassName(Table table) {
+        if (superClass == null) {
+            return "";
+        }
+        String entityClassName = table.buildEntityClassName();
+        String voClassName = table.buildVoClassName();
+        String dtoClassName = table.buildDtoClassName();
+        String queryClassName = table.buildQueryClassName();
+        String serviceClassName = table.buildServiceClassName();
+
+        TypeVariable<? extends Class<?>>[] typeParameters = superClass.getTypeParameters();
+
+        if (typeParameters.length > 1) {
+            StringBuilder genericityStr = new StringBuilder("<");
+            for (TypeVariable<? extends Class<?>> typeParameter : typeParameters) {
+
+                switch (typeParameter.getTypeName()) {
+                    case "Id" -> genericityStr.append("Long, ");
+                    case "Entity" -> genericityStr.append(entityClassName).append(", ");
+                    case "VO" -> genericityStr.append(voClassName).append(", ");
+                    case "DTO" -> genericityStr.append(dtoClassName).append(", ");
+                    case "Query" -> genericityStr.append(queryClassName).append(", ");
+                    default -> genericityStr.append(serviceClassName).append(", ");
+                }
+
+            }
+            String genericity = StrUtil.removeSuffix(genericityStr, ", ");
+
+            return superClass.getSimpleName() + genericity + ">";
+        }
+
         return superClass.getSimpleName();
     }
 

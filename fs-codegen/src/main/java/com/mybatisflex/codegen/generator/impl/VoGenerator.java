@@ -9,9 +9,9 @@
 package com.mybatisflex.codegen.generator.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
+import com.mybatisflex.codegen.config.VoConfig;
 import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
@@ -21,6 +21,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * VO 生成器。
+ *
+ * @author tangyh
+ * @since 2024年06月18日15:48:18
+ */
 
 public class VoGenerator implements IGenerator {
 
@@ -73,44 +79,45 @@ public class VoGenerator implements IGenerator {
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
-        if (!globalConfig.isEntityGenerateEnable()) {
+        if (!globalConfig.isVoGenerateEnable()) {
             return;
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        EntityConfig entityConfig = globalConfig.getEntityConfig();
+        VoConfig voConfig = globalConfig.getVoConfig();
 
-        String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
-        File entityJavaFile = new File(packageConfig.getSourceDir(), entityPackagePath + "/" +
-                table.buildEntityClassName() + "Vo.java");
+        String packagePath = packageConfig.getVoPackage().replace(".", "/");
+        File javaFile = new File(packageConfig.getSourceDir(), packagePath + "/" +
+                table.buildVoClassName() + ".java");
 
-
-        if (entityJavaFile.exists() && !entityConfig.isOverwriteEnable()) {
+        if (javaFile.exists() && !voConfig.isOverwriteEnable()) {
             return;
         }
 
-        Map<String, Object> params = new HashMap<>(4);
-        params.put("table", table);
-        params.put("entityConfig", entityConfig);
-        params.put("packageConfig", packageConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, voConfig);
 
-        globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), entityJavaFile);
+        globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+    }
+
+    private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, VoConfig voConfig) {
+        Map<String, Object> params = new HashMap<>(7);
+        params.put("table", table);
+        params.put("voPackageName", packageConfig.getVoPackage());
+        params.put("voConfig", voConfig);
+        params.put("voClassName", table.buildVoClassName());
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.put("packageConfig", packageConfig);
+        params.put("globalConfig", globalConfig);
+        return params;
     }
 
     @Override
     public String preview(Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        EntityConfig entityConfig = globalConfig.getEntityConfig();
+        VoConfig voConfig = globalConfig.getVoConfig();
 
-        Map<String, Object> params = new HashMap<>(6);
-        params.put("table", table);
-        params.put("entityPackageName", packageConfig.getEntityPackage());
-        params.put("entityConfig", entityConfig);
-        params.put("entityClassName", table.buildEntityClassName());
-        params.put("packageConfig", packageConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("isBase", false);
+        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, voConfig);
+
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
