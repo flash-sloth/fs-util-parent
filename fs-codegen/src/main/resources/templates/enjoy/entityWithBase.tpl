@@ -9,7 +9,6 @@ package #(entityPackageName);
 import #(importClass);
 #end
 import #(baseClassPackage).#(baseClassName);
-
 #if(withActiveRecord)
 import com.mybatisflex.core.activerecord.Model;
 #end
@@ -26,15 +25,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 #else
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 #end
 #end
-#if(jdkVersion >= 14)
-import java.io.Serial;
-#end
+
 #if(!isBase)
 /**
  * #(table.getComment()) 实体类。
@@ -52,7 +48,6 @@ import java.io.Serial;
 @Data
 @Builder
 @NoArgsConstructor
-//@AllArgsConstructor
 #end
 #end
 #if(withSwagger && swaggerVersion.getName() == "FOX")
@@ -61,7 +56,8 @@ import java.io.Serial;
 #if(withSwagger && swaggerVersion.getName() == "DOC")
 @Schema(description = "#(table.getComment())")
 #end
-
-#if(!isBase)#(table.buildTableAnnotation())#end
+#if(!isBase)
+#(table.buildTableAnnotation())
+#end
 public class #(entityClassName) extends #(baseClassName) {
 }

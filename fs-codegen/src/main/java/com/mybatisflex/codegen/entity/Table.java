@@ -151,6 +151,9 @@ public class Table {
     public List<Column> getColumns() {
         return columns;
     }
+    public List<Column> getSuperColumns() {
+        return superColumns;
+    }
 
     public List<Column> getSortedColumns() {
         ArrayList<Column> arrayList = new ArrayList<>(columns);
@@ -412,7 +415,7 @@ public class Table {
             }
         }
 
-        return tableAnnotation.append(")\n").toString();
+        return tableAnnotation.append(")").toString();
     }
 
     /**

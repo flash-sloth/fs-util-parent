@@ -16,6 +16,7 @@ import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @author tangyh
  * @since 2024年06月18日15:48:18
  */
-
+@Slf4j
 public class VoGenerator implements IGenerator {
 
     private String templatePath;
@@ -96,6 +97,7 @@ public class VoGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, voConfig);
 
+        log.info("Vo ---> {}", javaFile);
         globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
     }
 

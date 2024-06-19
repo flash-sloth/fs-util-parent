@@ -16,6 +16,7 @@
 package com.mybatisflex.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
 
@@ -276,13 +277,27 @@ public class VoConfig implements Serializable {
         return superClassGenericity;
     }
 
-    public List<String> buildImports() {
+    public List<String> buildImports(Table table) {
         Set<String> imports = new HashSet<>();
         if (superClass != null) {
             imports.add(superClass.getName());
         }
         imports.add(com.mybatisflex.annotation.Table.class.getName());
-        imports.add(Serializable.class.getName());
+
+        if (implInterfaces != null) {
+            for (Class<?> entityInterface : implInterfaces) {
+                imports.add(entityInterface.getName());
+            }
+        }
+
+        List<Column> columns = table.getColumns();
+        List<Column> superColumns = table.getSuperColumns();
+        for (Column column : columns) {
+            imports.addAll(column.getImportClasses());
+        }
+        for (Column column : superColumns) {
+            imports.addAll(column.getImportClasses());
+        }
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }

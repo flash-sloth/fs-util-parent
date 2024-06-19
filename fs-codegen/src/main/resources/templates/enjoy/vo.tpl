@@ -4,15 +4,13 @@
 #set(jdkVersion = voConfig.getJdkVersion())
 package #(voPackageName);
 
-#for(importClass : voConfig.buildImports())
+#for(importClass : voConfig.buildImports(table))
 import #(importClass);
 #end
-
 
 #if(jdkVersion >= 14)
 import java.io.Serial;
 #end
-
 
 #if(withSwagger && swaggerVersion.getName() == "FOX")
 import io.swagger.annotations.ApiModel;
@@ -31,7 +29,6 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 #end
 #end
-
 
 /**
  * #(table.getComment()) 实体类。
