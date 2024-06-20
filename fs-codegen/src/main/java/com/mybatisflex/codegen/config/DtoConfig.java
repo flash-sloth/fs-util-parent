@@ -19,9 +19,15 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.lang.reflect.TypeVariable;
+import java.math.BigDecimal;
+import java.sql.ResultSetMetaData;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -98,7 +104,10 @@ public class DtoConfig implements Serializable {
      */
     private int jdkVersion;
 
-
+    /**
+     * 需要忽略的列 全局配置。
+     */
+    private Set<String> ignoreColumns;
     /**
      * 继承的父类是否添加泛型
      */
@@ -229,6 +238,7 @@ public class DtoConfig implements Serializable {
         this.withLombok = withLombok;
         return this;
     }
+
     /**
      * 是否使用 Validator。
      */
@@ -295,7 +305,7 @@ public class DtoConfig implements Serializable {
         return superClassGenericity;
     }
 
-    public List<String> buildImports(Table table) {
+    public List<String> buildImports(GlobalConfig globalConfig, Table table) {
         Set<String> imports = new HashSet<>();
         if (superClass != null) {
             imports.add(superClass.getName());
@@ -308,7 +318,22 @@ public class DtoConfig implements Serializable {
         List<Column> columns = table.getAllColumns();
         for (Column column : columns) {
             imports.addAll(column.getImportClasses());
+
+            ColumnConfig columnConfig = globalConfig.getStrategyConfig().getColumnConfig(table.getName(), column.getName());
+            if (column.isPrimaryKey() || columnConfig.isPrimaryKey() || column.getNullable() == ResultSetMetaData.columnNoNulls) {
+                imports.add(NotNull.class.getName());
+                if (String.class.getName().equals(column.getPropertyType())) {
+                    imports.add(NotEmpty.class.getName());
+                }
+            }
+            if (String.class.getName().equals(column.getPropertyType())) {
+                imports.add(Size.class.getName());
+            }
+            if (BigDecimal.class.getName().equals(column.getPropertyType())) {
+                imports.add(Digits.class.getName());
+            }
         }
+
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }
 
@@ -363,4 +388,30 @@ public class DtoConfig implements Serializable {
             return "";
         }
     }
+
+
+    public Set<String> getIgnoreColumns() {
+        return ignoreColumns;
+    }
+
+    public DtoConfig setIgnoreColumns(Set<String> ignoreColumns) {
+        this.ignoreColumns = ignoreColumns;
+        return this;
+    }
+
+    /**
+     * 设置需要忽略的列  全局配置。
+     */
+    public DtoConfig setIgnoreColumns(String... columns) {
+        if (ignoreColumns == null) {
+            ignoreColumns = new HashSet<>();
+        }
+        for (String column : columns) {
+            if (column != null && !column.trim().isEmpty()) {
+                ignoreColumns.add(column.trim().toLowerCase());
+            }
+        }
+        return this;
+    }
+
 }

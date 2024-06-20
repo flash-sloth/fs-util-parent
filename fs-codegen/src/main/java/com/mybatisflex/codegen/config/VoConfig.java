@@ -284,6 +284,20 @@ public class VoConfig implements Serializable {
         }
         imports.add(com.mybatisflex.annotation.Table.class.getName());
 
+        EntityConfig entityConfig = table.getEntityConfig();
+        if (entityConfig.isWithBaseClassEnable()) {
+            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
+            String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+            String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
+                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
+            imports.add(baseClassPackage + "." + baseClassName);
+        } else {
+            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
+            String baseClassName = table.buildEntityClassName();
+            String baseClassPackage = packageConfig.getEntityPackage();
+            imports.add(baseClassPackage + "." + baseClassName);
+        }
+
         if (implInterfaces != null) {
             for (Class<?> entityInterface : implInterfaces) {
                 imports.add(entityInterface.getName());

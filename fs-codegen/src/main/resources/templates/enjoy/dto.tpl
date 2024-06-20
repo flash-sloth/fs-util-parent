@@ -4,7 +4,7 @@
 #set(jdkVersion = dtoConfig.getJdkVersion())
 package #(dtoPackageName);
 
-#for(importClass : dtoConfig.buildImports(table))
+#for(importClass : dtoConfig.buildImports(globalConfig, table))
 import #(importClass);
 #end
 
@@ -60,13 +60,16 @@ public class #(dtoClassName)#(dtoConfig.buildExtends(globalConfig))#(dtoConfig.b
     private static final long serialVersionUID = 1L;
 
 #for(column : table.allColumns)
+    #if(dtoConfig.getIgnoreColumns().contains(column.getName().toLowerCase()))
+    #continue
+    #end
     #set(comment = javadocConfig.formatColumnComment(column.comment))
     #if(isNotBlank(comment))
     /**
      * #(comment)
      */
     #end
-    #set(annotations = column.buildAnnotations())
+    #set(annotations = column.buildValidatorAnnotations())
     #if(isNotBlank(annotations))
     #(annotations)
     #end

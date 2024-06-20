@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.entity;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.annotation.ColumnMask;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -25,6 +26,8 @@ import com.mybatisflex.core.mask.MaskManager;
 import com.mybatisflex.core.mask.Masks;
 import com.mybatisflex.core.util.StringUtil;
 
+import java.math.BigDecimal;
+import java.sql.ResultSetMetaData;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -56,7 +59,7 @@ public class Column {
     /**
      * 是否可为空。
      */
-    private Integer nullable;
+    private int nullable;
 
     /**
      * 是否为主键。
@@ -129,6 +132,7 @@ public class Column {
     public String getComment() {
         return comment;
     }
+
     public String getSwaggerComment() {
         return getJavadocConfig().formatColumnSwaggerComment(comment);
     }
@@ -137,11 +141,11 @@ public class Column {
         this.comment = comment;
     }
 
-    public Integer getNullable() {
+    public int getNullable() {
         return nullable;
     }
 
-    public void setNullable(Integer nullable) {
+    public void setNullable(int nullable) {
         this.nullable = nullable;
     }
 
@@ -407,6 +411,48 @@ public class Column {
             }
             annotations.append(")");
         }
+
+        return annotations.toString();
+    }
+
+    public String buildValidatorAnnotations() {
+        StringBuilder annotations = new StringBuilder();
+
+        if (isPrimaryKey || columnConfig.isPrimaryKey() || nullable == ResultSetMetaData.columnNoNulls) {
+            String notAnt = "@NotNull";
+            if (String.class.getName().equals(propertyType)) {
+                notAnt = "@NotEmpty";
+            }
+            annotations.append(StrUtil.format("{}(message = \"请填写{}\")", notAnt, getSwaggerComment()));
+
+            if (StrUtil.equalsAny(propertyType, String.class.getName(), BigDecimal.class.getName())) {
+                annotations.append("\n    ");
+            }
+        }
+
+        if (String.class.getName().equals(propertyType)) {
+            annotations.append(StrUtil.format("@Size(max = {}, message = \"{}长度不能超过{max}\")", rawLength, getSwaggerComment()));
+        } else if (BigDecimal.class.getName().equals(propertyType)) {
+            annotations.append(StrUtil.format("@Digits(integer = {}, fraction = {}, message = \"{}整数位长度不能超过{integer}, 小数位长度不能超过{fraction}\")", rawLength, rawScale, getSwaggerComment()));
+        }
+
+//        else if ("java.lang.Integer".equals(propertyType)) {
+//            annotations.append(StrUtil.format("@Max(value = {}, message = \"{}不能大于{value}\")", "Integer.MAX_VALUE", getSwaggerComment()));
+//            annotations.append("\n    ");
+//            annotations.append(StrUtil.format("@Min(value = {}, message = \"{}不能小于{value}\")", "Integer.MIN_VALUE", getSwaggerComment()));
+//        } else if ("java.lang.Long".equals(propertyType)) {
+//            annotations.append(StrUtil.format("@Max(value = {}, message = \"{}不能大于{value}\")", "Integer.MAX_VALUE", getSwaggerComment()));
+//            annotations.append("\n    ");
+//            annotations.append(StrUtil.format("@Min(value = {}, message = \"{}不能小于{value}\")", "Integer.MIN_VALUE", getSwaggerComment()));
+//        } else if ("java.lang.Short".equals(propertyType)) {
+//            annotations.append(StrUtil.format("@Max(value = {}, message = \"{}不能大于{value}\")", "Short.MAX_VALUE", getSwaggerComment()));
+//            annotations.append("\n    ");
+//            annotations.append(StrUtil.format("@Min(value = {}, message = \"{}不能小于{value}\")", "Short.MIN_VALUE", getSwaggerComment()));
+//        } else if ("java.lang.Byte".equals(propertyType)) {
+//            annotations.append(StrUtil.format("@Max(value = {}, message = \"{}不能大于{value}\")", "Byte.MAX_VALUE", getSwaggerComment()));
+//            annotations.append("\n    ");
+//            annotations.append(StrUtil.format("@Min(value = {}, message = \"{}不能小于{value}\")", "Byte.MIN_VALUE", getSwaggerComment()));
+//        }
 
         return annotations.toString();
     }

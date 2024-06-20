@@ -27,7 +27,12 @@
             </exclusions>
         </dependency>
 
-
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
         <!--使用 enjoy 模板引擎-->
         <dependency>
             <groupId>com.jfinal</groupId>

@@ -53,7 +53,7 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "#(table.getComment())")
 #end
 #(table.buildTableAnnotation())
-public class #(voClassName) #(voConfig.buildExtends(globalConfig))#(voConfig.buildImplements(globalConfig)) {
+public class #(voClassName)#(voConfig.buildExtends(globalConfig))#(voConfig.buildImplements(globalConfig)) {
 
     #if(jdkVersion >= 14)
     @Serial

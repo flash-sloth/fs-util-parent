@@ -108,21 +108,7 @@ public class EntityBaseGenerator implements IGenerator {
 
         String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
 
-
-        // 排除忽略列
-        if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
-            table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
-        }
-
-        Map<String, Object> params = new HashMap<>(6);
-        params.put("table", table);
-        params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));
-        params.put("entityClassName", baseEntityClassName);
-        params.put("entityConfig", entityConfig);
-        params.put("packageConfig", packageConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("isBase", true);
-        params.putAll(globalConfig.getCustomConfig());
+        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityPackagePath, baseEntityClassName);
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
@@ -150,21 +136,7 @@ public class EntityBaseGenerator implements IGenerator {
 
         File baseEntityJavaFile = new File(sourceDir, baseEntityPackagePath + "/" + baseEntityClassName + globalConfig.getFileType());
 
-
-        // 排除忽略列
-        if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
-            table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
-        }
-
-        Map<String, Object> params = new HashMap<>(6);
-        params.put("table", table);
-        params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));
-        params.put("entityClassName", baseEntityClassName);
-        params.put("entityConfig", entityConfig);
-        params.put("packageConfig", packageConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("isBase", true);
-        params.putAll(globalConfig.getCustomConfig());
+        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityPackagePath, baseEntityClassName);
 
         log.info("BaseEntity ---> {}", baseEntityJavaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
@@ -174,4 +146,24 @@ public class EntityBaseGenerator implements IGenerator {
         }
     }
 
+    public Map<String, Object> getTemplatePath(Table table, GlobalConfig globalConfig, String baseEntityPackagePath, String baseEntityClassName) {
+        Map<String, Object> params = new HashMap<>(8);
+        EntityConfig entityConfig = globalConfig.getEntityConfig();
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        // 排除忽略列
+        if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
+            table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
+        }
+
+        params.put("table", table);
+        params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));
+        params.put("entityClassName", baseEntityClassName);
+        params.put("entityConfig", entityConfig);
+        params.put("packageConfig", packageConfig);
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.put("isBase", true);
+        params.putAll(globalConfig.getCustomConfig());
+        return params;
+    }
 }

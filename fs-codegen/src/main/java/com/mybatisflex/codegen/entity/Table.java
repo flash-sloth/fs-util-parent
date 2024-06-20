@@ -155,9 +155,11 @@ public class Table {
     public List<Column> getColumns() {
         return columns;
     }
+
     public List<Column> getSuperColumns() {
         return superColumns;
     }
+
     public List<Column> getAllColumns() {
         return allColumns;
     }
@@ -353,7 +355,6 @@ public class Table {
         imports.add(superClass.getName());
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
-
     }
 
     /**
@@ -362,7 +363,12 @@ public class Table {
     public String buildTableAnnotation() {
         StringBuilder tableAnnotation = new StringBuilder();
 
-        tableAnnotation.append("@Table(value = \"").append(name).append("\"");
+        String baseEntityClassName = buildEntityClassName();
+        if (entityConfig.isWithBaseClassEnable()) {
+            baseEntityClassName = buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+        }
+        String tableName = StrUtil.format("{}.TABLE_NAME", baseEntityClassName);
+        tableAnnotation.append("@Table(value = ").append(tableName);
 
         String globalSchema;
 
@@ -531,6 +537,7 @@ public class Table {
                 + entityJavaFileName
                 + voConfig.getClassSuffix();
     }
+
     /**
      * 构建 Dto 的 Class 名称。
      */

@@ -72,6 +72,8 @@ import lombok.EqualsAndHashCode;
 #(table.buildTableAnnotation())
 #end
 public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClassName)>#else#(table.buildExtends(isBase))#(table.buildImplements())#end  {
+    /** 表名称 */
+    public static final String TABLE_NAME = "#(table.getName())";
 
     #if(jdkVersion >= 14)
     @Serial
