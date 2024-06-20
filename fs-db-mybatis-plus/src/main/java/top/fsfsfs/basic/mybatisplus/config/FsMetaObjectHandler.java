@@ -19,16 +19,16 @@ import java.time.LocalDateTime;
 
 /**
  * MyBatis Plus 元数据处理类
- * 用于自动 注入 id, createdTime, updatedTime, createdBy, updatedBy 等字段
+ * 用于自动 注入 id, createdAt, updatedAt, createdBy, updatedBy 等字段
  * <p>
  * 判断逻辑：
- * 1. insert 方法，自动填充 id, createdTime, updatedTime, createdBy, updatedBy 字段，字段为空则自动生成，不为空则使用传递进来的
- * 2. update 方法，自动填充 updatedTime, updatedBy 字段，字段为空则自动生成，不为空则使用传递进来的
+ * 1. insert 方法，自动填充 id, createdAt, updatedAt, createdBy, updatedBy 字段，字段为空则自动生成，不为空则使用传递进来的
+ * 2. update 方法，自动填充 updatedAt, updatedBy 字段，字段为空则自动生成，不为空则使用传递进来的
  * <p>
  * 注入值：
  * id：  IdUtil.getSnowflake(workerId, dataCenterId);
- * createdTime：LocalDateTime.now()
- * updatedTime：LocalDateTime.now()
+ * createdAt：LocalDateTime.now()
+ * updatedAt：LocalDateTime.now()
  * createdBy：BaseContextHandler.getUserId()
  * updatedBy：BaseContextHandler.getUserId()
  *
@@ -51,7 +51,7 @@ public class FsMetaObjectHandler implements MetaObjectHandler {
      * 1、所有的继承了Entity、SuperEntity的实体，在insert时，
      * id： id为空时， 通过IdGenerate生成唯一ID。
      * createdBy, updatedBy: 自动赋予 当前线程上的登录人id。
-     * createdTime, updatedTime: 自动赋予 服务器的当前时间。
+     * createdAt, updatedAt: 自动赋予 服务器的当前时间。
      * <p>
      * 注意：实体中字段为空时才会赋值，若手动传值了，这里不会重新赋值
      * <p>
@@ -199,7 +199,7 @@ public class FsMetaObjectHandler implements MetaObjectHandler {
     /**
      * 所有的继承了Entity、SuperEntity的实体，在update时，
      * updatedBy: 自动赋予 当前线程上的登录人id
-     * updatedTime: 自动赋予 服务器的当前时间
+     * updatedAt: 自动赋予 服务器的当前时间
      */
     @Override
     public void updateFill(MetaObject metaObject) {

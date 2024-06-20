@@ -34,7 +34,7 @@ public class PageParams<T> {
     @Schema(description = "当前页", example = "1")
     private long current = 1;
 
-    @Schema(description = "排序字段，默认id；请传递实体类字段", allowableValues = "id,createdTime,updatedTime", example = "id")
+    @Schema(description = "排序字段，默认id；请传递实体类字段", allowableValues = "id,createdAt,updatedAt", example = "id")
     private String sort = BaseEntity.ID_FIELD;
 
     @Schema(description = "排序规则，默认descending", allowableValues = "descending,ascending", example = "descending")

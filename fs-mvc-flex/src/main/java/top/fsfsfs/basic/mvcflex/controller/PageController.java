@@ -82,17 +82,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
     default QueryWrapper handlerWrapper(PageParams<Query> params) {
         QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
 
-        List<String> sortArr = StrUtil.split(params.getSort(), StrPool.COMMA);
-        List<String> orderArr = StrUtil.split(params.getOrder(), StrPool.COMMA);
-
-        int len = Math.min(sortArr.size(), orderArr.size());
-        for (int i = 0; i < len; i++) {
-            String humpSort = sortArr.get(i);
-            String order = orderArr.get(i);
-
-            String beanColumn = ControllerUtil.getColumnByProperty(humpSort, params.getModel().getClass());
-            wrapper.orderBy(new QueryColumn(beanColumn), StrUtil.equalsAny(order, "ascending", "ascend"));
-        }
+        ControllerUtil.buildOrder(wrapper, params);
         return wrapper;
     }
 

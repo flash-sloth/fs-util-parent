@@ -1,8 +1,11 @@
 package top.fsfsfs.basic.mvcflex.utils;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.core.constant.SqlOperator;
+import com.mybatisflex.core.query.QueryColumn;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.query.SqlOperators;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
@@ -10,6 +13,8 @@ import com.mybatisflex.core.util.ClassUtil;
 import com.mybatisflex.core.util.StringUtil;
 import org.apache.ibatis.util.MapUtil;
 import top.fsfsfs.basic.exception.BizException;
+import top.fsfsfs.basic.mvcflex.request.PageParams;
+import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.util.utils.ArgumentAssert;
 
 import java.lang.reflect.Field;
@@ -36,6 +41,20 @@ public class ControllerUtil {
             });
             return sqlOperators;
         }));
+    }
+
+    public static <Query> void buildOrder(QueryWrapper wrapper, PageParams<Query> params) {
+        List<String> sortArr = StrUtil.split(params.getSort(), StrPool.COMMA);
+        List<String> orderArr = StrUtil.split(params.getOrder(), StrPool.COMMA);
+
+        int len = Math.min(sortArr.size(), orderArr.size());
+        for (int i = 0; i < len; i++) {
+            String humpSort = sortArr.get(i);
+            String order = orderArr.get(i);
+
+            String beanColumn = ControllerUtil.getColumnByProperty(humpSort, params.getModel().getClass());
+            wrapper.orderBy(new QueryColumn(beanColumn), StrUtil.equalsAny(order, "ascending", "ascend"));
+        }
     }
 
     public static String buildOrderBy(String sortKey, String sortType) {
