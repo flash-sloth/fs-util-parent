@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * DTO 生成器。
+ * DTO（写入方法入参） 生成器。
  *
  * @author tangyh
  * @since 2024年06月18日15:48:18

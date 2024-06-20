@@ -80,7 +80,7 @@ public class EntityConfig implements Serializable {
     /**
      * Swagger 版本
      */
-    private SwaggerVersion swaggerVersion;
+    private SwaggerVersion swaggerVersion = SwaggerVersion.DOC;
 
     /**
      * Entity 是否启用 Active Record 功能。
@@ -187,7 +187,9 @@ public class EntityConfig implements Serializable {
     public Class<?> getGenericityType() {
         return genericityType;
     }
-
+    public String getGenericityTypeName() {
+        return genericityType != null ? genericityType.getSimpleName() : null;
+    }
     public EntityConfig setGenericityType(Class<?> genericityType) {
         this.genericityType = genericityType;
         return this;

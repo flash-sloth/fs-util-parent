@@ -83,11 +83,13 @@ public class VoConfig implements Serializable {
      *  是否使用 Swagger 注解。
      */
     private boolean withSwagger;
+    /** 导出(@Excel)注解 */
+    private boolean withExcel;
 
     /**
      * Swagger 版本
      */
-    private SwaggerVersion swaggerVersion;
+    private EntityConfig.SwaggerVersion swaggerVersion;
 
     /**
      * 项目jdk版本
@@ -226,6 +228,15 @@ public class VoConfig implements Serializable {
         return this;
     }
 
+    public boolean isWithExcel() {
+        return withExcel;
+    }
+
+    public VoConfig setWithExcel(boolean withExcel) {
+        this.withExcel = withExcel;
+        return this;
+    }
+
     /**
      * 是否启用 Swagger。
      */
@@ -238,21 +249,22 @@ public class VoConfig implements Serializable {
      */
     public VoConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.DOC;
+        this.swaggerVersion = EntityConfig.SwaggerVersion.DOC;
         return this;
     }
+
 
     /**
      * Swagger 版本
      */
-    public SwaggerVersion getSwaggerVersion() {
+    public EntityConfig.SwaggerVersion getSwaggerVersion() {
         return swaggerVersion;
     }
 
     /**
      * 设置 Swagger 版本
      */
-    public VoConfig setSwaggerVersion(SwaggerVersion swaggerVersion) {
+    public VoConfig setSwaggerVersion(EntityConfig.SwaggerVersion swaggerVersion) {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
         return this;
@@ -310,23 +322,6 @@ public class VoConfig implements Serializable {
         }
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
-    }
-
-    public enum SwaggerVersion {
-        /** FOX */
-        FOX("FOX"),
-        DOC("DOC");
-
-        private final String name;
-
-        SwaggerVersion(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
     }
 
 

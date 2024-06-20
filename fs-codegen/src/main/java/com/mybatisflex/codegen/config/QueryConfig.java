@@ -83,11 +83,13 @@ public class QueryConfig implements Serializable {
      * Entity 是否使用 Swagger 注解。
      */
     private boolean withSwagger;
+    /** 导入注解 */
+    private boolean withExcel;
 
     /**
      * Swagger 版本
      */
-    private SwaggerVersion swaggerVersion;
+    private EntityConfig.SwaggerVersion swaggerVersion;
 
     /**
      * 项目jdk版本
@@ -238,23 +240,32 @@ public class QueryConfig implements Serializable {
      */
     public QueryConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.DOC;
+        this.swaggerVersion = EntityConfig.SwaggerVersion.DOC;
         return this;
     }
 
     /**
      * Swagger 版本
      */
-    public SwaggerVersion getSwaggerVersion() {
+    public EntityConfig.SwaggerVersion getSwaggerVersion() {
         return swaggerVersion;
     }
 
     /**
      * 设置 Swagger 版本
      */
-    public QueryConfig setSwaggerVersion(SwaggerVersion swaggerVersion) {
+    public QueryConfig setSwaggerVersion(EntityConfig.SwaggerVersion swaggerVersion) {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
+        return this;
+    }
+
+    public boolean isWithExcel() {
+        return withExcel;
+    }
+
+    public QueryConfig setWithExcel(boolean withExcel) {
+        this.withExcel = withExcel;
         return this;
     }
 
@@ -282,35 +293,35 @@ public class QueryConfig implements Serializable {
         if (superClass != null) {
             imports.add(superClass.getName());
         }
+        imports.add(com.mybatisflex.annotation.Table.class.getName());
+
+        EntityConfig entityConfig = table.getEntityConfig();
+        if (entityConfig.isWithBaseClassEnable()) {
+            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
+            String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+            String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
+                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
+            imports.add(baseClassPackage + "." + baseClassName);
+        } else {
+            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
+            String baseClassName = table.buildEntityClassName();
+            String baseClassPackage = packageConfig.getEntityPackage();
+            imports.add(baseClassPackage + "." + baseClassName);
+        }
+
         if (implInterfaces != null) {
             for (Class<?> entityInterface : implInterfaces) {
                 imports.add(entityInterface.getName());
             }
         }
+
         List<Column> columns = table.getAllColumns();
         for (Column column : columns) {
             imports.addAll(column.getImportClasses());
         }
+
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }
-
-    public enum SwaggerVersion {
-        /** FOX */
-        FOX("FOX"),
-        DOC("DOC");
-
-        private final String name;
-
-        SwaggerVersion(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-    }
-
 
     /**
      * 构建 extends 继承。

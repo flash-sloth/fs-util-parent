@@ -1,10 +1,10 @@
-#set(withLombok = voConfig.isWithLombok())
-#set(withSwagger = voConfig.isWithSwagger())
-#set(swaggerVersion = voConfig.getSwaggerVersion())
-#set(jdkVersion = voConfig.getJdkVersion())
-package #(voPackageName);
+#set(withLombok = queryConfig.isWithLombok())
+#set(withSwagger = queryConfig.isWithSwagger())
+#set(swaggerVersion = queryConfig.getSwaggerVersion())
+#set(jdkVersion = queryConfig.getJdkVersion())
+package #(queryPackageName);
 
-#for(importClass : voConfig.buildImports(table))
+#for(importClass : queryConfig.buildImports(table))
 import #(importClass);
 #end
 
@@ -25,13 +25,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
-#if(voConfig.getSuperClass())
+#if(queryConfig.getSuperClass())
 import lombok.EqualsAndHashCode;
 #end
 #end
 
 /**
- * #(table.getComment()) VO类（通常用作Controller出参）。
+ * #(table.getComment()) Query类（查询方法入参）。
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
@@ -42,7 +42,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-#if(voConfig.getSuperClass())
+#if(queryConfig.getSuperClass())
 @EqualsAndHashCode(callSuper = true)
 #end
 #end
@@ -53,7 +53,7 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "#(table.getComment())")
 #end
 #(table.buildTableAnnotation())
-public class #(voClassName)#(voConfig.buildExtends(globalConfig))#(voConfig.buildImplements(globalConfig)) {
+public class #(queryClassName)#(queryConfig.buildExtends(globalConfig))#(queryConfig.buildImplements(globalConfig)) {
 
     #if(jdkVersion >= 14)
     @Serial
@@ -87,7 +87,7 @@ public class #(voClassName)#(voConfig.buildExtends(globalConfig))#(voConfig.buil
         return #(column.property);
     }
 
-    public #(voClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
+    public #(queryClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
         this.#(column.property) = #(column.property);
         return this;
     }

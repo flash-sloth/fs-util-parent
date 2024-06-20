@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
 #end
 
 /**
- * #(table.getComment()) DTO（通常用作Controller写入方法入参）。
+ * #(table.getComment()) DTO（写入方法入参）。
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())

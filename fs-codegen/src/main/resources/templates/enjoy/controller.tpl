@@ -1,6 +1,9 @@
 #set(tableComment = table.getComment())
 #set(primaryKeyType = table.getPrimaryKey().getPropertySimpleType())
 #set(entityClassName = table.buildEntityClassName())
+#set(dtoClassName = table.buildDtoClassName())
+#set(voClassName = table.buildVoClassName())
+#set(queryClassName = table.buildQueryClassName())
 #set(entityVarName = firstCharToLowerCase(entityClassName))
 #set(serviceVarName = firstCharToLowerCase(table.buildServiceClassName()))
 package #(packageConfig.controllerPackage);
@@ -8,36 +11,6 @@ package #(packageConfig.controllerPackage);
 #for(importClass : table.buildControllerImports())
 import #(importClass);
 #end
-import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import #(packageConfig.entityPackage).#(entityClassName);
-import #(packageConfig.servicePackage).#(table.buildServiceClassName());
-#if(controllerConfig.restStyle)
-import org.springframework.web.bind.annotation.RestController;
-#else
-import org.springframework.stereotype.Controller;
-#end
-#if(controllerConfig.superClass != null)
-import #(controllerConfig.buildSuperClassImport());
-#end
-#if(withSwagger && swaggerVersion.getName() == "FOX")
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-#end
-#if(withSwagger && swaggerVersion.getName() == "DOC")
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-#end
-import java.util.List;
 
 /**
  * #(tableComment) 控制层。
@@ -50,10 +23,11 @@ import java.util.List;
 #else
 @Controller
 #end
-#if(withSwagger && swaggerVersion.getName() == "FOX")
+@Validated
+#if(swaggerVersion.getName() == "FOX")
 @Api("#(tableComment)接口")
 #end
-#if(withSwagger && swaggerVersion.getName() == "DOC")
+#if(swaggerVersion.getName() == "DOC")
 @Tag(name = "#(tableComment)接口")
 #end
 @RequestMapping("#(table.buildControllerRequestMappingPrefix())/#(firstCharToLowerCase(entityClassName))")
@@ -65,68 +39,52 @@ public class #(table.buildControllerClassName()) #if(controllerConfig.superClass
     /**
      * 添加#(tableComment)。
      *
-     * @param #(entityVarName) #(tableComment)
+     * @param dto #(tableComment)
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
-    @PostMapping("save")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("保存#(tableComment)")
+    @PostMapping
+    #if(swaggerVersion.getName() == "FOX")
+    @ApiOperation("新增")
     #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="保存#(tableComment)")
+    #if(swaggerVersion.getName() == "DOC")
+    @Operation(summary="新增", description="保存#(tableComment)")
     #end
-    public boolean save(@RequestBody #if(withSwagger && swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)") #end #if(withSwagger && swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)")#end #(entityClassName) #(entityVarName)) {
-        return #(serviceVarName).save(#(entityVarName));
+    public R<#(primaryKeyType)> save(@Validated @RequestBody #if(swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)") #end #if(swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)") #end #(dtoClassName) dto) {
+        return R.success(#(serviceVarName).saveDto(dto).getId());
     }
 
     /**
      * 根据主键删除#(tableComment)。
      *
-     * @param id 主键
+     * @param ids 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
-    @DeleteMapping("remove/{id}")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("根据主键#(tableComment)")
+    @DeleteMapping
+    #if(swaggerVersion.getName() == "FOX")
+    @ApiOperation("删除")
     #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="根据主键#(tableComment)")
+    #if(swaggerVersion.getName() == "DOC")
+    @Operation(summary="删除", description="根据主键删除#(tableComment)")
     #end
-    public boolean remove(@PathVariable #if(withSwagger && swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)主键") #end #if(withSwagger && swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)主键")#end #(primaryKeyType) id) {
-        return #(serviceVarName).removeById(id);
+    public R<Boolean> delete(@RequestBody List<#(primaryKeyType)> ids) {
+        return R.success(#(serviceVarName).removeByIds(ids));
     }
 
     /**
      * 根据主键更新#(tableComment)。
      *
-     * @param #(entityVarName) #(tableComment)
+     * @param dto #(tableComment)
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
-    @PutMapping("update")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("根据主键更新#(tableComment)")
+    @PutMapping
+    #if(swaggerVersion.getName() == "FOX")
+    @ApiOperation("修改")
     #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="根据主键更新#(tableComment)")
+    #if(swaggerVersion.getName() == "DOC")
+    @Operation(summary="修改", description="根据主键更新#(tableComment)")
     #end
-    public boolean update(@RequestBody #if(withSwagger && swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)主键") #end #if(withSwagger && swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)主键")#end#(entityClassName) #(entityVarName)) {
-        return #(serviceVarName).updateById(#(entityVarName));
-    }
-
-    /**
-     * 查询所有#(tableComment)。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("查询所有#(tableComment)")
-    #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="查询所有#(tableComment)")
-    #end
-    public List<#(entityClassName)> list() {
-        return #(serviceVarName).list();
+    public R<#(primaryKeyType)> update(@Validated(BaseEntity.Update.class) @RequestBody #if(swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)主键") #end #if(swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)主键")#end#(dtoClassName) dto) {
+        return R.success(#(serviceVarName).updateDtoById(dto).getId());
     }
 
     /**
@@ -135,32 +93,37 @@ public class #(table.buildControllerClassName()) #if(controllerConfig.superClass
      * @param id #(tableComment)主键
      * @return #(tableComment)详情
      */
-    @GetMapping("getInfo/{id}")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("根据主键获取#(tableComment)")
+    @GetMapping("/{id}")
+    #if(swaggerVersion.getName() == "FOX")
+    @ApiOperation("单体查询")
     #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="根据主键获取#(tableComment)")
+    #if(swaggerVersion.getName() == "DOC")
+    @Operation(summary="单体查询", description="根据主键获取#(tableComment)")
     #end
-    public #(entityClassName) getInfo(@PathVariable #if(withSwagger && swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)主键") #if(withSwagger && swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)主键")#end#end #(primaryKeyType) id) {
-        return #(serviceVarName).getById(id);
+    public R<#(voClassName)> get(@PathVariable #if(swaggerVersion.getName() == "FOX")@ApiParam("#(tableComment)主键") #if(swaggerVersion.getName() == "DOC")@Parameter(description="#(tableComment)主键")#end#end #(primaryKeyType) id) {
+        #(entityClassName) entity = #(serviceVarName).getById(id);
+        return R.success(BeanUtil.toBean(entity, #(voClassName).class));
     }
 
     /**
      * 分页查询#(tableComment)。
      *
-     * @param page 分页对象
+     * @param params 分页对象
      * @return 分页对象
      */
-    @GetMapping("page")
-    #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiOperation("分页查询#(tableComment)")
+    @PostMapping("/page")
+    #if(swaggerVersion.getName() == "FOX")
+    @ApiOperation("分页列表查询")
     #end
-    #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Operation(description="分页查询#(tableComment)")
+    #if(swaggerVersion.getName() == "DOC")
+    @Operation(summary="分页列表查询", description="分页查询#(tableComment)")
     #end
-    public Page<#(entityClassName)> page(#if(withSwagger && swaggerVersion.getName() == "FOX")@ApiParam("分页信息") #end #if(withSwagger && swaggerVersion.getName() == "DOC")@Parameter(description="分页信息")#end Page<#(entityClassName)> page) {
-        return #(serviceVarName).page(page);
+    public R<Page<#(voClassName)>> page(@RequestBody @Validated  PageParams<#(queryClassName)> params) {
+        Page<#(voClassName)> page = Page.of(params.getCurrent(), params.getSize());
+        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
+        ControllerUtil.buildOrder(wrapper, params);
+        #(serviceVarName).pageAs(page, wrapper, #(voClassName).class);
+        return R.success(page);
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package com.mybatisflex.codegen.entity;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -31,6 +32,7 @@ import com.mybatisflex.codegen.config.ServiceImplConfig;
 import com.mybatisflex.codegen.config.TableConfig;
 import com.mybatisflex.codegen.config.TableDefConfig;
 import com.mybatisflex.codegen.config.VoConfig;
+import com.mybatisflex.codegen.constant.PackageConst;
 import com.mybatisflex.core.util.StringUtil;
 
 import java.lang.reflect.Field;
@@ -332,6 +334,46 @@ public class Table {
         String serviceClassName = buildServiceClassName();
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
+        EntityConfig.SwaggerVersion swaggerVersion = globalConfig.getSwaggerVersion();
+
+
+        if (controllerConfig.isRestStyle()) {
+            imports.add(PackageConst.REST_CONTROLLER);
+        } else {
+            imports.add(PackageConst.CONTROLLER);
+        }
+
+        if (EntityConfig.SwaggerVersion.FOX.getName().equals(swaggerVersion.getName())) {
+            imports.add(PackageConst.API);
+            imports.add(PackageConst.API_OPERATION);
+            imports.add(PackageConst.API_PARAM);
+        } else {
+            imports.add(PackageConst.TAG);
+            imports.add(PackageConst.OPERATION);
+            imports.add(PackageConst.PARAMETER);
+        }
+
+        imports.add(PackageConst.VALIDATED);
+        if (controllerConfig.isWithCrud()) {
+            imports.add(PackageConst.AUTOWIRED);
+            imports.add(PackageConst.R);
+            imports.add(PackageConst.PAGE);
+            imports.add(PackageConst.BASE_ENTITY);
+            imports.add(PackageConst.PATH_VARIABLE);
+            imports.add(PackageConst.REQUEST_BODY);
+            imports.add(PackageConst.GET_MAPPING);
+            imports.add(PackageConst.DELETE_MAPPING);
+            imports.add(PackageConst.POST_MAPPING);
+            imports.add(PackageConst.PUT_MAPPING);
+            imports.add(PackageConst.REQUEST_MAPPING);
+            imports.add(PackageConst.PAGE_PARAMS);
+            imports.add(PackageConst.QUERY_WRAPPER);
+            imports.add(PackageConst.CONTROLLER_UTIL);
+            imports.add(List.class.getName());
+            imports.add(BeanUtil.class.getName());
+            imports.add(StrUtil.format("{}.{}", packageConfig.getServicePackage(), serviceClassName));
+        }
+
         Class<?> superClass = controllerConfig.getSuperClass();
         if (superClass == null) {
             return Collections.emptyList();

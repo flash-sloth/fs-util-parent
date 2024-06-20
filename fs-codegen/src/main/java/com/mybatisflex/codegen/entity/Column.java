@@ -423,8 +423,12 @@ public class Column {
             if (String.class.getName().equals(propertyType)) {
                 notAnt = "@NotEmpty";
             }
-            annotations.append(StrUtil.format("{}(message = \"请填写{}\")", notAnt, getSwaggerComment()));
-
+            annotations.append(notAnt);
+            annotations.append(StrUtil.format("(message = \"请填写{}\"", getSwaggerComment()));
+            if (isPrimaryKey || columnConfig.isPrimaryKey()) {
+                annotations.append(", groups = BaseEntity.Update.class");
+            }
+            annotations.append(")");
             if (StrUtil.equalsAny(propertyType, String.class.getName(), BigDecimal.class.getName())) {
                 annotations.append("\n    ");
             }

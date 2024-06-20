@@ -55,6 +55,10 @@ public class ControllerConfig implements Serializable {
     private Class<?> superClass;
 
     /**
+     * 在Controller类中生成CRUD方法。
+     */
+    private boolean withCrud;
+    /**
      * 是否覆盖之前生成的文件。
      */
     private boolean overwriteEnable;
@@ -78,6 +82,7 @@ public class ControllerConfig implements Serializable {
         String queryClassName = table.buildQueryClassName();
         String serviceClassName = table.buildServiceClassName();
 
+        Class<?> genericityType = table.getEntityConfig().getGenericityType();
         TypeVariable<? extends Class<?>>[] typeParameters = superClass.getTypeParameters();
 
         if (typeParameters.length > 1) {
@@ -85,7 +90,8 @@ public class ControllerConfig implements Serializable {
             for (TypeVariable<? extends Class<?>> typeParameter : typeParameters) {
 
                 switch (typeParameter.getTypeName()) {
-                    case "Id" -> genericityStr.append("Long, ");
+                    case "Id" ->
+                            genericityStr.append(genericityType != null ? genericityType.getSimpleName() : "Long").append(", ");
                     case "Entity" -> genericityStr.append(entityClassName).append(", ");
                     case "VO" -> genericityStr.append(voClassName).append(", ");
                     case "DTO" -> genericityStr.append(dtoClassName).append(", ");
@@ -200,4 +206,12 @@ public class ControllerConfig implements Serializable {
         return this;
     }
 
+    public boolean isWithCrud() {
+        return withCrud;
+    }
+
+    public ControllerConfig setWithCrud(boolean withCrud) {
+        this.withCrud = withCrud;
+        return this;
+    }
 }

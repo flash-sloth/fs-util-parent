@@ -16,6 +16,7 @@
 package com.mybatisflex.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.codegen.constant.PackageConst;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
@@ -97,7 +98,7 @@ public class DtoConfig implements Serializable {
     /**
      * Swagger 版本
      */
-    private SwaggerVersion swaggerVersion;
+    private EntityConfig.SwaggerVersion swaggerVersion;
 
     /**
      * 项目jdk版本
@@ -266,21 +267,21 @@ public class DtoConfig implements Serializable {
      */
     public DtoConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.DOC;
+        this.swaggerVersion = EntityConfig.SwaggerVersion.DOC;
         return this;
     }
 
     /**
      * Swagger 版本
      */
-    public SwaggerVersion getSwaggerVersion() {
+    public EntityConfig.SwaggerVersion getSwaggerVersion() {
         return swaggerVersion;
     }
 
     /**
      * 设置 Swagger 版本
      */
-    public DtoConfig setSwaggerVersion(SwaggerVersion swaggerVersion) {
+    public DtoConfig setSwaggerVersion(EntityConfig.SwaggerVersion swaggerVersion) {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
         return this;
@@ -310,6 +311,9 @@ public class DtoConfig implements Serializable {
         if (superClass != null) {
             imports.add(superClass.getName());
         }
+
+        imports.add(PackageConst.BASE_ENTITY);
+
         if (implInterfaces != null) {
             for (Class<?> entityInterface : implInterfaces) {
                 imports.add(entityInterface.getName());
@@ -336,24 +340,6 @@ public class DtoConfig implements Serializable {
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }
-
-    public enum SwaggerVersion {
-        /** FOX */
-        FOX("FOX"),
-        DOC("DOC");
-
-        private final String name;
-
-        SwaggerVersion(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-    }
-
 
     /**
      * 构建 extends 继承。

@@ -16,7 +16,17 @@
 package com.mybatisflex.codegen.generator;
 
 import com.mybatisflex.codegen.constant.GenTypeConst;
-import com.mybatisflex.codegen.generator.impl.*;
+import com.mybatisflex.codegen.generator.impl.ControllerGenerator;
+import com.mybatisflex.codegen.generator.impl.DtoGenerator;
+import com.mybatisflex.codegen.generator.impl.EntityBaseGenerator;
+import com.mybatisflex.codegen.generator.impl.EntityGenerator;
+import com.mybatisflex.codegen.generator.impl.MapperGenerator;
+import com.mybatisflex.codegen.generator.impl.MapperXmlGenerator;
+import com.mybatisflex.codegen.generator.impl.QueryGenerator;
+import com.mybatisflex.codegen.generator.impl.ServiceGenerator;
+import com.mybatisflex.codegen.generator.impl.ServiceImplGenerator;
+import com.mybatisflex.codegen.generator.impl.TableDefGenerator;
+import com.mybatisflex.codegen.generator.impl.VoGenerator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -35,6 +45,7 @@ public class GeneratorFactory {
         registerGenerator(GenTypeConst.ENTITY, new EntityGenerator());
         registerGenerator(GenTypeConst.ENTITY_BASE, new EntityBaseGenerator());
         registerGenerator(GenTypeConst.DTO, new DtoGenerator());
+        registerGenerator(GenTypeConst.QUERY, new QueryGenerator());
         registerGenerator(GenTypeConst.VO, new VoGenerator());
         registerGenerator(GenTypeConst.MAPPER, new MapperGenerator());
         registerGenerator(GenTypeConst.SERVICE, new ServiceGenerator());
