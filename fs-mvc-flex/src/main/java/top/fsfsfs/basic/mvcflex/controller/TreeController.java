@@ -43,7 +43,7 @@ public interface TreeController<Id extends Serializable, Entity extends BaseEnti
 
         List<Entity> list = getSuperService().list(wrapper);
 
-        List<VO> treeList = BeanUtil.copyToList(list, getResultVoClass());
+        List<VO> treeList = BeanUtil.copyToList(list, getVoClass());
         return success(FsTreeUtil.build(treeList, (Id) FsTreeUtil.DEF_PARENT_ID));
     }
 }

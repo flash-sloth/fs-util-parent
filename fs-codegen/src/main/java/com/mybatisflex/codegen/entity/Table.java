@@ -365,7 +365,6 @@ public class Table {
             imports.add(PackageConst.DELETE_MAPPING);
             imports.add(PackageConst.POST_MAPPING);
             imports.add(PackageConst.PUT_MAPPING);
-            imports.add(PackageConst.REQUEST_MAPPING);
             imports.add(PackageConst.PAGE_PARAMS);
             imports.add(PackageConst.QUERY_WRAPPER);
             imports.add(PackageConst.CONTROLLER_UTIL);
@@ -373,6 +372,7 @@ public class Table {
             imports.add(BeanUtil.class.getName());
             imports.add(StrUtil.format("{}.{}", packageConfig.getServicePackage(), serviceClassName));
         }
+        imports.add(PackageConst.REQUEST_MAPPING);
 
         Class<?> superClass = controllerConfig.getSuperClass();
         if (superClass == null) {

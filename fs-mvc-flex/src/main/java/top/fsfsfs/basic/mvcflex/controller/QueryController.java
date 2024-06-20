@@ -50,7 +50,7 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
     @WebLog("'单体查询:' + #id")
     default R<VO> get(@PathVariable Id id) {
         Entity entity = getSuperService().getById(id);
-        return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
+        return success(BeanPlusUtil.toBean(entity, getVoClass()));
     }
 
     /**
@@ -64,12 +64,12 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
     @WebLog("'查询单体详情:' + #id")
     default R<VO> getDetail(@RequestParam("id") Id id) {
         Entity entity = getSuperService().getById(id);
-        VO resultVO = BeanPlusUtil.toBean(entity, getResultVoClass());
+        VO vo = BeanPlusUtil.toBean(entity, getVoClass());
         EchoService echoService = getEchoService();
         if (echoService != null) {
-            echoService.action(resultVO);
+            echoService.action(vo);
         }
-        return success(resultVO);
+        return success(vo);
     }
 
     /**
@@ -85,7 +85,7 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
         Entity entity = BeanPlusUtil.toBean(data, getEntityClass());
         QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
         List<Entity> list = getSuperService().list(wrapper);
-        return success(BeanPlusUtil.toBeanList(list, getResultVoClass()));
+        return success(BeanPlusUtil.toBeanList(list, getVoClass()));
     }
 
 
@@ -103,7 +103,7 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
             return R.success(Collections.emptyList());
         }
         List<Entity> list = getSuperService().listByIds(ids);
-        return success(BeanPlusUtil.toBeanList(list, getResultVoClass()));
+        return success(BeanPlusUtil.toBeanList(list, getVoClass()));
     }
 
 }

@@ -34,7 +34,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
      *
      * @return 实体的类型
      */
-    Class<VO> getResultVoClass();
+    Class<VO> getVoClass();
 
     /**
      * 处理查询参数
@@ -66,7 +66,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
         QueryWrapper wrapper = handlerWrapper(params);
 
         // 执行单表分页查询
-        getSuperService().pageAs(page, wrapper, getResultVoClass());
+        getSuperService().pageAs(page, wrapper, getVoClass());
 
         // 处理查询后的分页结果， 如：调用EchoService回显字典、关联表数据等 【提供给子类重写】【有默认实现】
         handlerResult(page);

@@ -31,11 +31,11 @@ public abstract class SuperReadController<S extends SuperService<Entity>, Id ext
         extends SuperSimpleController<S, Entity>
         implements QueryController<Id, Entity, Query, VO> {
 
-    protected Class<VO> resultVoClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 4);
+    protected Class<VO> voClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 4);
 
     @Override
-    public Class<VO> getResultVoClass() {
-        return this.resultVoClass;
+    public Class<VO> getVoClass() {
+        return this.voClass;
     }
 
 }

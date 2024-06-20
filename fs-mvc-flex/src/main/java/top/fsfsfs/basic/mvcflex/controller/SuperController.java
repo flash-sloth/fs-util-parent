@@ -48,11 +48,11 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
         UpdateController<Id, Entity, DTO>,
         DeleteController<Id, Entity>,
         QueryController<Id, Entity, Query, VO> {
-    protected Class<VO> resultVoClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 5);
+    protected Class<VO> voClass = (Class<VO>) TypeUtil.getTypeArgument(this.getClass(), 5);
 
     @Override
-    public Class<VO> getResultVoClass() {
-        return resultVoClass;
+    public Class<VO> getVoClass() {
+        return voClass;
     }
 
     protected Class<Entity> entityClass = (Class<Entity>) TypeUtil.getTypeArgument(this.getClass(), 2);
@@ -77,7 +77,7 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
     @WebLog("'单体查询(优先查缓存):' + #id")
     public R<VO> getByIdCache(@PathVariable Id id) {
         Entity entity = getSuperService().getByIdCache(id);
-        return success(BeanPlusUtil.toBean(entity, getResultVoClass()));
+        return success(BeanPlusUtil.toBean(entity, getVoClass()));
     }
 
     /**

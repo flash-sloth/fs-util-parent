@@ -32,7 +32,7 @@ import #(importClass);
 #end
 @RequestMapping("#(table.buildControllerRequestMappingPrefix())/#(firstCharToLowerCase(entityClassName))")
 public class #(table.buildControllerClassName()) #if(controllerConfig.superClass)extends #(controllerConfig.buildSuperClassName(table)) #end {
-
+#if(controllerConfig.withCrud)
     @Autowired
     private #(table.buildServiceClassName()) #(serviceVarName);
 
@@ -124,6 +124,10 @@ public class #(table.buildControllerClassName()) #if(controllerConfig.superClass
         ControllerUtil.buildOrder(wrapper, params);
         #(serviceVarName).pageAs(page, wrapper, #(voClassName).class);
         return R.success(page);
+        // Page<#(entityClassName)> page = Page.of(params.getCurrent(), params.getSize());
+        // #(serviceVarName).page(page, wrapper);
+        // Page<#(voClassName)> voPage = top.fsfsfs.basic.mybatisflex.utils.BeanPageUtil.toBeanPage(page, #(voClassName).class);
+        // return R.success(voPage);
     }
-
+#end
 }
