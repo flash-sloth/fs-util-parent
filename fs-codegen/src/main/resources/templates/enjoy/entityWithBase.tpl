@@ -25,15 +25,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 #else
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 #end
 #end
 
 #if(!isBase)
 /**
  * #(table.getComment()) 实体类。
+ * DO类：数据对象，可以在关联查询时，再次添加字段，重新生成代码时，忽略此文件。
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
@@ -45,8 +47,9 @@ import lombok.NoArgsConstructor;
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
 #else
+@Accessors(chain = true)
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 #end
 #end

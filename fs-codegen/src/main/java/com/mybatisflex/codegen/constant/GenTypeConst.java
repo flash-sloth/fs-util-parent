@@ -26,10 +26,11 @@ public class GenTypeConst {
     private GenTypeConst() {
     }
 
-    public static final String RESULT_VO = "resultVo";
-    public static final String QUERY_VO = "queryVo";
+    public static final String DTO = "dto";
+    public static final String QUERY = "query";
     public static final String VO = "vo";
     public static final String ENTITY = "entity";
+    public static final String ENTITY_BASE = "entityBase";
     public static final String MAPPER = "mapper";
     public static final String SERVICE = "service";
     public static final String SERVICE_IMPL = "serviceImpl";

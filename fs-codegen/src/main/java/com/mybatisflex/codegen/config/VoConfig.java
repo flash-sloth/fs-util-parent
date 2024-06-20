@@ -75,12 +75,12 @@ public class VoConfig implements Serializable {
     private Class<?>[] implInterfaces = {Serializable.class};
 
     /**
-     * Entity 是否使用 Lombok 注解。
+     * 是否使用 Lombok 注解。
      */
     private boolean withLombok;
 
     /**
-     * Entity 是否使用 Swagger 注解。
+     *  是否使用 Swagger 注解。
      */
     private boolean withSwagger;
 
@@ -238,7 +238,7 @@ public class VoConfig implements Serializable {
      */
     public VoConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.FOX;
+        this.swaggerVersion = SwaggerVersion.DOC;
         return this;
     }
 

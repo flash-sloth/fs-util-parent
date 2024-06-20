@@ -67,7 +67,7 @@
 
         <mybatis.typehandlers.version>1.0.2</mybatis.typehandlers.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <mybatis-flex.version>1.9.2</mybatis-flex.version>
+        <mybatis-flex.version>1.9.3</mybatis-flex.version>
         <dynamic.datasource.version>4.2.0</dynamic.datasource.version>
         <jasypt.version>3.0.4</jasypt.version>
         <p6spy.version>3.9.1</p6spy.version>

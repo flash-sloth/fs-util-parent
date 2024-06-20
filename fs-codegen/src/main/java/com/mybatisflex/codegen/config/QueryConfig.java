@@ -237,7 +237,7 @@ public class QueryConfig implements Serializable {
      */
     public QueryConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.FOX;
+        this.swaggerVersion = SwaggerVersion.DOC;
         return this;
     }
 

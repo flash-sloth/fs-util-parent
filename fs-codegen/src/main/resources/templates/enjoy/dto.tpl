@@ -1,15 +1,11 @@
-#set(withLombok = entityConfig.isWithLombok())
-#set(withSwagger = entityConfig.isWithSwagger())
-#set(swaggerVersion = entityConfig.getSwaggerVersion())
-#set(withActiveRecord = entityConfig.isWithActiveRecord())
-#set(jdkVersion = entityConfig.getJdkVersion())
-package #(entityPackageName);
+#set(withLombok = dtoConfig.isWithLombok())
+#set(withSwagger = dtoConfig.isWithSwagger())
+#set(swaggerVersion = dtoConfig.getSwaggerVersion())
+#set(jdkVersion = dtoConfig.getJdkVersion())
+package #(dtoPackageName);
 
-#for(importClass : table.buildImports(isBase))
+#for(importClass : dtoConfig.buildImports(table))
 import #(importClass);
-#end
-#if(withActiveRecord)
-import com.mybatisflex.core.activerecord.Model;
 #end
 
 #if(jdkVersion >= 14)
@@ -24,42 +20,30 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 #end
 #if(withLombok)
-#if(withActiveRecord)
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-#else
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-#if(entityConfig.getSuperClass())
+import lombok.NoArgsConstructor;
+#if(dtoConfig.getSuperClass())
 import lombok.EqualsAndHashCode;
-#end
 #end
 #end
 
 /**
- * #(table.getComment()) 实体类。
+ * #(table.getComment()) DTO（通常用作Controller写入方法入参）。
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
  */
 #if(withLombok)
-#if(withActiveRecord)
 @Accessors(chain = true)
-@Data(staticConstructor = "create")
-@EqualsAndHashCode(callSuper = true)
-#else
 @Data
 @Builder
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-#if(entityConfig.getSuperClass())
+#if(dtoConfig.getSuperClass())
 @EqualsAndHashCode(callSuper = true)
-#end
 #end
 #end
 #if(withSwagger && swaggerVersion.getName() == "FOX")
@@ -68,17 +52,14 @@ import lombok.EqualsAndHashCode;
 #if(withSwagger && swaggerVersion.getName() == "DOC")
 @Schema(description = "#(table.getComment())")
 #end
-#if(!isBase)
-#(table.buildTableAnnotation())
-#end
-public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClassName)>#else#(table.buildExtends(isBase))#(table.buildImplements())#end  {
+public class #(dtoClassName)#(dtoConfig.buildExtends(globalConfig))#(dtoConfig.buildImplements(globalConfig)) {
 
     #if(jdkVersion >= 14)
     @Serial
     #end
     private static final long serialVersionUID = 1L;
 
-#for(column : table.columns)
+#for(column : table.allColumns)
     #set(comment = javadocConfig.formatColumnComment(column.comment))
     #if(isNotBlank(comment))
     /**
@@ -90,36 +71,25 @@ public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClass
     #(annotations)
     #end
     #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiModelProperty("#(column.comment)")
+    @ApiModelProperty("#(column.getSwaggerComment())")
     #end
     #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Schema(description = "#(column.comment)")
+    @Schema(description = "#(column.getSwaggerComment())")
     #end
     private #(column.propertySimpleType) #(column.property)#if(isNotBlank(column.propertyDefaultValue)) = #(column.propertyDefaultValue)#end;
 
 #end
 #if(!withLombok)
-    #if(withActiveRecord)
-    public static #(entityClassName) create() {
-        return new #(entityClassName)();
-    }
 
-    #end
-    #for(column: table.columns)
+    #for(column: table.allColumns)
     public #(column.propertySimpleType) #(column.getterMethod())() {
         return #(column.property);
     }
 
-    #if(withActiveRecord)
-    public #(entityClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
+    public #(dtoClassName) #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
         this.#(column.property) = #(column.property);
         return this;
     }
-    #else
-    public void #(column.setterMethod())(#(column.propertySimpleType) #(column.property)) {
-        this.#(column.property) = #(column.property);
-    }
-    #end
 
     #end
 #end}

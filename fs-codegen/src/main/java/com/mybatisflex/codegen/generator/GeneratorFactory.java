@@ -33,13 +33,15 @@ public class GeneratorFactory {
 
     static {
         registerGenerator(GenTypeConst.ENTITY, new EntityGenerator());
+        registerGenerator(GenTypeConst.ENTITY_BASE, new EntityBaseGenerator());
+        registerGenerator(GenTypeConst.DTO, new DtoGenerator());
+        registerGenerator(GenTypeConst.VO, new VoGenerator());
         registerGenerator(GenTypeConst.MAPPER, new MapperGenerator());
         registerGenerator(GenTypeConst.SERVICE, new ServiceGenerator());
         registerGenerator(GenTypeConst.SERVICE_IMPL, new ServiceImplGenerator());
         registerGenerator(GenTypeConst.CONTROLLER, new ControllerGenerator());
         registerGenerator(GenTypeConst.TABLE_DEF, new TableDefGenerator());
         registerGenerator(GenTypeConst.MAPPER_XML, new MapperXmlGenerator());
-        registerGenerator(GenTypeConst.VO, new VoGenerator());
 //        registerGenerator(GenTypeConst.PACKAGE_INFO, new PackageInfoGenerator());
     }
 

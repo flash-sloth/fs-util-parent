@@ -54,6 +54,10 @@ public class JavadocConfig implements Serializable {
      * 列名格式化。
      */
     private UnaryOperator<String> columnCommentFormat = UnaryOperator.identity();
+    /**
+     * 列名Swagger注释格式化。
+     */
+    private UnaryOperator<String> columnSwaggerCommentFormat = UnaryOperator.identity();
 
     /**
      * Entity 包注释。
@@ -164,6 +168,12 @@ public class JavadocConfig implements Serializable {
         }
         return columnCommentFormat.apply(comment);
     }
+    public String formatColumnSwaggerComment(String comment) {
+        if (StringUtil.isBlank(comment)) {
+            return "";
+        }
+        return columnSwaggerCommentFormat.apply(comment);
+    }
 
     /**
      * 获取列注释格式化。
@@ -177,6 +187,20 @@ public class JavadocConfig implements Serializable {
      */
     public JavadocConfig setColumnCommentFormat(UnaryOperator<String> columnCommentFormat) {
         this.columnCommentFormat = columnCommentFormat;
+        return this;
+    }
+    /**
+     * 获取列Swagger注释格式化。
+     */
+    public Function<String, String> getColumnSwaggerCommentFormat() {
+        return columnSwaggerCommentFormat;
+    }
+
+    /**
+     * 设置列Swagger注释格式化方案，用来生成实体类Swagger属性注释。
+     */
+    public JavadocConfig setColumnSwaggerCommentFormat(UnaryOperator<String> columnSwaggerCommentFormat) {
+        this.columnSwaggerCommentFormat = columnSwaggerCommentFormat;
         return this;
     }
 

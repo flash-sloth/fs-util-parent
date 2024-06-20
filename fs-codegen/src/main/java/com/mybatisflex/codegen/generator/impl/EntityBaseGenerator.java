@@ -31,13 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Entity 生成器。
+ * Entity Base 生成器。
  *
- * @author Michael Yang
- * @author 王帅
+ * @author tangyh
+ * @since 2024年06月19日23:47:34
  */
 @Slf4j
-public class EntityGenerator implements IGenerator {
+public class EntityBaseGenerator implements IGenerator {
 
     /** 模板路径 */
     protected String templatePath;
@@ -45,16 +45,12 @@ public class EntityGenerator implements IGenerator {
     protected String templateContent;
     private String genType;
 
-    protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
-    protected String ktEntityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.kotlin.tpl";
-
-
-    public EntityGenerator() {
+    public EntityBaseGenerator() {
         this(TemplateConst.ENTITY);
-        this.genType = GenTypeConst.ENTITY;
+        this.genType = GenTypeConst.ENTITY_BASE;
     }
 
-    public EntityGenerator(String templatePath) {
+    public EntityBaseGenerator(String templatePath) {
         this.templatePath = templatePath;
     }
 
@@ -67,14 +63,6 @@ public class EntityGenerator implements IGenerator {
     public IGenerator setGenType(String genType) {
         this.genType = genType;
         return this;
-    }
-
-    public String getEntityWithBaseTemplatePath() {
-        return entityWithBaseTemplatePath;
-    }
-
-    public void setEntityWithBaseTemplatePath(String entityWithBaseTemplatePath) {
-        this.entityWithBaseTemplatePath = entityWithBaseTemplatePath;
     }
 
     @Override
@@ -104,17 +92,37 @@ public class EntityGenerator implements IGenerator {
             return;
         }
 
-        // 生成 entity 类
-        genEntityClass(table, globalConfig);
-
+        // 生成 base 类
+        genBaseClass(table, globalConfig);
     }
 
     @Override
     public String preview(Table table, GlobalConfig globalConfig) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        EntityConfig entityConfig = globalConfig.getEntityConfig();
 
-        Map<String, Object> params = new HashMap<>(7);
 
-        String templatePath = getTemplatePath(params, table, globalConfig);
+        String baseEntityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
+        baseEntityPackagePath = StringUtil.isNotBlank(entityConfig.getWithBasePackage()) ? entityConfig.getWithBasePackage().replace(".", "")
+                : baseEntityPackagePath + "/base";
+
+        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+
+
+        // 排除忽略列
+        if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
+            table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
+        }
+
+        Map<String, Object> params = new HashMap<>(6);
+        params.put("table", table);
+        params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));
+        params.put("entityClassName", baseEntityClassName);
+        params.put("entityConfig", entityConfig);
+        params.put("packageConfig", packageConfig);
+        params.put("javadocConfig", globalConfig.getJavadocConfig());
+        params.put("isBase", true);
+        params.putAll(globalConfig.getCustomConfig());
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
@@ -123,37 +131,24 @@ public class EntityGenerator implements IGenerator {
         }
     }
 
-    protected void genEntityClass(Table table, GlobalConfig globalConfig) {
-        PackageConfig packageConfig = globalConfig.getPackageConfig();
+    protected void genBaseClass(Table table, GlobalConfig globalConfig) {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
-        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
-        String entityClassName = table.buildEntityClassName();
-        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + globalConfig.getFileType());
-
-        if (entityJavaFile.exists() && !entityConfig.isOverwriteEnable()) {
+        // 不需要生成 baseClass
+        if (!entityConfig.isWithBaseClassEnable()) {
             return;
         }
 
-        Map<String, Object> params = new HashMap<>(7);
-
-        String templatePath = getTemplatePath(params, table, globalConfig);
-
-        log.info("Entity ---> {}", entityJavaFile);
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, entityJavaFile);
-        } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, entityJavaFile);
-        }
-
-    }
-
-    public String getTemplatePath(Map<String, Object> params, Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        EntityConfig entityConfig = globalConfig.getEntityConfig();
+        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
+
+        String baseEntityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
+        baseEntityPackagePath = StringUtil.isNotBlank(entityConfig.getWithBasePackage()) ? entityConfig.getWithBasePackage().replace(".", "")
+                : baseEntityPackagePath + "/base";
+
+        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+
+        File baseEntityJavaFile = new File(sourceDir, baseEntityPackagePath + "/" + baseEntityClassName + globalConfig.getFileType());
 
 
         // 排除忽略列
@@ -161,36 +156,22 @@ public class EntityGenerator implements IGenerator {
             table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
         }
 
+        Map<String, Object> params = new HashMap<>(6);
         params.put("table", table);
-        params.put("entityPackageName", packageConfig.getEntityPackage());
+        params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));
+        params.put("entityClassName", baseEntityClassName);
         params.put("entityConfig", entityConfig);
-        params.put("entityClassName", table.buildEntityClassName());
         params.put("packageConfig", packageConfig);
         params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("isBase", false);
-
+        params.put("isBase", true);
         params.putAll(globalConfig.getCustomConfig());
 
-        String templatePath = this.templatePath;
-
-        // 开启生成 baseClass
-        if (entityConfig.isWithBaseClassEnable()) {
-            if (globalConfig.getFileType() == GlobalConfig.FileType.KOTLIN) {
-                templatePath = this.ktEntityWithBaseTemplatePath;
-            } else {
-                templatePath = this.entityWithBaseTemplatePath;
-            }
-
-            String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
-            params.put("baseClassName", baseClassName);
-
-            String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
-                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
-            params.put("baseClassPackage", baseClassPackage);
-
-            params.put("entityClassName", table.buildEntityClassName());
+        log.info("BaseEntity ---> {}", baseEntityJavaFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, baseEntityJavaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, baseEntityJavaFile);
         }
-        return templatePath;
     }
 
 }

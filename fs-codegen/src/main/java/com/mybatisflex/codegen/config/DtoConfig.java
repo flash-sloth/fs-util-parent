@@ -16,6 +16,7 @@
 package com.mybatisflex.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
 
@@ -74,12 +75,16 @@ public class DtoConfig implements Serializable {
     private Class<?>[] implInterfaces = {Serializable.class};
 
     /**
-     * Entity 是否使用 Lombok 注解。
+     * 是否使用 Lombok 注解。
      */
     private boolean withLombok;
+    /**
+     * 是否使用 Validator 注解。
+     */
+    private boolean withValidator;
 
     /**
-     * Entity 是否使用 Swagger 注解。
+     *  是否使用 Swagger 注解。
      */
     private boolean withSwagger;
 
@@ -224,6 +229,20 @@ public class DtoConfig implements Serializable {
         this.withLombok = withLombok;
         return this;
     }
+    /**
+     * 是否使用 Validator。
+     */
+    public boolean isWithValidator() {
+        return withValidator;
+    }
+
+    /**
+     * 设置是否使用 Validator。
+     */
+    public DtoConfig setWithValidator(boolean withValidator) {
+        this.withValidator = withValidator;
+        return this;
+    }
 
     /**
      * 是否启用 Swagger。
@@ -237,7 +256,7 @@ public class DtoConfig implements Serializable {
      */
     public DtoConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.FOX;
+        this.swaggerVersion = SwaggerVersion.DOC;
         return this;
     }
 
@@ -276,13 +295,20 @@ public class DtoConfig implements Serializable {
         return superClassGenericity;
     }
 
-    public List<String> buildImports() {
+    public List<String> buildImports(Table table) {
         Set<String> imports = new HashSet<>();
         if (superClass != null) {
             imports.add(superClass.getName());
         }
-        imports.add(Serializable.class.getName());
-
+        if (implInterfaces != null) {
+            for (Class<?> entityInterface : implInterfaces) {
+                imports.add(entityInterface.getName());
+            }
+        }
+        List<Column> columns = table.getAllColumns();
+        for (Column column : columns) {
+            imports.addAll(column.getImportClasses());
+        }
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }
 

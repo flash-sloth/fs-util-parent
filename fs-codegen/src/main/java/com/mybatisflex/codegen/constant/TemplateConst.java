@@ -28,6 +28,8 @@ public final class TemplateConst {
     }
 
     public static final String VO = "/templates/enjoy/vo.tpl";
+    public static final String DTO = "/templates/enjoy/dto.tpl";
+    public static final String QUERY = "/templates/enjoy/query.tpl";
     public static final String ENTITY = "/templates/enjoy/entityOrBase.tpl";
     public static final String MAPPER = "/templates/enjoy/mapper.tpl";
     public static final String SERVICE = "/templates/enjoy/service.tpl";

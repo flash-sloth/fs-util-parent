@@ -279,7 +279,7 @@ public class EntityConfig implements Serializable {
      */
     public EntityConfig setWithSwagger(boolean withSwagger) {
         this.withSwagger = withSwagger;
-        this.swaggerVersion = SwaggerVersion.FOX;
+        this.swaggerVersion = SwaggerVersion.DOC;
         return this;
     }
 

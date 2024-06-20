@@ -234,6 +234,7 @@ public class Table {
 
         column.setColumnConfig(globalConfig.getStrategyConfig().getColumnConfig(name, column.getName()));
         column.setEntityConfig(globalConfig.getEntityConfig());
+        column.setJavadocConfig(globalConfig.getJavadocConfig());
 
         if (superColumnNames.contains(column.getProperty())) {
             superColumns.add(column);
