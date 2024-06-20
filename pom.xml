@@ -111,6 +111,7 @@
         <okio.version>2.10.0</okio.version>
         <okhttp3.version>4.10.0</okhttp3.version>
         <magic-api.version>2.1.1</magic-api.version>
+        <powerjob.version>5.0.1-beta</powerjob.version>
     </properties>
 
 
@@ -573,6 +574,16 @@
                 <groupId>org.ssssssss</groupId>
                 <artifactId>magic-api-plugin-redis</artifactId>
                 <version>${magic-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.powerjob</groupId>
+                <artifactId>powerjob-worker-spring-boot-starter</artifactId>
+                <version>${powerjob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.powerjob</groupId>
+                <artifactId>powerjob-official-processors</artifactId>
+                <version>${powerjob.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
