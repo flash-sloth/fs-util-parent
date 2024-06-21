@@ -106,13 +106,12 @@ public class Generator {
     }
 
 
-
     public List<Table> getTables() {
         try (Connection conn = dataSource.getConnection()) {
             DatabaseMetaData dbMeta = conn.getMetaData();
             return buildTables(dbMeta, conn);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("从数据源中加载表结构失败", e);
         }
         return null;
     }
