@@ -19,7 +19,7 @@ public class DefaultUpdateListener implements UpdateListener {
     public void onUpdate(Object param) {
         if (param instanceof SuperEntity entity) {
             if (entity.getUpdatedBy() == null) {
-                Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY_FIELD);
+                Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY);
                 Object userIdVal = ContextUtil.getUserId();
                 if (updatedByField != null) {
                     userIdVal = StrPool.STRING_TYPE_NAME.equals(updatedByField.getGenericType().getTypeName()) ? String.valueOf(ContextUtil.getUserId()) : ContextUtil.getUserId();
@@ -35,7 +35,7 @@ public class DefaultUpdateListener implements UpdateListener {
         }
 
 
-        Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY_FIELD);
+        Field updatedByField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_BY);
         if (updatedByField != null) {
             Object fieldValue = ReflectUtil.getFieldValue(param, updatedByField);
             if (fieldValue == null) {
@@ -45,7 +45,7 @@ public class DefaultUpdateListener implements UpdateListener {
             }
         }
 
-        Field updatedTimeField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_AT_FIELD);
+        Field updatedTimeField = ReflectUtil.getField(param.getClass(), SuperEntity.UPDATED_AT);
         if (updatedTimeField != null) {
             Object fieldValue = ReflectUtil.getFieldValue(param, updatedTimeField);
             if (fieldValue == null) {
