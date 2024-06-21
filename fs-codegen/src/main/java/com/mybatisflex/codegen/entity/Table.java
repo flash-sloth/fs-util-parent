@@ -123,6 +123,12 @@ public class Table {
         }
         return null;
     }
+    public String getSwaggerComment() {
+        if (StringUtil.isNotBlank(comment)) {
+            return globalConfig.getJavadocConfig().formatTableSwaggerComment(comment);
+        }
+        return null;
+    }
 
     public void setComment(String comment) {
         this.comment = comment;

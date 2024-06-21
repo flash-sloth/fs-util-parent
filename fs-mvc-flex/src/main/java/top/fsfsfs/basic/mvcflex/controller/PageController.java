@@ -1,8 +1,6 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
@@ -14,9 +12,6 @@ import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.interfaces.echo.EchoService;
 import top.fsfsfs.basic.mvcflex.request.PageParams;
 import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
-import top.fsfsfs.basic.utils.StrPool;
-
-import java.util.List;
 
 /**
  * 分页控制器
@@ -116,7 +111,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
      * @param params 分页参数
      * @return 分页数据s
      */
-    @Operation(summary = "分页列表查询")
+    @Operation(summary = "分页列表查询", description = "分页列表查询")
     @PostMapping(value = "/page")
     @WebLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
     default R<Page<VO>> page(@RequestBody @Validated PageParams<Query> params) {

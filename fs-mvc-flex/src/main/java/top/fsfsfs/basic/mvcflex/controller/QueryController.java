@@ -59,7 +59,7 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
      * @param id 主键id
      * @return 查询结果
      */
-    @Operation(summary = "查询单体详情")
+    @Operation(summary = "查询单体详情", description = "查询单体详情")
     @GetMapping("/detail")
     @WebLog("'查询单体详情:' + #id")
     default R<VO> getDetail(@RequestParam("id") Id id) {
