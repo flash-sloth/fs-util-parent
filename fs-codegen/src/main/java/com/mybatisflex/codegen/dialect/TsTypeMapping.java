@@ -19,7 +19,9 @@ import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,12 +34,13 @@ public class TsTypeMapping {
     private TsTypeMapping() {
     }
 
-    private static final Map<String, String> mapping = new HashMap<>();
+    private static final Map<String, String> MAPPING = new HashMap<>();
     private static JdbcTypeMapper typeMapper;
 
     static {
-        registerMapping("[B", "byte[]");
-        registerMapping("oracle.jdbc.OracleBlob", "byte[]");
+        registerMapping(Arrays.asList("tinyint", "bit"), "boolean");
+        registerMapping(Arrays.asList("int", "float", "double"), "number");
+//        registerMapping(Arrays.asList("longtext", "char", "text", "json", "enum", "clob", "blob", "binary", "bigint", "decimal"), "string");
     }
 
     public static void registerMapping(Class<?> from, Class<?> to) {
@@ -45,11 +48,15 @@ public class TsTypeMapping {
     }
 
     public static void registerMapping(String from, String to) {
-        mapping.put(from, to);
+        MAPPING.put(from, to);
+    }
+
+    public static void registerMapping(List<String> froms, String to) {
+        froms.forEach(from -> MAPPING.put(from, to));
     }
 
     public static Map<String, String> getMapping() {
-        return mapping;
+        return MAPPING;
     }
 
     public static JdbcTypeMapper getTypeMapper() {
@@ -60,16 +67,6 @@ public class TsTypeMapping {
         TsTypeMapping.typeMapper = typeMapper;
     }
 
-    /**
-     * 当只使用 date 类型来映射数据库的所有 "时间" 类型时，调用此方法
-     */
-    public static void registerDateTypes() {
-        registerMapping("java.sql.Time", "java.util.Date");
-        registerMapping("java.sql.Timestamp", "java.util.Date");
-        registerMapping("java.time.LocalDateTime", "java.util.Date");
-        registerMapping("java.time.LocalDate", "java.util.Date");
-    }
-
     public static String getType(String rawType, String jdbcType, Table table, Column column) {
         if (typeMapper != null) {
             String type = typeMapper.getType(rawType, jdbcType, table, column);
@@ -77,8 +74,7 @@ public class TsTypeMapping {
                 return type;
             }
         }
-        String registered = mapping.get(jdbcType);
-        return StringUtil.isNotBlank(registered) ? registered : jdbcType;
+        return MAPPING.getOrDefault(rawType.toLowerCase(), "string");
     }
 
     public interface JdbcTypeMapper {

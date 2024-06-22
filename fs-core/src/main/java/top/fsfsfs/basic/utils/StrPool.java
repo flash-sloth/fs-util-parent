@@ -94,6 +94,11 @@ public interface StrPool {
     String LOCAL_DATE_TYPE_NAME = "java.time.LocalDate";
     String LOCAL_TIME_TYPE_NAME = "java.time.LocalTime";
     String JAVA_TEMP_DIR = "java.io.tmpdir";
+    String SRC_MAIN_JAVA = "src/main/java";
+    String SRC_MAIN_RESOURCES = "src/main/resources";
+
+    String SRC_TEST_JAVA = "src/test/java";
+    String SRC_TEST_RESOURCES = "src/test/resources";
 
     String ARRAY = "Array";
     String INTEGER = "Integer";

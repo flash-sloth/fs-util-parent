@@ -160,6 +160,7 @@ public class GlobalConfig implements Serializable {
         }
         return voConfig;
     }
+
     public DtoConfig getDtoConfig() {
         if (dtoConfig == null) {
             dtoConfig = new DtoConfig();
@@ -227,10 +228,12 @@ public class GlobalConfig implements Serializable {
         voGenerateEnable = true;
         return getVoConfig();
     }
+
     public DtoConfig enableDto() {
         dtoGenerateEnable = true;
         return getDtoConfig();
     }
+
     public QueryConfig enableQuery() {
         queryGenerateEnable = true;
         return getQueryConfig();
@@ -279,9 +282,11 @@ public class GlobalConfig implements Serializable {
     public void disableVo() {
         voGenerateEnable = false;
     }
+
     public void disableDto() {
         dtoGenerateEnable = false;
     }
+
     public void disableQuery() {
         queryGenerateEnable = false;
     }
@@ -992,6 +997,7 @@ public class GlobalConfig implements Serializable {
     public void setEntityGenerateEnable(boolean entityGenerateEnable) {
         this.entityGenerateEnable = entityGenerateEnable;
     }
+
     public boolean isVoGenerateEnable() {
         return voGenerateEnable;
     }
@@ -1003,6 +1009,7 @@ public class GlobalConfig implements Serializable {
     public void setVoGenerateEnable(boolean voGenerateEnable) {
         this.voGenerateEnable = voGenerateEnable;
     }
+
     public boolean isDtoGenerateEnable() {
         return dtoGenerateEnable;
     }

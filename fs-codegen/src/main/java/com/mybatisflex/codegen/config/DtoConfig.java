@@ -108,7 +108,7 @@ public class DtoConfig implements Serializable {
     /**
      * 需要忽略的列 全局配置。
      */
-    private Set<String> ignoreColumns;
+    private Set<String> ignoreColumns = new HashSet<>();
     /**
      * 继承的父类是否添加泛型
      */
