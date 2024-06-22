@@ -27,18 +27,15 @@ import java.util.Map;
  *
  * @author michael
  */
-public class JdbcTypeMapping {
+public class TsTypeMapping {
 
-    private JdbcTypeMapping() {
+    private TsTypeMapping() {
     }
 
     private static final Map<String, String> mapping = new HashMap<>();
     private static JdbcTypeMapper typeMapper;
 
     static {
-        registerMapping("java.sql.Timestamp", "java.time.LocalDateTime");
-        registerMapping("java.sql.Time", "java.time.LocalTime");
-        registerMapping("java.sql.Date", "java.time.LocalDate");
         registerMapping("[B", "byte[]");
         registerMapping("oracle.jdbc.OracleBlob", "byte[]");
     }
@@ -60,7 +57,7 @@ public class JdbcTypeMapping {
     }
 
     public static void setTypeMapper(JdbcTypeMapper typeMapper) {
-        JdbcTypeMapping.typeMapper = typeMapper;
+        TsTypeMapping.typeMapper = typeMapper;
     }
 
     /**
@@ -73,9 +70,9 @@ public class JdbcTypeMapping {
         registerMapping("java.time.LocalDate", "java.util.Date");
     }
 
-    public static String getType(String jdbcType, Table table, Column column) {
+    public static String getType(String rawType, String jdbcType, Table table, Column column) {
         if (typeMapper != null) {
-            String type = typeMapper.getType(jdbcType, table, column);
+            String type = typeMapper.getType(rawType, jdbcType, table, column);
             if (StringUtil.isNotBlank(type)) {
                 return type;
             }
@@ -85,7 +82,7 @@ public class JdbcTypeMapping {
     }
 
     public interface JdbcTypeMapper {
-        String getType(String jdbcType, Table table, Column column);
+        String getType(String rawType, String jdbcType, Table table, Column column);
     }
 
 }

@@ -51,6 +51,12 @@ public class Column {
      */
     private String propertyType;
 
+
+    /**
+     * 属性TS类型。
+     */
+    private String tsType;
+
     /**
      * 字段注释。
      */
@@ -104,6 +110,15 @@ public class Column {
 
     public String getProperty() {
         return property;
+    }
+
+    public String getTsType() {
+        return tsType;
+    }
+
+    public Column setTsType(String tsType) {
+        this.tsType = tsType;
+        return this;
     }
 
     public String getPropertyType() {
