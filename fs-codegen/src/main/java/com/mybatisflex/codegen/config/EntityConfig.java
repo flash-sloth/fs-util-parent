@@ -48,6 +48,15 @@ public class EntityConfig implements Serializable {
     private String classSuffix = "";
 
     /**
+     * 类名
+     */
+    private String name;
+    /**
+     * swagger注释
+     */
+    private String description;
+
+    /**
      * Entity 类的父类，可以自定义一些 BaseEntity 类。
      */
     private Class<?> superClass;
