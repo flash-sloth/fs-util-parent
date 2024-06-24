@@ -549,6 +549,10 @@ public class Table {
      * 获取生成 Java 文件名。
      */
     public String getEntityJavaFileName() {
+        String entityName = entityConfig.getName();
+        if (StrUtil.isNotEmpty(entityName)) {
+            return entityName;
+        }
         String entityJavaFileName = name;
         String tablePrefix = globalConfig.getStrategyConfig().getTablePrefix();
         if (tablePrefix != null) {
@@ -573,6 +577,13 @@ public class Table {
         return entityConfig.getClassPrefix()
                 + entityJavaFileName
                 + entityConfig.getClassSuffix();
+    }
+
+    /**
+     * 构建 entity 的 Class 名称。
+     */
+    public String buildEntityBaseClassName() {
+        return buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
     }
 
     /**

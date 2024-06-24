@@ -76,10 +76,11 @@ public class EntityBaseGenerator implements IGenerator {
         return this;
     }
 
+    @Override
     public String getTemplateContent() {
         return templateContent;
     }
-
+    @Override
     public IGenerator setTemplateContent(String templateContent) {
         this.templateContent = templateContent;
         return this;

@@ -434,5 +434,12 @@ public class EntityConfig implements Serializable {
 
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public EntityConfig setName(String name) {
+        this.name = name;
+        return this;
+    }
 }
