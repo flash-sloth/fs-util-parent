@@ -136,6 +136,7 @@ public class PackageConfig implements Serializable {
         this.entityPackage = entityPackage;
         return this;
     }
+
     /**
      * 获取VO层包路径。
      */
@@ -153,6 +154,7 @@ public class PackageConfig implements Serializable {
         this.voPackage = voPackage;
         return this;
     }
+
     /**
      * 获取DTO层包路径。
      */
@@ -170,6 +172,7 @@ public class PackageConfig implements Serializable {
         this.dtoPackage = dtoPackage;
         return this;
     }
+
     /**
      * 获取Query层包路径。
      */
@@ -229,7 +232,10 @@ public class PackageConfig implements Serializable {
      */
     public String getServiceImplPackage() {
         if (StringUtil.isBlank(serviceImplPackage)) {
-            return basePackage.concat(".service.impl");
+            if (StringUtil.isBlank(servicePackage)) {
+                return getServicePackage().concat(".impl");
+            }
+            return servicePackage.concat(".impl");
         }
         return serviceImplPackage;
     }

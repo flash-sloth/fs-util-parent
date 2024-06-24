@@ -18,7 +18,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public class TreeEntity<T> extends SuperEntity<T> {
-
+    public static final String PARENT_ID = "parentId";
+    public static final String WEIGHT = "weight";
+    public static final String PARENT_ID_FIELD = "parent_id";
+    public static final String WEIGHT_FIELD = "weight";
     /**
      * 父ID
      */
