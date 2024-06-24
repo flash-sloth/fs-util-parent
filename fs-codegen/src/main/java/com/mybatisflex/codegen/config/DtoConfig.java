@@ -385,19 +385,5 @@ public class DtoConfig implements Serializable {
         return this;
     }
 
-    /**
-     * 设置需要忽略的列  全局配置。
-     */
-    public DtoConfig setIgnoreColumns(String... columns) {
-        if (ignoreColumns == null) {
-            ignoreColumns = new HashSet<>();
-        }
-        for (String column : columns) {
-            if (column != null && !column.trim().isEmpty()) {
-                ignoreColumns.add(column.trim().toLowerCase());
-            }
-        }
-        return this;
-    }
 
 }

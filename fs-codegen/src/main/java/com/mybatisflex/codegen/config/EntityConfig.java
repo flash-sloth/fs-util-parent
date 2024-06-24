@@ -80,6 +80,7 @@ public class EntityConfig implements Serializable {
      * Entity 是否使用 Lombok 注解。
      */
     private boolean withLombok;
+    private boolean withChain;
 
     /**
      * Entity 是否使用 Swagger 注解。
@@ -275,6 +276,15 @@ public class EntityConfig implements Serializable {
      */
     public EntityConfig setWithLombok(boolean withLombok) {
         this.withLombok = withLombok;
+        return this;
+    }
+
+    public boolean isWithChain() {
+        return withChain;
+    }
+
+    public EntityConfig setWithChain(boolean withChain) {
+        this.withChain = withChain;
         return this;
     }
 

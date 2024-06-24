@@ -93,4 +93,8 @@ public class ClassUtils {
         return classes.stream().filter(classFilter).collect(Collectors.toSet());
     }
 
+    @SneakyThrows
+    public static Class<?> forName(String className) {
+        return StrUtil.isNotEmpty(className) ? Class.forName(className) : null;
+    }
 }
