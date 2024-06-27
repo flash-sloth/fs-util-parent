@@ -16,6 +16,7 @@
 package com.mybatisflex.codegen.generator;
 
 import com.mybatisflex.codegen.constant.GenTypeConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.generator.impl.ControllerGenerator;
 import com.mybatisflex.codegen.generator.impl.DtoGenerator;
 import com.mybatisflex.codegen.generator.impl.EntityBaseGenerator;
@@ -35,24 +36,25 @@ import java.util.Map;
 /**
  * 代码生成器工厂，用于创建各种类型文件的生成。
  *
+ * @author tangyh
  * @see GenTypeConst
  */
 public class GeneratorFactory {
 
-    private static final Map<String, IGenerator> generators = new LinkedHashMap<>();
+    private static final Map<GenTypeEnum, IGenerator> GENERATORS = new LinkedHashMap<>();
 
     static {
-        registerGenerator(GenTypeConst.ENTITY, new EntityGenerator());
-        registerGenerator(GenTypeConst.ENTITY_BASE, new EntityBaseGenerator());
-        registerGenerator(GenTypeConst.DTO, new DtoGenerator());
-        registerGenerator(GenTypeConst.QUERY, new QueryGenerator());
-        registerGenerator(GenTypeConst.VO, new VoGenerator());
-        registerGenerator(GenTypeConst.MAPPER, new MapperGenerator());
-        registerGenerator(GenTypeConst.SERVICE, new ServiceGenerator());
-        registerGenerator(GenTypeConst.SERVICE_IMPL, new ServiceImplGenerator());
-        registerGenerator(GenTypeConst.CONTROLLER, new ControllerGenerator());
-        registerGenerator(GenTypeConst.TABLE_DEF, new TableDefGenerator());
-        registerGenerator(GenTypeConst.MAPPER_XML, new MapperXmlGenerator());
+        registerGenerator(GenTypeEnum.ENTITY, new EntityGenerator());
+        registerGenerator(GenTypeEnum.ENTITY_BASE, new EntityBaseGenerator());
+        registerGenerator(GenTypeEnum.DTO, new DtoGenerator());
+        registerGenerator(GenTypeEnum.QUERY, new QueryGenerator());
+        registerGenerator(GenTypeEnum.VO, new VoGenerator());
+        registerGenerator(GenTypeEnum.MAPPER, new MapperGenerator());
+        registerGenerator(GenTypeEnum.SERVICE, new ServiceGenerator());
+        registerGenerator(GenTypeEnum.SERVICE_IMPL, new ServiceImplGenerator());
+        registerGenerator(GenTypeEnum.CONTROLLER, new ControllerGenerator());
+        registerGenerator(GenTypeEnum.TABLE_DEF, new TableDefGenerator());
+        registerGenerator(GenTypeEnum.MAPPER_XML, new MapperXmlGenerator());
 //        registerGenerator(GenTypeConst.PACKAGE_INFO, new PackageInfoGenerator());
     }
 
@@ -65,8 +67,8 @@ public class GeneratorFactory {
      * @param genType 生成类型
      * @return 该类型的文件生成器
      */
-    public static IGenerator getGenerator(String genType) {
-        return generators.get(genType);
+    public static IGenerator getGenerator(GenTypeEnum genType) {
+        return GENERATORS.get(genType);
     }
 
     /**
@@ -75,7 +77,7 @@ public class GeneratorFactory {
      * @return 所有的文件生成器
      */
     public static Collection<IGenerator> getGenerators() {
-        return generators.values();
+        return GENERATORS.values();
     }
 
     /**
@@ -84,8 +86,8 @@ public class GeneratorFactory {
      * @param name      生成器名称
      * @param generator 生成器
      */
-    public static void registerGenerator(String name, IGenerator generator) {
-        generators.put(name, generator);
+    public static void registerGenerator(GenTypeEnum name, IGenerator generator) {
+        GENERATORS.put(name, generator);
     }
 
 }

@@ -16,6 +16,7 @@
 package com.mybatisflex.codegen.generator;
 
 import com.mybatisflex.codegen.config.GlobalConfig;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 
 /**
@@ -25,45 +26,25 @@ import com.mybatisflex.codegen.entity.Table;
  * @author 王帅
  */
 public interface IGenerator {
-    /**
-     *  生成器类型
-     *
-     * @param genType 生成器类型
-     */
-    IGenerator setGenType(String genType);
+//    /**
+//     *  生成器类型
+//     *
+//     * @param genType 生成器类型
+//     */
+//    IGenerator setGenType(String genType);
 
     /**
      *  生成器类型
      *
      * @return 生成器类型
      */
-    String getGenType();
-
-    /**
-     * 获取模板文件位置。
-     *
-     * @return 路径
-     */
-    String getTemplatePath();
-
-    /**
-     * 设置模板文件位置。
-     *
-     * @param templatePath 模版路径
-     */
-    IGenerator setTemplatePath(String templatePath);
-
-    /**
-     * 获取模板内容
-     *
-     * @return 内容
-     */
-    String getTemplateContent();
+    GenTypeEnum getGenType();
 
     /**
      * 设置模板内容
      *
      * @param templateContent 模版内容
+     * @return 生成器
      */
     IGenerator setTemplateContent(String templateContent);
 

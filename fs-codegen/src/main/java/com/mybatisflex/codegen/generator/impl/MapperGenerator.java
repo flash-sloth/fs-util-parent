@@ -20,10 +20,14 @@ import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.MapperConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.constant.GenTypeConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,53 +41,22 @@ import java.util.Map;
  * @author 王帅
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class MapperGenerator implements IGenerator {
 
-    private String templatePath;
     private String templateContent;
-    private String genType;
+    private GenTypeEnum genType;
 
     public MapperGenerator() {
-        this(TemplateConst.MAPPER);
-        this.genType = GenTypeConst.MAPPER;
+        this(GenTypeEnum.MAPPER);
     }
 
-    public MapperGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    @Override
-    public IGenerator setGenType(String genType) {
+    public MapperGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
     }
 
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    @Override
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
 
 
     @Override
@@ -118,7 +91,7 @@ public class MapperGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, mapperJavaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, mapperJavaFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), mapperJavaFile);
         }
 
         log.info("Mapper ---> {}", mapperJavaFile);
@@ -139,7 +112,7 @@ public class MapperGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
         }
     }
 }

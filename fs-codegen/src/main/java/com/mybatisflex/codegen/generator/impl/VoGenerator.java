@@ -12,10 +12,12 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.VoConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
-import com.mybatisflex.codegen.constant.TemplateConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -29,54 +31,21 @@ import java.util.Map;
  * @since 2024年06月18日15:48:18
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class VoGenerator implements IGenerator {
 
-    private String templatePath;
     private String templateContent;
-    private String genType;
+    private GenTypeEnum genType;
 
     public VoGenerator() {
-        this(TemplateConst.VO);
-        this.genType = GenTypeConst.VO;
+        this(GenTypeEnum.VO);
     }
 
-    public VoGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    @Override
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
-
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    public IGenerator setGenType(String genType) {
+    public VoGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
     }
-
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -101,7 +70,7 @@ public class VoGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplateContent(), javaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
     }
 
@@ -128,6 +97,6 @@ public class VoGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         }
-        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.templatePath);
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.genType.getTemplate());
     }
 }

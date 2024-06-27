@@ -90,7 +90,6 @@ public class GlobalConfig implements Serializable {
         this.packageConfig = new PackageConfig();
         this.strategyConfig = new StrategyConfig();
         this.templateConfig = new TemplateConfig();
-        this.setTemplatePath();
         if (fileType == FileType.KOTLIN) {
             JdbcTypeMapping.registerMapping("java.lang.Integer", "Int");
         }
@@ -100,16 +99,6 @@ public class GlobalConfig implements Serializable {
         return fileType;
     }
 
-    private void setTemplatePath() {
-        if (fileType == FileType.KOTLIN) {
-            setEntityTemplatePath(TemplateConst.ENTITY_KOTLIN);
-            setMapperTemplatePath(TemplateConst.MAPPER_KOTLIN);
-            setServiceTemplatePath(TemplateConst.SERVICE_KOTLIN);
-            setServiceImplTemplatePath(TemplateConst.SERVICE_IMPL_KOTLIN);
-            setControllerTemplatePath(TemplateConst.CONTROLLER_KOTLIN);
-            setTableDefTemplatePath(TemplateConst.TABLE_DEF_KOTLIN);
-        }
-    }
 
     public enum FileType {
 
@@ -895,12 +884,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getEntity();
     }
 
-    /**
-     * @see TemplateConfig#setEntity(String)
-     */
-    public void setEntityTemplatePath(String entityTemplatePath) {
-        getTemplateConfig().setEntity(entityTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getMapper()
@@ -909,12 +892,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getMapper();
     }
 
-    /**
-     * @see TemplateConfig#setMapper(String)
-     */
-    public void setMapperTemplatePath(String mapperTemplatePath) {
-        getTemplateConfig().setMapper(mapperTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getService()
@@ -923,12 +900,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getService();
     }
 
-    /**
-     * @see TemplateConfig#setService(String)
-     */
-    public void setServiceTemplatePath(String serviceTemplatePath) {
-        getTemplateConfig().setService(serviceTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getServiceImpl()
@@ -937,12 +908,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getServiceImpl();
     }
 
-    /**
-     * @see TemplateConfig#setServiceImpl(String)
-     */
-    public void setServiceImplTemplatePath(String serviceImplTemplatePath) {
-        getTemplateConfig().setServiceImpl(serviceImplTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getController()
@@ -951,12 +916,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getController();
     }
 
-    /**
-     * @see TemplateConfig#setController(String)
-     */
-    public void setControllerTemplatePath(String controllerTemplatePath) {
-        getTemplateConfig().setController(controllerTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getTableDef()
@@ -965,12 +924,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getTableDef();
     }
 
-    /**
-     * @see TemplateConfig#setTableDef(String)
-     */
-    public void setTableDefTemplatePath(String tableDefTemplatePath) {
-        getTemplateConfig().setTableDef(tableDefTemplatePath);
-    }
 
     /**
      * @see TemplateConfig#getMapperXml()
@@ -979,12 +932,6 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getMapperXml();
     }
 
-    /**
-     * @see TemplateConfig#setMapperXml(String)
-     */
-    public void setMapperXmlTemplatePath(String mapperXmlTemplatePath) {
-        getTemplateConfig().setMapperXml(mapperXmlTemplatePath);
-    }
 
     public boolean isEntityGenerateEnable() {
         return entityGenerateEnable;

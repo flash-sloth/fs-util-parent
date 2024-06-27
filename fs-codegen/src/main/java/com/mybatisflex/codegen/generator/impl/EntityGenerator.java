@@ -19,11 +19,13 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
-import com.mybatisflex.codegen.constant.TemplateConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,65 +39,26 @@ import java.util.Map;
  * @author 王帅
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class EntityGenerator implements IGenerator {
 
-    /** 模板路径 */
-    protected String templatePath;
     /** 模板内容 */
     protected String templateContent;
-    private String genType;
+    private GenTypeEnum genType;
 
     protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
-    protected String ktEntityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.kotlin.tpl";
 
 
     public EntityGenerator() {
-        this(TemplateConst.ENTITY);
-        this.genType = GenTypeConst.ENTITY;
+        this(GenTypeEnum.ENTITY);
     }
 
-    public EntityGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    @Override
-    public IGenerator setGenType(String genType) {
+    public EntityGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
     }
 
-    public String getEntityWithBaseTemplatePath() {
-        return entityWithBaseTemplatePath;
-    }
-
-    public void setEntityWithBaseTemplatePath(String entityWithBaseTemplatePath) {
-        this.entityWithBaseTemplatePath = entityWithBaseTemplatePath;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
-
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -106,7 +69,6 @@ public class EntityGenerator implements IGenerator {
 
         // 生成 entity 类
         genEntityClass(table, globalConfig);
-
     }
 
     @Override
@@ -171,15 +133,11 @@ public class EntityGenerator implements IGenerator {
 
         params.putAll(globalConfig.getCustomConfig());
 
-        String templatePath = this.templatePath;
+        String templatePath = this.genType.getTemplate();
 
         // 开启生成 baseClass
         if (entityConfig.isWithBaseClassEnable()) {
-            if (globalConfig.getFileType() == GlobalConfig.FileType.KOTLIN) {
-                templatePath = this.ktEntityWithBaseTemplatePath;
-            } else {
-                templatePath = this.entityWithBaseTemplatePath;
-            }
+            templatePath = this.entityWithBaseTemplatePath;
 
             String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
             params.put("baseClassName", baseClassName);

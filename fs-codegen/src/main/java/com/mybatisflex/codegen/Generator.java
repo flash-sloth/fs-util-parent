@@ -17,6 +17,7 @@ package com.mybatisflex.codegen;
 
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.StrategyConfig;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.dialect.IDialect;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
@@ -80,11 +81,11 @@ public class Generator {
         log.info("Code is generated successfully.");
     }
 
-    public Map<String, Map<String, String>> preview() {
+    public Map<String, Map<GenTypeEnum, String>> preview() {
         return preview(getTables());
     }
 
-    public Map<String, Map<String, String>> preview(List<Table> tables) {
+    public Map<String, Map<GenTypeEnum, String>> preview(List<Table> tables) {
         if (tables == null || tables.isEmpty()) {
             log.error("table {} not found.", globalConfig.getGenerateTables());
             return Collections.emptyMap();
@@ -92,10 +93,10 @@ public class Generator {
             log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
         }
 
-        Map<String, Map<String, String>> tableMap = new HashMap(tables.size());
+        Map<String, Map<GenTypeEnum, String>> tableMap = new HashMap(tables.size());
         for (Table table : tables) {
             Collection<IGenerator> generators = GeneratorFactory.getGenerators();
-            Map<String, String> codeMap = new HashMap(generators.size());
+            Map<GenTypeEnum, String> codeMap = new HashMap(generators.size());
             for (IGenerator generator : generators) {
                 codeMap.put(generator.getGenType(), generator.preview(table, globalConfig));
             }

@@ -19,11 +19,13 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceImplConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
-import com.mybatisflex.codegen.constant.TemplateConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,53 +39,22 @@ import java.util.Map;
  * @since 2023-05-14
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ServiceImplGenerator implements IGenerator {
 
-    private String templatePath;
     private String templateContent;
-    private String genType;
+    private GenTypeEnum genType;
 
     public ServiceImplGenerator() {
-        this(TemplateConst.SERVICE_IMPL);
-        this.genType = GenTypeConst.SERVICE_IMPL;
+        this(GenTypeEnum.SERVICE_IMPL);
     }
 
-    public ServiceImplGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    @Override
-    public IGenerator setGenType(String genType) {
+    public ServiceImplGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
     }
 
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    @Override
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -101,11 +72,9 @@ public class ServiceImplGenerator implements IGenerator {
         File serviceImplJavaFile = new File(sourceDir, serviceImplPackagePath + "/" +
                 table.buildServiceImplClassName() + globalConfig.getFileType());
 
-
         if (serviceImplJavaFile.exists() && !serviceImplConfig.isOverwriteEnable()) {
             return;
         }
-
 
         Map<String, Object> params = new HashMap<>(4);
         params.put("table", table);
@@ -117,7 +86,7 @@ public class ServiceImplGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, serviceImplJavaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, serviceImplJavaFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), serviceImplJavaFile);
         }
 
         log.info("ServiceImpl ---> {}", serviceImplJavaFile);
@@ -137,7 +106,7 @@ public class ServiceImplGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         }
-        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
 
     }
 }

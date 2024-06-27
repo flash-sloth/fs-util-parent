@@ -19,11 +19,13 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
-import com.mybatisflex.codegen.constant.TemplateConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,53 +39,22 @@ import java.util.Map;
  * @since 2024年06月19日23:47:34
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class EntityBaseGenerator implements IGenerator {
 
     /** 模板路径 */
-    protected String templatePath;
+    private GenTypeEnum genType;
     /** 模板内容 */
     protected String templateContent;
-    private String genType;
 
     public EntityBaseGenerator() {
-        this(TemplateConst.ENTITY);
-        this.genType = GenTypeConst.ENTITY_BASE;
+        this(GenTypeEnum.ENTITY_BASE);
     }
 
-    public EntityBaseGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    @Override
-    public IGenerator setGenType(String genType) {
+    public EntityBaseGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
-
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-    @Override
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
     }
 
     @Override
@@ -114,7 +85,7 @@ public class EntityBaseGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
         }
     }
 
@@ -143,7 +114,7 @@ public class EntityBaseGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, baseEntityJavaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, baseEntityJavaFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), baseEntityJavaFile);
         }
     }
 

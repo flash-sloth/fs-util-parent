@@ -20,10 +20,14 @@ import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceConfig;
 import com.mybatisflex.codegen.constant.GenTypeConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -37,54 +41,21 @@ import java.util.Map;
  * @since 2023-05-14
  */
 @Slf4j
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ServiceGenerator implements IGenerator {
 
-    private String templatePath;
     private String templateContent;
-    private String genType;
+    private GenTypeEnum genType;
 
     public ServiceGenerator() {
-        this(TemplateConst.SERVICE);
-        this.genType = GenTypeConst.SERVICE;
+        this(GenTypeEnum.SERVICE);
     }
 
-    public ServiceGenerator(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    @Override
-    public String getGenType() {
-        return genType;
-    }
-
-    @Override
-    public IGenerator setGenType(String genType) {
+    public ServiceGenerator(GenTypeEnum genType) {
         this.genType = genType;
-        return this;
     }
-
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    @Override
-    public IGenerator setTemplateContent(String templateContent) {
-        this.templateContent = templateContent;
-        return this;
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    @Override
-    public IGenerator setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-        return this;
-    }
-
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -118,7 +89,7 @@ public class ServiceGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, serviceJavaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, serviceJavaFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), serviceJavaFile);
         }
 
         log.info("Service ---> {}", serviceJavaFile);
@@ -140,7 +111,7 @@ public class ServiceGenerator implements IGenerator {
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
         }
     }
 }
