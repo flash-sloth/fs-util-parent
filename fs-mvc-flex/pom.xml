@@ -30,6 +30,15 @@
             <artifactId>fs-cache-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-validator-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
 
     </dependencies>
 
