@@ -107,7 +107,11 @@ public class MapperXmlGenerator implements IGenerator {
         params.put("table", table);
         params.put("packageConfig", packageConfig);
         params.putAll(globalConfig.getCustomConfig());
-        globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, mapperXmlFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, mapperXmlFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, mapperXmlFile);
+        }
 
         log.info("MapperXML ---> {}", mapperXmlFile);
     }

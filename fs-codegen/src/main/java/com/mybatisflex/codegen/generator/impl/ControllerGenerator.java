@@ -116,7 +116,12 @@ public class ControllerGenerator implements IGenerator {
         params.put("withSwagger", globalConfig.isEntityWithSwagger());
         params.put("swaggerVersion", globalConfig.getSwaggerVersion());
         params.putAll(globalConfig.getCustomConfig());
-        globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, controllerJavaFile);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, controllerJavaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, controllerJavaFile);
+        }
 
         log.info("Controller ---> {}", controllerJavaFile);
     }

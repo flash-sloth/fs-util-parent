@@ -12,7 +12,6 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.QueryConfig;
-import com.mybatisflex.codegen.config.QueryConfig;
 import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
@@ -99,7 +98,11 @@ public class QueryGenerator implements IGenerator {
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, queryConfig);
 
         log.info("Query ---> {}", javaFile);
-        globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, this.getTemplateContent(), javaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        }
     }
 
     private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, QueryConfig queryConfig) {

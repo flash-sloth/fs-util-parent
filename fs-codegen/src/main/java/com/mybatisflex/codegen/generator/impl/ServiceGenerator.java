@@ -114,7 +114,12 @@ public class ServiceGenerator implements IGenerator {
         params.put("packageConfig", packageConfig);
         params.put("javadocConfig", globalConfig.getJavadocConfig());
         params.putAll(globalConfig.getCustomConfig());
-        globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, serviceJavaFile);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, serviceJavaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templatePath, serviceJavaFile);
+        }
 
         log.info("Service ---> {}", serviceJavaFile);
     }

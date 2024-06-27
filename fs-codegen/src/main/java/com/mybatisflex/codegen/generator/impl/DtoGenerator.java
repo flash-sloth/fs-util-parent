@@ -12,7 +12,6 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.DtoConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
-import com.mybatisflex.codegen.config.VoConfig;
 import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
@@ -99,7 +98,13 @@ public class DtoGenerator implements IGenerator {
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, dtoConfig);
 
         log.info("Dto ---> {}", javaFile);
-        globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
+        } else {
+
+            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        }
     }
 
     private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, DtoConfig dtoConfig) {

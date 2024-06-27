@@ -98,7 +98,11 @@ public class VoGenerator implements IGenerator {
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, voConfig);
 
         log.info("Vo ---> {}", javaFile);
-        globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplateContent(), javaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplatePath(), javaFile);
+        }
     }
 
     private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, VoConfig voConfig) {
