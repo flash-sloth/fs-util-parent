@@ -41,7 +41,7 @@ import lombok.EqualsAndHashCode;
 #end
 
 /**
- * #(table.getComment()) 实体类。
+ * #(entityConfig.getDescription() ?? (table.getComment() + "实体类。"))
  *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())

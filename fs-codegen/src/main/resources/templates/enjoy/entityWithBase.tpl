@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 
 #if(!isBase)
 /**
- * #(table.getComment()) 实体类。
+ * #(entityConfig.getDescription() ?? (table.getComment() + "实体类。"))
  * DO类：数据对象，可以在关联查询时，再次添加字段，重新生成代码时，忽略此文件。
  *
  * @author #(javadocConfig.getAuthor())
