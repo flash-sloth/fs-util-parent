@@ -17,11 +17,13 @@
 package com.mybatisflex.codegen.config;
 
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -31,9 +33,11 @@ import java.util.function.UnaryOperator;
  * @author 王帅
  * @since 2023-05-17
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class JavadocConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -4280345489968397327L;
     /**
      * 作者。
@@ -107,21 +111,6 @@ public class JavadocConfig implements Serializable {
     private String tableDefPackage = "表定义层（TableDef）软件包。";
 
     /**
-     * 获取作者。
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * 设置作者。
-     */
-    public JavadocConfig setAuthor(String author) {
-        this.author = author;
-        return this;
-    }
-
-    /**
      * 获取自。
      */
     public String getSince() {
@@ -151,20 +140,6 @@ public class JavadocConfig implements Serializable {
         return tableCommentFormat.apply(comment);
     }
 
-    /**
-     * 获取表注释格式化。
-     */
-    public Function<String, String> getTableCommentFormat() {
-        return tableCommentFormat;
-    }
-
-    /**
-     * 设置表注释格式化方案，用来生成实体类注释。
-     */
-    public JavadocConfig setTableCommentFormat(UnaryOperator<String> tableCommentFormat) {
-        this.tableCommentFormat = tableCommentFormat;
-        return this;
-    }
 
     public String formatColumnComment(String comment) {
         if (StringUtil.isBlank(comment)) {
@@ -172,197 +147,19 @@ public class JavadocConfig implements Serializable {
         }
         return columnCommentFormat.apply(comment);
     }
+
     public String formatColumnSwaggerComment(String comment) {
         if (StringUtil.isBlank(comment)) {
             return "";
         }
         return columnSwaggerCommentFormat.apply(comment);
     }
+
     public String formatTableSwaggerComment(String comment) {
         if (StringUtil.isBlank(comment)) {
             return "";
         }
         return tableSwaggerCommentFormat.apply(comment);
-    }
-
-    /**
-     * 获取列注释格式化。
-     */
-    public Function<String, String> getColumnCommentFormat() {
-        return columnCommentFormat;
-    }
-
-    /**
-     * 设置列注释格式化方案，用来生成实体类属性注释。
-     */
-    public JavadocConfig setColumnCommentFormat(UnaryOperator<String> columnCommentFormat) {
-        this.columnCommentFormat = columnCommentFormat;
-        return this;
-    }
-    /**
-     * 获取列Swagger注释格式化。
-     */
-    public Function<String, String> getColumnSwaggerCommentFormat() {
-        return columnSwaggerCommentFormat;
-    }
-
-    /**
-     * 设置列Swagger注释格式化方案，用来生成实体类Swagger属性注释。
-     */
-    public JavadocConfig setColumnSwaggerCommentFormat(UnaryOperator<String> columnSwaggerCommentFormat) {
-        this.columnSwaggerCommentFormat = columnSwaggerCommentFormat;
-        return this;
-    }
-    /**
-     * 获取列Swagger注释格式化。
-     */
-    public Function<String, String> getTableSwaggerCommentFormat() {
-        return tableSwaggerCommentFormat;
-    }
-
-    /**
-     * 设置列Swagger注释格式化方案，用来生成实体类Swagger属性注释。
-     */
-    public JavadocConfig setTableSwaggerCommentFormat(UnaryOperator<String> tableSwaggerCommentFormat) {
-        this.tableSwaggerCommentFormat = tableSwaggerCommentFormat;
-        return this;
-    }
-
-    /**
-     * 获取实体类层包注释。
-     */
-    public String getEntityPackage() {
-        return entityPackage;
-    }
-
-    /**
-     * 设置实体类层包注释。
-     */
-    public JavadocConfig setEntityPackage(String entityPackage) {
-        this.entityPackage = entityPackage;
-        return this;
-    }
-
-    /**
-     * 获取VO层包注释。
-     */
-    public String getVoPackage() {
-        return voPackage;
-    }
-
-    /**
-     * 设置VO层包注释。
-     */
-    public JavadocConfig setVoPackage(String voPackage) {
-        this.voPackage = voPackage;
-        return this;
-    }
-
-    /**
-     * 获取DTO层包注释。
-     */
-    public String getDtoPackage() {
-        return dtoPackage;
-    }
-
-    /**
-     * 设置VO层包注释。
-     */
-    public JavadocConfig setDtoPackage(String dtoPackage) {
-        this.dtoPackage = dtoPackage;
-        return this;
-    }
-
-    /**
-     * 获取Qyery层包注释。
-     */
-    public String getQueryPackage() {
-        return queryPackage;
-    }
-
-    /**
-     * 设置Qyery层包注释。
-     */
-    public JavadocConfig setQueryPackage(String queryPackage) {
-        this.queryPackage = queryPackage;
-        return this;
-    }
-
-    /**
-     * 获取映射层包注释。
-     */
-    public String getMapperPackage() {
-        return mapperPackage;
-    }
-
-    /**
-     * 设置映射层包注释。
-     */
-    public JavadocConfig setMapperPackage(String mapperPackage) {
-        this.mapperPackage = mapperPackage;
-        return this;
-    }
-
-    /**
-     * 获取服务层包注释。
-     */
-    public String getServicePackage() {
-        return servicePackage;
-    }
-
-    /**
-     * 设置服务层包注释。
-     */
-    public JavadocConfig setServicePackage(String servicePackage) {
-        this.servicePackage = servicePackage;
-        return this;
-    }
-
-    /**
-     * 获取服务层实现包注释。
-     *
-     * @return {@link String}
-     */
-    public String getServiceImplPackage() {
-        return serviceImplPackage;
-    }
-
-    /**
-     * 设置服务层实现包注释。
-     */
-    public JavadocConfig setServiceImplPackage(String serviceImplPackage) {
-        this.serviceImplPackage = serviceImplPackage;
-        return this;
-    }
-
-    /**
-     * 获取控制层包注释。
-     */
-    public String getControllerPackage() {
-        return controllerPackage;
-    }
-
-    /**
-     * 设置控制层包注释。
-     */
-    public JavadocConfig setControllerPackage(String controllerPackage) {
-        this.controllerPackage = controllerPackage;
-        return this;
-    }
-
-    /**
-     * 获取表定义层包注释。
-     */
-    public String getTableDefPackage() {
-        return tableDefPackage;
-    }
-
-    /**
-     * 设置表定义层包注释。
-     */
-    public JavadocConfig setTableDefPackage(String tableDefPackage) {
-        this.tableDefPackage = tableDefPackage;
-        return this;
     }
 
 }

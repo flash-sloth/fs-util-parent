@@ -64,7 +64,7 @@ public class QueryGenerator implements IGenerator {
         File javaFile = new File(packageConfig.getSourceDir(), packagePath + "/" +
                 table.buildQueryClassName() + ".java");
 
-        if (javaFile.exists() && !queryConfig.isOverwriteEnable()) {
+        if (javaFile.exists() && !queryConfig.getOverwriteEnable()) {
             return;
         }
 

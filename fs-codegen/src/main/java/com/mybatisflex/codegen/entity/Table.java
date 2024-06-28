@@ -140,7 +140,7 @@ public class Table {
         allColumns.addAll(columns);
         allColumns.addAll(superColumns);
         return allColumns.stream()
-                .filter(Column::isPrimaryKey)
+                .filter(Column::getPrimaryKey)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("PrimaryKey can't be null"));
     }
@@ -285,7 +285,7 @@ public class Table {
     /**
      * 构建 import 导包。
      */
-    public List<String> buildImports(boolean isBase) {
+    public List<String> buildImports(Boolean isBase) {
         Set<String> imports = new HashSet<>();
 
         //base 类不需要添加 Table 的导入，没有 @Table 注解
@@ -296,7 +296,7 @@ public class Table {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
         //未开启基类生成，或者是基类的情况下，添加 Column 类型的导入
-        if (!entityConfig.isWithBaseClassEnable() || (entityConfig.isWithBaseClassEnable() && isBase)) {
+        if (!entityConfig.getWithBaseClassEnable() || (entityConfig.getWithBaseClassEnable() && isBase)) {
             for (Column column : columns) {
                 imports.addAll(column.getImportClasses());
             }
@@ -314,7 +314,7 @@ public class Table {
         }
 
 
-        if (!entityConfig.isWithBaseClassEnable() || (entityConfig.isWithBaseClassEnable() && !isBase)) {
+        if (!entityConfig.getWithBaseClassEnable() || (entityConfig.getWithBaseClassEnable() && !isBase)) {
             if (tableConfig != null) {
                 if (tableConfig.getInsertListenerClass() != null) {
                     imports.add(tableConfig.getInsertListenerClass().getName());
@@ -343,7 +343,7 @@ public class Table {
         EntityConfig.SwaggerVersion swaggerVersion = globalConfig.getSwaggerVersion();
 
 
-        if (controllerConfig.isRestStyle()) {
+        if (controllerConfig.getRestStyle()) {
             imports.add(PackageConst.REST_CONTROLLER);
         } else {
             imports.add(PackageConst.CONTROLLER);
@@ -360,7 +360,7 @@ public class Table {
         }
 
         imports.add(PackageConst.VALIDATED);
-        if (controllerConfig.isWithCrud()) {
+        if (controllerConfig.getWithCrud()) {
             imports.add(PackageConst.AUTOWIRED);
             imports.add(PackageConst.R);
             imports.add(PackageConst.PAGE);
@@ -412,7 +412,7 @@ public class Table {
         StringBuilder tableAnnotation = new StringBuilder();
 
         String baseEntityClassName = buildEntityClassName();
-        if (entityConfig.isWithBaseClassEnable()) {
+        if (entityConfig.getWithBaseClassEnable()) {
             baseEntityClassName = buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
         }
         String tableName = StrUtil.format("{}.TABLE_NAME", baseEntityClassName);
@@ -464,7 +464,7 @@ public class Table {
         }
 
 
-        if (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
+        if (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
             tableAnnotation.append(", comment = \"")
                     .append(this.comment.replace("\n", "").replace("\"", "\\\"").trim())
                     .append("\"");
@@ -485,7 +485,7 @@ public class Table {
     /**
      * 构建 extends 继承。
      */
-    public String buildExtends(boolean isBase) {
+    public String buildExtends(Boolean isBase) {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         Class<?> superClass = entityConfig.getSuperClass(this);
         if (superClass != null) {
@@ -519,7 +519,7 @@ public class Table {
     /**
      * 构建 kt 继承
      */
-    public String buildKtExtends(boolean isBase) {
+    public String buildKtExtends(Boolean isBase) {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         Class<?> superClass = entityConfig.getSuperClass(this);
         List<String> s = new ArrayList<>();

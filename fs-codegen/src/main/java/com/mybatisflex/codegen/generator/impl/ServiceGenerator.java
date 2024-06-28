@@ -60,7 +60,7 @@ public class ServiceGenerator implements IGenerator {
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
 
-        if (!globalConfig.isServiceGenerateEnable()) {
+        if (!globalConfig.getServiceGenerateEnable()) {
             return;
         }
 
@@ -71,10 +71,10 @@ public class ServiceGenerator implements IGenerator {
 
         String servicePackagePath = packageConfig.getServicePackage().replace(".", "/");
         File serviceJavaFile = new File(sourceDir, servicePackagePath + "/" +
-                table.buildServiceClassName() + globalConfig.getFileType());
+                table.buildServiceClassName() + ".java");
 
 
-        if (serviceJavaFile.exists() && !serviceConfig.isOverwriteEnable()) {
+        if (serviceJavaFile.exists() && !serviceConfig.getOverwriteEnable()) {
             return;
         }
 

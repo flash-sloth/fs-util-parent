@@ -1,5 +1,5 @@
-#set(withLombok = queryConfig.isWithLombok())
-#set(withSwagger = queryConfig.isWithSwagger())
+#set(withLombok = queryConfig.getWithLombok())
+#set(withSwagger = queryConfig.getWithSwagger())
 #set(swaggerVersion = queryConfig.getSwaggerVersion())
 #set(jdkVersion = queryConfig.getJdkVersion())
 package #(queryPackageName);

@@ -18,7 +18,10 @@ package com.mybatisflex.codegen.config;
 import com.mybatisflex.annotation.InsertListener;
 import com.mybatisflex.annotation.SetListener;
 import com.mybatisflex.annotation.UpdateListener;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +29,12 @@ import java.util.Map;
 /**
  * 表的单独设置。
  */
-@SuppressWarnings({"unused", "UnusedReturnValue"})
+@Data
+@Accessors(chain = true)
 public class TableConfig implements Serializable {
 
     public static final String ALL_TABLES = "*";
+    @Serial
     private static final long serialVersionUID = -2568968178699265858L;
 
     /**
@@ -65,7 +70,7 @@ public class TableConfig implements Serializable {
     /**
      * 是否开启 Mapper 生成。
      */
-    private Boolean mapperGenerateEnable = Boolean.TRUE;
+    private Boolean mapperGenerateEnable = Boolean.FALSE;
 
     /**
      * 对应列的配置。
@@ -77,77 +82,6 @@ public class TableConfig implements Serializable {
         return new TableConfig();
     }
 
-    public String getSchema() {
-        return this.schema;
-    }
-
-    public TableConfig setSchema(String schema) {
-        this.schema = schema;
-        return this;
-    }
-
-    public String getTableName() {
-        return this.tableName;
-    }
-
-    public TableConfig setTableName(String tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    public Boolean getCamelToUnderline() {
-        return this.camelToUnderline;
-    }
-
-    public TableConfig setCamelToUnderline(Boolean camelToUnderline) {
-        this.camelToUnderline = camelToUnderline;
-        return this;
-    }
-
-    public Class<? extends InsertListener> getInsertListenerClass() {
-        return this.insertListenerClass;
-    }
-
-    public TableConfig setInsertListenerClass(Class<? extends InsertListener> insertListenerClass) {
-        this.insertListenerClass = insertListenerClass;
-        return this;
-    }
-
-    public Class<? extends UpdateListener> getUpdateListenerClass() {
-        return this.updateListenerClass;
-    }
-
-    public TableConfig setUpdateListenerClass(Class<? extends UpdateListener> updateListenerClass) {
-        this.updateListenerClass = updateListenerClass;
-        return this;
-    }
-
-    public Class<? extends SetListener> getSetListenerClass() {
-        return this.setListenerClass;
-    }
-
-    public TableConfig setSetListenerClass(Class<? extends SetListener> setListenerClass) {
-        this.setListenerClass = setListenerClass;
-        return this;
-    }
-
-    public Boolean getMapperGenerateEnable() {
-        return this.mapperGenerateEnable;
-    }
-
-    public TableConfig setMapperGenerateEnable(Boolean mapperGenerateEnable) {
-        this.mapperGenerateEnable = mapperGenerateEnable;
-        return this;
-    }
-
-    public Map<String, ColumnConfig> getColumnConfigMap() {
-        return this.columnConfigMap;
-    }
-
-    public TableConfig setColumnConfigMap(Map<String, ColumnConfig> columnConfigMap) {
-        this.columnConfigMap = columnConfigMap;
-        return this;
-    }
 
     public TableConfig setColumnConfig(ColumnConfig columnConfig) {
         if (this.columnConfigMap == null) {

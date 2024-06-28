@@ -93,7 +93,7 @@ public class EntityBaseGenerator implements IGenerator {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
         // 不需要生成 baseClass
-        if (!entityConfig.isWithBaseClassEnable()) {
+        if (!entityConfig.getWithBaseClassEnable()) {
             return;
         }
 
@@ -106,7 +106,7 @@ public class EntityBaseGenerator implements IGenerator {
 
         String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
 
-        File baseEntityJavaFile = new File(sourceDir, baseEntityPackagePath + "/" + baseEntityClassName + globalConfig.getFileType());
+        File baseEntityJavaFile = new File(sourceDir, baseEntityPackagePath + "/" + baseEntityClassName + ".java");
 
         Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityPackagePath, baseEntityClassName);
 

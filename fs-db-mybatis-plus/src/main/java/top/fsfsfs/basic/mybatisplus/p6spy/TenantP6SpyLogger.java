@@ -1,4 +1,4 @@
-package top.fsfsfs.basic.db.p6spy;
+package top.fsfsfs.basic.mybatisplus.p6spy;
 
 import cn.hutool.core.util.StrUtil;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;

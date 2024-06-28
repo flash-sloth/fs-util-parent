@@ -16,17 +16,24 @@
 package com.mybatisflex.codegen.config;
 
 import com.mybatisflex.annotation.KeyType;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 表字段的单独设置。
+ * @author tangyh
+ * @since 2024年06月28日11:43:13
  */
-@SuppressWarnings({"rawtypes", "UnusedReturnValue", "unused"})
+@Data
+@Accessors(chain = true)
 public class ColumnConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -1511605303951623381L;
 
     /**
@@ -47,22 +54,22 @@ public class ColumnConfig implements Serializable {
     /**
      * 是否是大字段，大字段 APT 不会生成到 DEFAULT_COLUMNS 里。
      */
-    private Boolean isLarge;
+    private Boolean large = false;
 
     /**
      * 是否是逻辑删除字段，一张表中只能存在 1 一个逻辑删除字段。
      */
-    private Boolean isLogicDelete;
+    private Boolean logicDelete = false;
 
     /**
      * 是否为乐观锁字段。
      */
-    private Boolean version;
+    private Boolean version = false;
 
     /**
      * 是否是租户 ID。
      */
-    private Boolean tenantId;
+    private Boolean tenantId = false;
 
     /**
      * 配置的 jdbcType。
@@ -95,7 +102,7 @@ public class ColumnConfig implements Serializable {
     /**
      * 字段是否为主键。
      */
-    private boolean isPrimaryKey = false;
+    private Boolean primaryKey = false;
 
     /**
      * ID 生成策略。
@@ -110,156 +117,13 @@ public class ColumnConfig implements Serializable {
     /**
      * sequence 序列执行顺序。
      */
-    private Boolean keyBefore;
+    private Boolean keyBefore = false;
 
 
     public static ColumnConfig create() {
         return new ColumnConfig();
     }
 
-    public String getColumnName() {
-        return this.columnName;
-    }
-
-    public ColumnConfig setColumnName(String columnName) {
-        this.columnName = columnName;
-        return this;
-    }
-
-    public String getOnInsertValue() {
-        return this.onInsertValue;
-    }
-
-    public ColumnConfig setOnInsertValue(String onInsertValue) {
-        this.onInsertValue = onInsertValue;
-        return this;
-    }
-
-    public String getOnUpdateValue() {
-        return this.onUpdateValue;
-    }
-
-    public ColumnConfig setOnUpdateValue(String onUpdateValue) {
-        this.onUpdateValue = onUpdateValue;
-        return this;
-    }
-
-    public Boolean getLarge() {
-        return this.isLarge;
-    }
-
-    public ColumnConfig setLarge(Boolean large) {
-        this.isLarge = large;
-        return this;
-    }
-
-    public Boolean getLogicDelete() {
-        return this.isLogicDelete;
-    }
-
-    public ColumnConfig setLogicDelete(Boolean logicDelete) {
-        this.isLogicDelete = logicDelete;
-        return this;
-    }
-
-    public Boolean getVersion() {
-        return this.version;
-    }
-
-    public ColumnConfig setVersion(Boolean version) {
-        this.version = version;
-        return this;
-    }
-
-    public Boolean getTenantId() {
-        return this.tenantId;
-    }
-
-    public ColumnConfig setTenantId(Boolean tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    public JdbcType getJdbcType() {
-        return this.jdbcType;
-    }
-
-    public ColumnConfig setJdbcType(JdbcType jdbcType) {
-        this.jdbcType = jdbcType;
-        return this;
-    }
-
-    public String getPropertyType() {
-        return this.propertyType;
-    }
-
-    public ColumnConfig setPropertyType(String propertyType) {
-        this.propertyType = propertyType;
-        return this;
-    }
-
-    public String getPropertyDefaultValue() {
-        return this.propertyDefaultValue;
-    }
-
-    public ColumnConfig setPropertyDefaultValue(String propertyDefaultValue) {
-        this.propertyDefaultValue = propertyDefaultValue;
-        return this;
-    }
-
-    public Class<? extends TypeHandler> getTypeHandler() {
-        return this.typeHandler;
-    }
-
-    public ColumnConfig setTypeHandler(Class<? extends TypeHandler> typeHandler) {
-        this.typeHandler = typeHandler;
-        return this;
-    }
-
-    public String getMaskType() {
-        return this.maskType;
-    }
-
-    public ColumnConfig setMaskType(String maskType) {
-        this.maskType = maskType;
-        return this;
-    }
-
-    public boolean isPrimaryKey() {
-        return this.isPrimaryKey;
-    }
-
-    public ColumnConfig setPrimaryKey(boolean primaryKey) {
-        this.isPrimaryKey = primaryKey;
-        return this;
-    }
-
-    public KeyType getKeyType() {
-        return this.keyType;
-    }
-
-    public ColumnConfig setKeyType(KeyType keyType) {
-        this.keyType = keyType;
-        return this;
-    }
-
-    public String getKeyValue() {
-        return this.keyValue;
-    }
-
-    public ColumnConfig setKeyValue(String keyValue) {
-        this.keyValue = keyValue;
-        return this;
-    }
-
-    public Boolean getKeyBefore() {
-        return this.keyBefore;
-    }
-
-    public ColumnConfig setKeyBefore(Boolean keyBefore) {
-        this.keyBefore = keyBefore;
-        return this;
-    }
 
     public static Builder builder() {
         return new Builder();

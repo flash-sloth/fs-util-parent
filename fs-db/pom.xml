@@ -43,12 +43,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-3-starter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
-        </dependency>
-
         <!-- 必须有这个jar 才能提示 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

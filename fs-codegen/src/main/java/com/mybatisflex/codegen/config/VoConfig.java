@@ -19,7 +19,10 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
@@ -36,9 +39,10 @@ import java.util.stream.Collectors;
  * @author tangyh
  * @since 2024年06月18日15:51:07
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class VoConfig implements Serializable {
-
+    @Serial
     private static final long serialVersionUID = -6790274333595436008L;
 
     /**
@@ -67,7 +71,7 @@ public class VoConfig implements Serializable {
     /**
      * 是否覆盖之前生成的文件。
      */
-    private boolean overwriteEnable;
+    private Boolean overwriteEnable = false;
 
     /**
      * VO 默认实现的接口。
@@ -77,14 +81,14 @@ public class VoConfig implements Serializable {
     /**
      * 是否使用 Lombok 注解。
      */
-    private boolean withLombok;
+    private Boolean withLombok = true;
 
     /**
      *  是否使用 Swagger 注解。
      */
-    private boolean withSwagger;
+    private Boolean withSwagger = true;
     /** 导出(@Excel)注解 */
-    private boolean withExcel;
+    private Boolean withExcel = true;
 
     /**
      * Swagger 版本
@@ -100,53 +104,7 @@ public class VoConfig implements Serializable {
     /**
      * 继承的父类是否添加泛型
      */
-    private boolean superClassGenericity = false;
-
-    public String getSourceDir() {
-        return sourceDir;
-    }
-
-    public VoConfig setSourceDir(String sourceDir) {
-        this.sourceDir = sourceDir;
-        return this;
-    }
-
-    /**
-     * 获取类前缀。
-     */
-    public String getClassPrefix() {
-        return classPrefix;
-    }
-
-    /**
-     * 设置类前缀。
-     */
-    public VoConfig setClassPrefix(String classPrefix) {
-        this.classPrefix = classPrefix;
-        return this;
-    }
-
-    /**
-     * 获取类后缀。
-     */
-    public String getClassSuffix() {
-        return classSuffix;
-    }
-
-    /**
-     * 设置类后缀。
-     */
-    public VoConfig setClassSuffix(String classSuffix) {
-        this.classSuffix = classSuffix;
-        return this;
-    }
-
-    /**
-     * 获取父类。
-     */
-    public Class<?> getSuperClass() {
-        return superClass;
-    }
+    private Boolean superClassGenericity = false;
 
     /**
      * 设置父类。
@@ -154,15 +112,6 @@ public class VoConfig implements Serializable {
     public VoConfig setSuperClass(Class<?> superClass) {
         this.superClass = superClass;
         superClassGenericity = hasGenericity(superClass);
-        return this;
-    }
-
-    public Class<?> getGenericityType() {
-        return genericityType;
-    }
-
-    public VoConfig setGenericityType(Class<?> genericityType) {
-        this.genericityType = genericityType;
         return this;
     }
 
@@ -178,89 +127,6 @@ public class VoConfig implements Serializable {
         }
     }
 
-
-    public Class<?> getSuperClass(Table table) {
-        return superClass;
-    }
-
-    /**
-     * 是否覆盖原有文件。
-     */
-    public boolean isOverwriteEnable() {
-        return overwriteEnable;
-    }
-
-    /**
-     * 设置是否覆盖原有文件。
-     */
-    public VoConfig setOverwriteEnable(boolean overwriteEnable) {
-        this.overwriteEnable = overwriteEnable;
-        return this;
-    }
-
-    /**
-     * 获取实现接口。
-     */
-    public Class<?>[] getImplInterfaces() {
-        return implInterfaces;
-    }
-
-    /**
-     * 设置实现接口。
-     */
-    public VoConfig setImplInterfaces(Class<?>... implInterfaces) {
-        this.implInterfaces = implInterfaces;
-        return this;
-    }
-
-    /**
-     * 是否使用 Lombok。
-     */
-    public boolean isWithLombok() {
-        return withLombok;
-    }
-
-    /**
-     * 设置是否使用 Lombok。
-     */
-    public VoConfig setWithLombok(boolean withLombok) {
-        this.withLombok = withLombok;
-        return this;
-    }
-
-    public boolean isWithExcel() {
-        return withExcel;
-    }
-
-    public VoConfig setWithExcel(boolean withExcel) {
-        this.withExcel = withExcel;
-        return this;
-    }
-
-    /**
-     * 是否启用 Swagger。
-     */
-    public boolean isWithSwagger() {
-        return withSwagger;
-    }
-
-    /**
-     * 设置是否启用 Swagger。
-     */
-    public VoConfig setWithSwagger(boolean withSwagger) {
-        this.withSwagger = withSwagger;
-        this.swaggerVersion = EntityConfig.SwaggerVersion.DOC;
-        return this;
-    }
-
-
-    /**
-     * Swagger 版本
-     */
-    public EntityConfig.SwaggerVersion getSwaggerVersion() {
-        return swaggerVersion;
-    }
-
     /**
      * 设置 Swagger 版本
      */
@@ -268,25 +134,6 @@ public class VoConfig implements Serializable {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
         return this;
-    }
-
-    /**
-     * 获取项目jdk版本
-     */
-    public int getJdkVersion() {
-        return jdkVersion;
-    }
-
-    /**
-     * 设置项目jdk版本
-     */
-    public VoConfig setJdkVersion(int jdkVersion) {
-        this.jdkVersion = jdkVersion;
-        return this;
-    }
-
-    public boolean isSuperClassGenericity() {
-        return superClassGenericity;
     }
 
     public List<String> buildImports(Table table) {
@@ -309,7 +156,7 @@ public class VoConfig implements Serializable {
         }
 
         EntityConfig entityConfig = table.getEntityConfig();
-        if (entityConfig.isWithBaseClassEnable()) {
+        if (entityConfig.getWithBaseClassEnable()) {
             PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
             String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
             String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
@@ -345,7 +192,7 @@ public class VoConfig implements Serializable {
         Class<?> superClass = voConfig.getSuperClass();
         if (superClass != null) {
             String type = "";
-            if (voConfig.isSuperClassGenericity()) {
+            if (voConfig.getSuperClassGenericity()) {
                 if (voConfig.getGenericityType() == null) {
                     type = StrUtil.format("<{}>", Long.class.getSimpleName());
                 } else {

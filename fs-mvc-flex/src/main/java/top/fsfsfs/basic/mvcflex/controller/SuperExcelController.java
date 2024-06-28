@@ -2,6 +2,7 @@ package top.fsfsfs.basic.mvcflex.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.TypeUtil;
 import cn.hutool.json.JSONUtil;
@@ -136,7 +137,7 @@ public abstract class SuperExcelController<S extends SuperService<Entity>,
             ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
             String name = "";
             if (excelProperty != null) {
-                name = StrUtil.join(".", excelProperty.value());
+                name = ArrayUtil.join(excelProperty.value(), ".");
             } else {
                 Schema apiModelProperty = field.getAnnotation(Schema.class);
                 if (apiModelProperty != null) {

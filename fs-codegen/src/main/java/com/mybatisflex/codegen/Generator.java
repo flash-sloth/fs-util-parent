@@ -161,7 +161,7 @@ public class Generator {
 
 
     protected ResultSet getTablesResultSet(DatabaseMetaData dbMeta, Connection conn, String schema) throws SQLException {
-        if (globalConfig.getStrategyConfig().isGenerateForView()) {
+        if (globalConfig.getStrategyConfig().getGenerateForView()) {
             return dialect.getTablesResultSet(dbMeta, conn, schema, new String[]{"TABLE", "VIEW"});
         } else {
             return dialect.getTablesResultSet(dbMeta, conn, schema, new String[]{"TABLE"});

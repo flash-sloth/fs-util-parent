@@ -70,12 +70,12 @@ public class Column {
     /**
      * 是否为主键。
      */
-    private boolean isPrimaryKey = false;
+    private Boolean primaryKey = false;
 
     /**
      * 是否自增。
      */
-    private boolean isAutoIncrement;
+    private Boolean autoIncrement;
 
     /**
      * 数据库的字段类型，比如 varchar/tinyint 等
@@ -164,20 +164,20 @@ public class Column {
         this.nullable = nullable;
     }
 
-    public boolean isPrimaryKey() {
-        return isPrimaryKey;
+    public Boolean getPrimaryKey() {
+        return primaryKey;
     }
 
-    public void setPrimaryKey(boolean primaryKey) {
-        isPrimaryKey = primaryKey;
+    public void setPrimaryKey(Boolean primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     public Boolean getAutoIncrement() {
-        return isAutoIncrement;
+        return autoIncrement;
     }
 
     public void setAutoIncrement(Boolean autoIncrement) {
-        isAutoIncrement = autoIncrement;
+        this.autoIncrement = autoIncrement;
     }
 
     public String getRawType() {
@@ -269,7 +269,7 @@ public class Column {
         }
     }
 
-    private void addComma(StringBuilder annotations, boolean needComma) {
+    private void addComma(StringBuilder annotations, Boolean needComma) {
         if (needComma) {
             annotations.append(", ");
         }
@@ -279,11 +279,11 @@ public class Column {
         StringBuilder annotations = new StringBuilder();
 
         //@Id 的注解
-        if (isPrimaryKey || columnConfig.isPrimaryKey()) {
+        if (primaryKey || columnConfig.getPrimaryKey()) {
             annotations.append("@Id(");
 
-            boolean needComma = false;
-            if (isAutoIncrement) {
+            Boolean needComma = false;
+            if (autoIncrement) {
                 annotations.append("keyType = KeyType.Auto");
                 needComma = true;
             } else if (columnConfig.getKeyType() != null) {
@@ -304,7 +304,7 @@ public class Column {
             }
 
 
-            if (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
+            if (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
                 addComma(annotations, needComma);
                 annotations.append("comment = \"")
                         .append(this.comment.replace("\n", "")
@@ -319,14 +319,14 @@ public class Column {
                 annotations.append(")");
             }
 
-            if (entityConfig != null && entityConfig.isAlwaysGenColumnAnnotation()) {
+            if (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation()) {
                 annotations.append("\n    ");
             }
         }
 
-        boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.isAlwaysGenColumnAnnotation())
+        Boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation())
                 || !name.equalsIgnoreCase(StringUtil.camelToUnderline(property))
-                || (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(this.comment) && annotations.length() == 0);
+                || (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(this.comment) && annotations.length() == 0);
 
         StringBuilder columnAnnotation = new StringBuilder("@Column(");
 
@@ -341,8 +341,8 @@ public class Column {
                 || columnConfig.getTenantId() != null
                 || needGenColumnAnnotation
         ) {
-            boolean needComma = false;
-            if (entityConfig != null && entityConfig.isAlwaysGenColumnAnnotation()
+            Boolean needComma = false;
+            if (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation()
                     || !name.equalsIgnoreCase(StringUtil.camelToUnderline(property))) {
                 columnAnnotation.append("value = \"").append(name).append("\"");
                 needComma = true;
@@ -388,7 +388,7 @@ public class Column {
                 columnAnnotation.append("tenantId = true");
                 needComma = true;
             }
-            if (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
+            if (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(comment)) {
                 addComma(columnAnnotation, needComma);
                 columnAnnotation.append("comment = \"")
                         .append(this.comment.replace("\n", "")
@@ -433,14 +433,14 @@ public class Column {
     public String buildValidatorAnnotations() {
         StringBuilder annotations = new StringBuilder();
 
-        if (isPrimaryKey || columnConfig.isPrimaryKey() || nullable == ResultSetMetaData.columnNoNulls) {
+        if (primaryKey || columnConfig.getPrimaryKey() || nullable == ResultSetMetaData.columnNoNulls) {
             String notAnt = "@NotNull";
             if (String.class.getName().equals(propertyType)) {
                 notAnt = "@NotEmpty";
             }
             annotations.append(notAnt);
             annotations.append(StrUtil.format("(message = \"请填写{}\"", getSwaggerComment()));
-            if (isPrimaryKey || columnConfig.isPrimaryKey()) {
+            if (primaryKey || columnConfig.getPrimaryKey()) {
                 annotations.append(", groups = BaseEntity.Update.class");
             }
             annotations.append(")");
@@ -481,9 +481,9 @@ public class Column {
 
         addImportClass(importClasses, propertyType);
 
-        if (isPrimaryKey || (columnConfig != null && columnConfig.isPrimaryKey())) {
+        if (primaryKey || (columnConfig != null && columnConfig.getPrimaryKey())) {
             addImportClass(importClasses, Id.class.getName());
-            if (isAutoIncrement || (columnConfig != null && columnConfig.getKeyType() != null)) {
+            if (autoIncrement || (columnConfig != null && columnConfig.getKeyType() != null)) {
                 addImportClass(importClasses, KeyType.class.getName());
             }
         }
@@ -507,9 +507,9 @@ public class Column {
                 addImportClass(importClasses, columnConfig.getTypeHandler().getName());
             }
 
-            boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.isAlwaysGenColumnAnnotation())
+            Boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation())
                     || !name.equalsIgnoreCase(StringUtil.camelToUnderline(property))
-                    || (entityConfig != null && entityConfig.isColumnCommentEnable() && StringUtil.isNotBlank(this.comment));
+                    || (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(this.comment));
 
             if (columnConfig.getOnInsertValue() != null
                     || columnConfig.getOnUpdateValue() != null
@@ -528,7 +528,7 @@ public class Column {
         return importClasses;
     }
 
-    public boolean isDefaultColumn() {
+    public Boolean getDefaultColumn() {
         if (columnConfig == null) {
             return true;
         }
@@ -543,7 +543,7 @@ public class Column {
                 "name='" + name + '\'' +
                 ", className='" + propertyType + '\'' +
                 ", remarks='" + comment + '\'' +
-                ", isAutoIncrement=" + isAutoIncrement +
+                ", isAutoIncrement=" + autoIncrement +
                 '}';
     }
 

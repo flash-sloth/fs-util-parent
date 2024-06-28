@@ -24,7 +24,10 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
@@ -43,9 +46,11 @@ import java.util.stream.Collectors;
  * @author tangyh
  * @since 2024年06月18日15:51:07
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class DtoConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -6790274333595436008L;
 
     /**
@@ -74,7 +79,7 @@ public class DtoConfig implements Serializable {
     /**
      * 是否覆盖之前生成的文件。
      */
-    private boolean overwriteEnable;
+    private Boolean overwriteEnable = false;
 
     /**
      * VO 默认实现的接口。
@@ -84,16 +89,16 @@ public class DtoConfig implements Serializable {
     /**
      * 是否使用 Lombok 注解。
      */
-    private boolean withLombok;
+    private Boolean withLombok = true;
     /**
      * 是否使用 Validator 注解。
      */
-    private boolean withValidator;
+    private Boolean withValidator = true;
 
     /**
      *  是否使用 Swagger 注解。
      */
-    private boolean withSwagger;
+    private Boolean withSwagger = true;
 
     /**
      * Swagger 版本
@@ -112,53 +117,12 @@ public class DtoConfig implements Serializable {
     /**
      * 继承的父类是否添加泛型
      */
-    private boolean superClassGenericity = false;
+    private Boolean superClassGenericity = false;
 
     public String getSourceDir() {
         return sourceDir;
     }
 
-    public DtoConfig setSourceDir(String sourceDir) {
-        this.sourceDir = sourceDir;
-        return this;
-    }
-
-    /**
-     * 获取类前缀。
-     */
-    public String getClassPrefix() {
-        return classPrefix;
-    }
-
-    /**
-     * 设置类前缀。
-     */
-    public DtoConfig setClassPrefix(String classPrefix) {
-        this.classPrefix = classPrefix;
-        return this;
-    }
-
-    /**
-     * 获取类后缀。
-     */
-    public String getClassSuffix() {
-        return classSuffix;
-    }
-
-    /**
-     * 设置类后缀。
-     */
-    public DtoConfig setClassSuffix(String classSuffix) {
-        this.classSuffix = classSuffix;
-        return this;
-    }
-
-    /**
-     * 获取父类。
-     */
-    public Class<?> getSuperClass() {
-        return superClass;
-    }
 
     /**
      * 设置父类。
@@ -166,15 +130,6 @@ public class DtoConfig implements Serializable {
     public DtoConfig setSuperClass(Class<?> superClass) {
         this.superClass = superClass;
         superClassGenericity = hasGenericity(superClass);
-        return this;
-    }
-
-    public Class<?> getGenericityType() {
-        return genericityType;
-    }
-
-    public DtoConfig setGenericityType(Class<?> genericityType) {
-        this.genericityType = genericityType;
         return this;
     }
 
@@ -190,92 +145,13 @@ public class DtoConfig implements Serializable {
         }
     }
 
-
-    public Class<?> getSuperClass(Table table) {
-        return superClass;
-    }
-
-    /**
-     * 是否覆盖原有文件。
-     */
-    public boolean isOverwriteEnable() {
-        return overwriteEnable;
-    }
-
-    /**
-     * 设置是否覆盖原有文件。
-     */
-    public DtoConfig setOverwriteEnable(boolean overwriteEnable) {
-        this.overwriteEnable = overwriteEnable;
-        return this;
-    }
-
-    /**
-     * 获取实现接口。
-     */
-    public Class<?>[] getImplInterfaces() {
-        return implInterfaces;
-    }
-
-    /**
-     * 设置实现接口。
-     */
-    public DtoConfig setImplInterfaces(Class<?>... implInterfaces) {
-        this.implInterfaces = implInterfaces;
-        return this;
-    }
-
-    /**
-     * 是否使用 Lombok。
-     */
-    public boolean isWithLombok() {
-        return withLombok;
-    }
-
-    /**
-     * 设置是否使用 Lombok。
-     */
-    public DtoConfig setWithLombok(boolean withLombok) {
-        this.withLombok = withLombok;
-        return this;
-    }
-
-    /**
-     * 是否使用 Validator。
-     */
-    public boolean isWithValidator() {
-        return withValidator;
-    }
-
-    /**
-     * 设置是否使用 Validator。
-     */
-    public DtoConfig setWithValidator(boolean withValidator) {
-        this.withValidator = withValidator;
-        return this;
-    }
-
-    /**
-     * 是否启用 Swagger。
-     */
-    public boolean isWithSwagger() {
-        return withSwagger;
-    }
-
     /**
      * 设置是否启用 Swagger。
      */
-    public DtoConfig setWithSwagger(boolean withSwagger) {
+    public DtoConfig setWithSwagger(Boolean withSwagger) {
         this.withSwagger = withSwagger;
         this.swaggerVersion = EntityConfig.SwaggerVersion.DOC;
         return this;
-    }
-
-    /**
-     * Swagger 版本
-     */
-    public EntityConfig.SwaggerVersion getSwaggerVersion() {
-        return swaggerVersion;
     }
 
     /**
@@ -285,25 +161,6 @@ public class DtoConfig implements Serializable {
         this.swaggerVersion = swaggerVersion;
         this.withSwagger = swaggerVersion != null;
         return this;
-    }
-
-    /**
-     * 获取项目jdk版本
-     */
-    public int getJdkVersion() {
-        return jdkVersion;
-    }
-
-    /**
-     * 设置项目jdk版本
-     */
-    public DtoConfig setJdkVersion(int jdkVersion) {
-        this.jdkVersion = jdkVersion;
-        return this;
-    }
-
-    public boolean isSuperClassGenericity() {
-        return superClassGenericity;
     }
 
     public List<String> buildImports(GlobalConfig globalConfig, Table table) {
@@ -324,7 +181,7 @@ public class DtoConfig implements Serializable {
             imports.addAll(column.getImportClasses());
 
             ColumnConfig columnConfig = globalConfig.getStrategyConfig().getColumnConfig(table.getName(), column.getName());
-            if (column.isPrimaryKey() || columnConfig.isPrimaryKey() || column.getNullable() == ResultSetMetaData.columnNoNulls) {
+            if (column.getPrimaryKey() || columnConfig.getPrimaryKey() || column.getNullable() == ResultSetMetaData.columnNoNulls) {
                 imports.add(NotNull.class.getName());
                 if (String.class.getName().equals(column.getPropertyType())) {
                     imports.add(NotEmpty.class.getName());
@@ -349,7 +206,7 @@ public class DtoConfig implements Serializable {
         Class<?> superClass = voConfig.getSuperClass();
         if (superClass != null) {
             String type = "";
-            if (voConfig.isSuperClassGenericity()) {
+            if (voConfig.getSuperClassGenericity()) {
                 if (voConfig.getGenericityType() == null) {
                     type = StrUtil.format("<{}>", Long.class.getSimpleName());
                 } else {
@@ -373,16 +230,6 @@ public class DtoConfig implements Serializable {
         } else {
             return "";
         }
-    }
-
-
-    public Set<String> getIgnoreColumns() {
-        return ignoreColumns;
-    }
-
-    public DtoConfig setIgnoreColumns(Set<String> ignoreColumns) {
-        this.ignoreColumns = ignoreColumns;
-        return this;
     }
 
 

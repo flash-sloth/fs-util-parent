@@ -1,5 +1,5 @@
-#set(withLombok = voConfig.isWithLombok())
-#set(withSwagger = voConfig.isWithSwagger())
+#set(withLombok = voConfig.getWithLombok())
+#set(withSwagger = voConfig.getWithSwagger())
 #set(swaggerVersion = voConfig.getSwaggerVersion())
 #set(jdkVersion = voConfig.getJdkVersion())
 package #(voPackageName);

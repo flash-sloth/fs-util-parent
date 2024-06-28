@@ -72,10 +72,10 @@ public class TableDefGenerator implements IGenerator {
 
         String tableDefPackagePath = packageConfig.getTableDefPackage().replace(".", "/");
         File tableDefJavaFile = new File(sourceDir, tableDefPackagePath + "/" +
-                table.buildTableDefClassName() + globalConfig.getFileType());
+                table.buildTableDefClassName() + ".java");
 
 
-        if (tableDefJavaFile.exists() && !tableDefConfig.isOverwriteEnable()) {
+        if (tableDefJavaFile.exists() && !tableDefConfig.getOverwriteEnable()) {
             return;
         }
 

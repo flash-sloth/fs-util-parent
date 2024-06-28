@@ -15,7 +15,11 @@
 
 
     <dependencies>
-
+        <dependency>
+            <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-core</artifactId>
@@ -33,6 +37,7 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
+
         <!--使用 enjoy 模板引擎-->
         <dependency>
             <groupId>com.jfinal</groupId>

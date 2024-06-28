@@ -1,6 +1,6 @@
 package #(packageConfig.mapperPackage);
 
-#if(mapperConfig.isMapperAnnotation())
+#if(mapperConfig.getMapperAnnotation())
 import org.apache.ibatis.annotations.Mapper;
 #end
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import #(packageConfig.entityPackage).#(table.buildEntityClassName());
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
  */
-#if(mapperConfig.isMapperAnnotation())
+#if(mapperConfig.getMapperAnnotation())
 @Mapper
 #end
 @Repository

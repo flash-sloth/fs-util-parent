@@ -62,6 +62,7 @@
         <hutool.version>5.8.28</hutool.version>
         <lombok.version>1.18.32</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct-plus.version>1.4.2</mapstruct-plus.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <oshi.version>6.3.2</oshi.version>
@@ -221,6 +222,11 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.linpeilie</groupId>
+                <artifactId>mapstruct-plus</artifactId>
+                <version>${mapstruct-plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
@@ -642,9 +648,33 @@
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                        <!--                        <compilerArgs>-Xlint:deprecation</compilerArgs>-->
-                        <!--                        <compilerArgs>-Xlint:unchecked</compilerArgs>-->
-
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>io.github.linpeilie</groupId>
+                                <artifactId>mapstruct-plus-processor</artifactId>
+                                <version>${mapstruct-plus.version}</version>
+                            </path>
+                            <path>
+                                <groupId>com.mybatis-flex</groupId>
+                                <artifactId>mybatis-flex-processor</artifactId>
+                                <version>${mybatis-flex.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -719,36 +749,36 @@
             </plugins>
         </pluginManagement>
 
-        <!--        <plugins>-->
-        <!--            &lt;!&ndash; 编译插件 &ndash;&gt;-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.apache.maven.plugins</groupId>-->
-        <!--                <artifactId>maven-compiler-plugin</artifactId>-->
-        <!--            </plugin>-->
-        <!--            &lt;!&ndash; 资源插件 &ndash;&gt;-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.apache.maven.plugins</groupId>-->
-        <!--                <artifactId>maven-resources-plugin</artifactId>-->
-        <!--            </plugin>-->
-        <!--            &lt;!&ndash;-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.apache.maven.plugins</groupId>-->
-        <!--                <artifactId>maven-javadoc-plugin</artifactId>-->
-        <!--            </plugin>-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.apache.maven.plugins</groupId>-->
-        <!--                <artifactId>maven-source-plugin</artifactId>-->
-        <!--            </plugin>-->
-        <!--            &ndash;&gt;-->
-        <!--            &lt;!&ndash; 一键更新子模块版本号 &ndash;&gt;-->
-        <!--            <plugin>-->
-        <!--                <groupId>org.codehaus.mojo</groupId>-->
-        <!--                <artifactId>versions-maven-plugin</artifactId>-->
-        <!--                <configuration>-->
-        <!--                    <generateBackupPoms>false</generateBackupPoms>-->
-        <!--                </configuration>-->
-        <!--            </plugin>-->
-        <!--        </plugins>-->
+        <plugins>
+            <!-- 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <!--            &lt;!&ndash; 资源插件 &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-resources-plugin</artifactId>-->
+            <!--            </plugin>-->
+            <!--            &lt;!&ndash;-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-javadoc-plugin</artifactId>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-source-plugin</artifactId>-->
+            <!--            </plugin>-->
+            <!--            &ndash;&gt;-->
+            <!--            &lt;!&ndash; 一键更新子模块版本号 &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>versions-maven-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <generateBackupPoms>false</generateBackupPoms>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+        </plugins>
     </build>
     <repositories>
         <repository>

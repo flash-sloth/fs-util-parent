@@ -15,6 +15,9 @@
  */
 package com.mybatisflex.codegen.config;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -24,7 +27,8 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2024年06月25日14:30:32
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class FrontConfig implements Serializable {
 
     @Serial
@@ -42,20 +46,20 @@ public class FrontConfig implements Serializable {
     /**
      * 是否启用国际化。
      */
-    private boolean i18n = true;
+    private Boolean i18n = true;
     /**
      * 页面缓存。
      */
-    private boolean keepAlive = true;
+    private Boolean keepAlive = true;
     /**
      * 复选框。
      */
-    private boolean checkbox = true;
+    private Boolean checkbox = true;
 
     /**
      * 单选框。
      */
-    private boolean radio = false;
+    private Boolean radio = false;
 
     public enum OpenMode {
         /** 弹窗、抽屉、新窗口 */
@@ -67,57 +71,5 @@ public class FrontConfig implements Serializable {
         SIMPLE, TREE, SLAVE;
     }
 
-    public OpenMode getOpenMode() {
-        return openMode;
-    }
 
-    public FrontConfig setOpenMode(OpenMode openMode) {
-        this.openMode = openMode;
-        return this;
-    }
-
-    public Layout getLayout() {
-        return layout;
-    }
-
-    public FrontConfig setLayout(Layout layout) {
-        this.layout = layout;
-        return this;
-    }
-
-    public boolean isI18n() {
-        return i18n;
-    }
-
-    public FrontConfig setI18n(boolean i18n) {
-        this.i18n = i18n;
-        return this;
-    }
-
-    public boolean isKeepAlive() {
-        return keepAlive;
-    }
-
-    public FrontConfig setKeepAlive(boolean keepAlive) {
-        this.keepAlive = keepAlive;
-        return this;
-    }
-
-    public boolean isCheckbox() {
-        return checkbox;
-    }
-
-    public FrontConfig setCheckbox(boolean checkbox) {
-        this.checkbox = checkbox;
-        return this;
-    }
-
-    public boolean isRadio() {
-        return radio;
-    }
-
-    public FrontConfig setRadio(boolean radio) {
-        this.radio = radio;
-        return this;
-    }
 }

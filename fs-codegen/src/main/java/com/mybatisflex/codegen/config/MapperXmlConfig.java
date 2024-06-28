@@ -16,6 +16,10 @@
 
 package com.mybatisflex.codegen.config;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -25,8 +29,11 @@ import java.io.Serializable;
  * @since 2023-05-17
  */
 @SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class MapperXmlConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7836897652282634412L;
     /**
      * MapperXml 文件的前缀。
@@ -41,51 +48,6 @@ public class MapperXmlConfig implements Serializable {
     /**
      * 是否覆盖之前生成的文件。
      */
-    private boolean overwriteEnable;
-
-    /**
-     * 获取文件前缀。
-     */
-    public String getFilePrefix() {
-        return filePrefix;
-    }
-
-    /**
-     * 设置文件前缀。
-     */
-    public MapperXmlConfig setFilePrefix(String filePrefix) {
-        this.filePrefix = filePrefix;
-        return this;
-    }
-
-    /**
-     * 获取文件后缀。
-     */
-    public String getFileSuffix() {
-        return fileSuffix;
-    }
-
-    /**
-     * 设置文件后缀。
-     */
-    public MapperXmlConfig setFileSuffix(String fileSuffix) {
-        this.fileSuffix = fileSuffix;
-        return this;
-    }
-
-    /**
-     * 是否覆盖原有文件。
-     */
-    public boolean isOverwriteEnable() {
-        return overwriteEnable;
-    }
-
-    /**
-     * 设置是否覆盖原有文件。
-     */
-    public MapperXmlConfig setOverwriteEnable(boolean overwriteEnable) {
-        this.overwriteEnable = overwriteEnable;
-        return this;
-    }
+    private Boolean overwriteEnable = false;
 
 }

@@ -60,7 +60,7 @@ public class DtoGenerator implements IGenerator {
         File javaFile = new File(packageConfig.getSourceDir(), packagePath + "/" +
                 table.buildDtoClassName() + ".java");
 
-        if (javaFile.exists() && !dtoConfig.isOverwriteEnable()) {
+        if (javaFile.exists() && !dtoConfig.getOverwriteEnable()) {
             return;
         }
 

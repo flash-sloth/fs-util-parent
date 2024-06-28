@@ -20,10 +20,12 @@ import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
 import com.mybatisflex.codegen.template.ITemplate;
 import com.mybatisflex.codegen.template.impl.EnjoyTemplate;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -32,12 +34,10 @@ import java.io.Serializable;
  * @author 王帅
  * @since 2023-05-17
  */
-@SuppressWarnings("unused")
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class TemplateConfig implements Serializable {
-
+    @Serial
     private static final long serialVersionUID = 6700855804948021101L;
     /**
      * 生成代码的模板引擎。

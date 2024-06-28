@@ -69,7 +69,7 @@ public class MapperXmlGenerator implements IGenerator {
                 table.buildMapperXmlFileName() + ".xml");
 
 
-        if (mapperXmlFile.exists() && !mapperXmlConfig.isOverwriteEnable()) {
+        if (mapperXmlFile.exists() && !mapperXmlConfig.getOverwriteEnable()) {
             return;
         }
 

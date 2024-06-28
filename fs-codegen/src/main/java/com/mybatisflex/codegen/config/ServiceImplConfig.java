@@ -15,6 +15,10 @@
  */
 package com.mybatisflex.codegen.config;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -23,9 +27,11 @@ import java.io.Serializable;
  * @author 王帅
  * @since 2023-05-15
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class ServiceImplConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 17115432462168151L;
 
     /**
@@ -51,20 +57,13 @@ public class ServiceImplConfig implements Serializable {
     /**
      * 是否覆盖之前生成的文件。
      */
-    private boolean overwriteEnable;
+    private Boolean overwriteEnable = false;
 
     /**
      * 是否生成缓存样例代码。
      */
-    private boolean cacheExample;
+    private Boolean cacheExample = false;
 
-    public String getSourceDir() {
-        return sourceDir;
-    }
-
-    public void setSourceDir(String sourceDir) {
-        this.sourceDir = sourceDir;
-    }
 
     public String buildSuperClassImport() {
         if (superClass == null) {
@@ -79,80 +78,4 @@ public class ServiceImplConfig implements Serializable {
         }
         return superClass.getSimpleName();
     }
-
-    /**
-     * 获取类前缀。
-     */
-    public String getClassPrefix() {
-        return classPrefix;
-    }
-
-    /**
-     * 设置类前缀。
-     */
-    public ServiceImplConfig setClassPrefix(String classPrefix) {
-        this.classPrefix = classPrefix;
-        return this;
-    }
-
-    /**
-     * 获取类后缀。
-     */
-    public String getClassSuffix() {
-        return classSuffix;
-    }
-
-    /**
-     * 设置类后缀。
-     */
-    public ServiceImplConfig setClassSuffix(String classSuffix) {
-        this.classSuffix = classSuffix;
-        return this;
-    }
-
-    /**
-     * 获取父类。
-     */
-    public Class<?> getSuperClass() {
-        return superClass;
-    }
-
-    /**
-     * 设置父类。
-     */
-    public ServiceImplConfig setSuperClass(Class<?> superClass) {
-        this.superClass = superClass;
-        return this;
-    }
-
-    /**
-     * 是否覆盖原有文件。
-     */
-    public boolean isOverwriteEnable() {
-        return overwriteEnable;
-    }
-
-    /**
-     * 设置是否覆盖原有文件。
-     */
-    public ServiceImplConfig setOverwriteEnable(boolean overwriteEnable) {
-        this.overwriteEnable = overwriteEnable;
-        return this;
-    }
-
-    /**
-     * 是否生成缓存例子。
-     */
-    public boolean isCacheExample() {
-        return cacheExample;
-    }
-
-    /**
-     * 设置生成缓存例子。
-     */
-    public ServiceImplConfig setCacheExample(boolean cacheExample) {
-        this.cacheExample = cacheExample;
-        return this;
-    }
-
 }

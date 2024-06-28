@@ -17,7 +17,10 @@
 package com.mybatisflex.codegen.config;
 
 import com.mybatisflex.core.util.StringUtil;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -26,9 +29,11 @@ import java.io.Serializable;
  * @author 王帅
  * @since 2023-05-15
  */
-@SuppressWarnings("unused")
+@Data
+@Accessors(chain = true)
 public class PackageConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -8257632247633439537L;
     /**
      * 代码生成目录。
@@ -96,28 +101,6 @@ public class PackageConfig implements Serializable {
         return sourceDir;
     }
 
-    /**
-     * 设置生成目录。
-     */
-    public PackageConfig setSourceDir(String sourceDir) {
-        this.sourceDir = sourceDir;
-        return this;
-    }
-
-    /**
-     * 获得根包路径。
-     */
-    public String getBasePackage() {
-        return basePackage;
-    }
-
-    /**
-     * 设置根包路径。
-     */
-    public PackageConfig setBasePackage(String basePackage) {
-        this.basePackage = basePackage;
-        return this;
-    }
 
     /**
      * 获取实体类层包路径。
@@ -130,14 +113,6 @@ public class PackageConfig implements Serializable {
     }
 
     /**
-     * 设置实体类层包路径。
-     */
-    public PackageConfig setEntityPackage(String entityPackage) {
-        this.entityPackage = entityPackage;
-        return this;
-    }
-
-    /**
      * 获取VO层包路径。
      */
     public String getVoPackage() {
@@ -147,13 +122,6 @@ public class PackageConfig implements Serializable {
         return voPackage;
     }
 
-    /**
-     * 设置VO层包路径。
-     */
-    public PackageConfig setVoPackage(String voPackage) {
-        this.voPackage = voPackage;
-        return this;
-    }
 
     /**
      * 获取DTO层包路径。
@@ -165,13 +133,6 @@ public class PackageConfig implements Serializable {
         return dtoPackage;
     }
 
-    /**
-     * 设置DTO层包路径。
-     */
-    public PackageConfig setDtoPackage(String dtoPackage) {
-        this.dtoPackage = dtoPackage;
-        return this;
-    }
 
     /**
      * 获取Query层包路径。
@@ -183,13 +144,6 @@ public class PackageConfig implements Serializable {
         return queryPackage;
     }
 
-    /**
-     * 设置Query层包路径。
-     */
-    public PackageConfig setQueryPackage(String queryPackage) {
-        this.queryPackage = queryPackage;
-        return this;
-    }
 
     /**
      * 获取映射层包路径。
@@ -201,13 +155,6 @@ public class PackageConfig implements Serializable {
         return mapperPackage;
     }
 
-    /**
-     * 设置映射层包路径。
-     */
-    public PackageConfig setMapperPackage(String mapperPackage) {
-        this.mapperPackage = mapperPackage;
-        return this;
-    }
 
     /**
      * 获取服务层包路径。
@@ -219,13 +166,6 @@ public class PackageConfig implements Serializable {
         return servicePackage;
     }
 
-    /**
-     * 设置服务层包路径。
-     */
-    public PackageConfig setServicePackage(String servicePackage) {
-        this.servicePackage = servicePackage;
-        return this;
-    }
 
     /**
      * 获取服务层实现包路径。
@@ -240,13 +180,6 @@ public class PackageConfig implements Serializable {
         return serviceImplPackage;
     }
 
-    /**
-     * 设置服务层实现包路径。
-     */
-    public PackageConfig setServiceImplPackage(String serviceImplPackage) {
-        this.serviceImplPackage = serviceImplPackage;
-        return this;
-    }
 
     /**
      * 获取控制层包路径。
@@ -258,13 +191,6 @@ public class PackageConfig implements Serializable {
         return controllerPackage;
     }
 
-    /**
-     * 设置控制层包路径。
-     */
-    public PackageConfig setControllerPackage(String controllerPackage) {
-        this.controllerPackage = controllerPackage;
-        return this;
-    }
 
     /**
      * 获取表定义层包路径。
@@ -277,14 +203,6 @@ public class PackageConfig implements Serializable {
     }
 
     /**
-     * 设置表定义层包路径。
-     */
-    public PackageConfig setTableDefPackage(String tableDefPackage) {
-        this.tableDefPackage = tableDefPackage;
-        return this;
-    }
-
-    /**
      * 获取 Mapper XML 文件路径。
      */
     public String getMapperXmlPath() {
@@ -292,14 +210,6 @@ public class PackageConfig implements Serializable {
             return System.getProperty("user.dir").concat("/src/main/resources/mapper");
         }
         return mapperXmlPath;
-    }
-
-    /**
-     * 设置 Mapper XML 文件路径。
-     */
-    public PackageConfig setMapperXmlPath(String mapperXmlPath) {
-        this.mapperXmlPath = mapperXmlPath;
-        return this;
     }
 
 }

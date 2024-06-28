@@ -1,7 +1,7 @@
-#set(withLombok = entityConfig.isWithLombok())
-#set(withSwagger = entityConfig.isWithSwagger())
+#set(withLombok = entityConfig.getWithLombok())
+#set(withSwagger = entityConfig.getWithSwagger())
 #set(swaggerVersion = entityConfig.getSwaggerVersion())
-#set(withActiveRecord = entityConfig.isWithActiveRecord())
+#set(withActiveRecord = entityConfig.getWithActiveRecord())
 #set(jdkVersion = entityConfig.getJdkVersion())
 package #(entityPackageName);
 

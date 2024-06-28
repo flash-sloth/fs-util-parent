@@ -15,11 +15,10 @@
  */
 package com.mybatisflex.codegen.config;
 
-import com.mybatisflex.codegen.constant.TemplateConst;
-import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.template.ITemplate;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,15 +37,10 @@ import java.util.function.UnaryOperator;
 @SuppressWarnings("unused")
 public class GlobalConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 5033600623041298000L;
 
-    private final FileType fileType;
-
     // === 必须配置 ===
-
-    public GlobalConfig() {
-        this(FileType.JAVA);
-    }
 
     private final JavadocConfig javadocConfig;
     private final PackageConfig packageConfig;
@@ -71,51 +65,24 @@ public class GlobalConfig implements Serializable {
 
     // === 是否启用生成 ===
 
-    private boolean entityGenerateEnable;
-    private boolean voGenerateEnable;
-    private boolean dtoGenerateEnable;
-    private boolean queryGenerateEnable;
-    private boolean mapperGenerateEnable;
-    private boolean serviceGenerateEnable;
-    private boolean serviceImplGenerateEnable;
-    private boolean controllerGenerateEnable;
-    private boolean tableDefGenerateEnable;
-    private boolean mapperXmlGenerateEnable;
-    private boolean packageInfoGenerateEnable;
+    private Boolean entityGenerateEnable = false;
+    private Boolean voGenerateEnable = false;
+    private Boolean dtoGenerateEnable = false;
+    private Boolean queryGenerateEnable = false;
+    private Boolean mapperGenerateEnable = false;
+    private Boolean serviceGenerateEnable = false;
+    private Boolean serviceImplGenerateEnable = false;
+    private Boolean controllerGenerateEnable = false;
+    private Boolean tableDefGenerateEnable = false;
+    private Boolean mapperXmlGenerateEnable = false;
+    private Boolean packageInfoGenerateEnable = false;
 
 
-    public GlobalConfig(FileType fileType) {
-        this.fileType = fileType;
+    public GlobalConfig() {
         this.javadocConfig = new JavadocConfig();
         this.packageConfig = new PackageConfig();
         this.strategyConfig = new StrategyConfig();
         this.templateConfig = new TemplateConfig();
-        if (fileType == FileType.KOTLIN) {
-            JdbcTypeMapping.registerMapping("java.lang.Integer", "Int");
-        }
-    }
-
-    public FileType getFileType() {
-        return fileType;
-    }
-
-
-    public enum FileType {
-
-        JAVA(".java"),
-        KOTLIN(".kt");
-
-        private final String suffix;
-
-        FileType(String suffix) {
-            this.suffix = suffix;
-        }
-
-        @Override
-        public String toString() {
-            return suffix;
-        }
-
     }
 
     // === 分类配置 ===
@@ -792,16 +759,16 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see StrategyConfig#isGenerateForView()
+     * @see StrategyConfig#getGenerateForView()
      */
-    public boolean isGenerateForView() {
-        return getStrategyConfig().isGenerateForView();
+    public Boolean getGenerateForView() {
+        return getStrategyConfig().getGenerateForView();
     }
 
     /**
-     * @see StrategyConfig#setGenerateForView(boolean)
+     * @see StrategyConfig#setGenerateForView(Boolean)
      */
-    public void setGenerateForView(boolean generateForView) {
+    public void setGenerateForView(Boolean generateForView) {
         getStrategyConfig().setGenerateForView(generateForView);
     }
 
@@ -933,7 +900,7 @@ public class GlobalConfig implements Serializable {
     }
 
 
-    public boolean isEntityGenerateEnable() {
+    public Boolean isEntityGenerateEnable() {
         return entityGenerateEnable;
     }
 
@@ -941,11 +908,11 @@ public class GlobalConfig implements Serializable {
      * @see #enableEntity()
      * @see #disableEntity()
      */
-    public void setEntityGenerateEnable(boolean entityGenerateEnable) {
+    public void setEntityGenerateEnable(Boolean entityGenerateEnable) {
         this.entityGenerateEnable = entityGenerateEnable;
     }
 
-    public boolean isVoGenerateEnable() {
+    public Boolean isVoGenerateEnable() {
         return voGenerateEnable;
     }
 
@@ -953,11 +920,11 @@ public class GlobalConfig implements Serializable {
      * @see #enableVo()
      * @see #disableVo()
      */
-    public void setVoGenerateEnable(boolean voGenerateEnable) {
+    public void setVoGenerateEnable(Boolean voGenerateEnable) {
         this.voGenerateEnable = voGenerateEnable;
     }
 
-    public boolean isDtoGenerateEnable() {
+    public Boolean isDtoGenerateEnable() {
         return dtoGenerateEnable;
     }
 
@@ -965,11 +932,11 @@ public class GlobalConfig implements Serializable {
      * @see #enableDto()
      * @see #disableDto()
      */
-    public void setDtoGenerateEnable(boolean dtoGenerateEnable) {
+    public void setDtoGenerateEnable(Boolean dtoGenerateEnable) {
         this.dtoGenerateEnable = dtoGenerateEnable;
     }
 
-    public boolean isQueryGenerateEnable() {
+    public Boolean isQueryGenerateEnable() {
         return queryGenerateEnable;
     }
 
@@ -977,21 +944,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableQuery()
      * @see #disableQuery()
      */
-    public void setQueryGenerateEnable(boolean queryGenerateEnable) {
+    public void setQueryGenerateEnable(Boolean queryGenerateEnable) {
         this.queryGenerateEnable = queryGenerateEnable;
     }
 
     /**
-     * @see EntityConfig#isOverwriteEnable()
+     * @see EntityConfig#getOverwriteEnable()
      */
-    public boolean isEntityOverwriteEnable() {
-        return getEntityConfig().isOverwriteEnable();
+    public Boolean isEntityOverwriteEnable() {
+        return getEntityConfig().getOverwriteEnable();
     }
 
     /**
-     * @see EntityConfig#setOverwriteEnable(boolean)
+     * @see EntityConfig#setOverwriteEnable(Boolean)
      */
-    public void setEntityOverwriteEnable(boolean entityOverwriteEnable) {
+    public void setEntityOverwriteEnable(Boolean entityOverwriteEnable) {
         getEntityConfig().setOverwriteEnable(entityOverwriteEnable);
     }
 
@@ -1066,24 +1033,24 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see EntityConfig#isWithLombok()
+     * @see EntityConfig#getWithLombok()
      */
-    public boolean isEntityWithLombok() {
-        return getEntityConfig().isWithLombok();
+    public Boolean isEntityWithLombok() {
+        return getEntityConfig().getWithLombok();
     }
 
     /**
-     * @see EntityConfig#setWithLombok(boolean)
+     * @see EntityConfig#setWithLombok(Boolean)
      */
-    public void setEntityWithLombok(boolean entityWithLombok) {
+    public void setEntityWithLombok(Boolean entityWithLombok) {
         getEntityConfig().setWithLombok(entityWithLombok);
     }
 
     /**
-     * @see EntityConfig#isWithSwagger()
+     * @see EntityConfig#getWithSwagger()
      */
-    public boolean isEntityWithSwagger() {
-        return getEntityConfig().isWithSwagger();
+    public Boolean isEntityWithSwagger() {
+        return getEntityConfig().getWithSwagger();
     }
 
     /**
@@ -1094,23 +1061,23 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see EntityConfig#setWithSwagger(boolean)
+     * @see EntityConfig#setWithSwagger(Boolean)
      */
-    public void setEntityWithSwagger(boolean entityWithSwagger) {
+    public void setEntityWithSwagger(Boolean entityWithSwagger) {
         getEntityConfig().setWithSwagger(entityWithSwagger);
     }
 
     /**
-     * @see EntityConfig#isWithActiveRecord()
+     * @see EntityConfig#getWithActiveRecord()
      */
-    public boolean isWithActiveRecord() {
-        return getEntityConfig().isWithActiveRecord();
+    public Boolean isWithActiveRecord() {
+        return getEntityConfig().getWithActiveRecord();
     }
 
     /**
-     * @see EntityConfig#setWithActiveRecord(boolean)
+     * @see EntityConfig#setWithActiveRecord(Boolean)
      */
-    public void setWithActiveRecord(boolean withActiveRecord) {
+    public void setWithActiveRecord(Boolean withActiveRecord) {
         getEntityConfig().setWithActiveRecord(withActiveRecord);
     }
 
@@ -1152,7 +1119,7 @@ public class GlobalConfig implements Serializable {
         getDtoConfig().setJdkVersion(jdkVersion);
     }
 
-    public boolean isMapperGenerateEnable() {
+    public Boolean isMapperGenerateEnable() {
         return mapperGenerateEnable;
     }
 
@@ -1160,21 +1127,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableMapper()
      * @see #disableMapper()
      */
-    public void setMapperGenerateEnable(boolean mapperGenerateEnable) {
+    public void setMapperGenerateEnable(Boolean mapperGenerateEnable) {
         this.mapperGenerateEnable = mapperGenerateEnable;
     }
 
     /**
-     * @see MapperConfig#isOverwriteEnable()
+     * @see MapperConfig#getOverwriteEnable()
      */
-    public boolean isMapperOverwriteEnable() {
-        return getMapperConfig().isOverwriteEnable();
+    public Boolean isMapperOverwriteEnable() {
+        return getMapperConfig().getOverwriteEnable();
     }
 
     /**
-     * @see MapperConfig#setOverwriteEnable(boolean)
+     * @see MapperConfig#setOverwriteEnable(Boolean)
      */
-    public void setMapperOverwriteEnable(boolean mapperOverwriteEnable) {
+    public void setMapperOverwriteEnable(Boolean mapperOverwriteEnable) {
         getMapperConfig().setOverwriteEnable(mapperOverwriteEnable);
     }
 
@@ -1221,20 +1188,20 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see MapperConfig#isMapperAnnotation()
+     * @see MapperConfig#getMapperAnnotation()
      */
-    public boolean isMapperAnnotation() {
-        return getMapperConfig().isMapperAnnotation();
+    public Boolean getMapperAnnotation() {
+        return getMapperConfig().getMapperAnnotation();
     }
 
     /**
-     * @see MapperConfig#setMapperAnnotation(boolean)
+     * @see MapperConfig#setMapperAnnotation(Boolean)
      */
-    public void setMapperAnnotation(boolean mapperAnnotation) {
+    public void setMapperAnnotation(Boolean mapperAnnotation) {
         getMapperConfig().setMapperAnnotation(mapperAnnotation);
     }
 
-    public boolean isServiceGenerateEnable() {
+    public Boolean getServiceGenerateEnable() {
         return serviceGenerateEnable;
     }
 
@@ -1242,21 +1209,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableService()
      * @see #disableService()
      */
-    public void setServiceGenerateEnable(boolean serviceGenerateEnable) {
+    public void setServiceGenerateEnable(Boolean serviceGenerateEnable) {
         this.serviceGenerateEnable = serviceGenerateEnable;
     }
 
     /**
-     * @see ServiceConfig#isOverwriteEnable()
+     * @see ServiceConfig#getOverwriteEnable()
      */
-    public boolean isServiceOverwriteEnable() {
-        return getServiceConfig().isOverwriteEnable();
+    public Boolean isServiceOverwriteEnable() {
+        return getServiceConfig().getOverwriteEnable();
     }
 
     /**
-     * @see ServiceConfig#setOverwriteEnable(boolean)
+     * @see ServiceConfig#setOverwriteEnable(Boolean)
      */
-    public void setServiceOverwriteEnable(boolean serviceOverwriteEnable) {
+    public void setServiceOverwriteEnable(Boolean serviceOverwriteEnable) {
         getServiceConfig().setOverwriteEnable(serviceOverwriteEnable);
     }
 
@@ -1302,7 +1269,7 @@ public class GlobalConfig implements Serializable {
         getServiceConfig().setSuperClass(serviceSuperClass);
     }
 
-    public boolean isServiceImplGenerateEnable() {
+    public Boolean isServiceImplGenerateEnable() {
         return serviceImplGenerateEnable;
     }
 
@@ -1310,21 +1277,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableServiceImpl()
      * @see #disableServiceImpl()
      */
-    public void setServiceImplGenerateEnable(boolean serviceImplGenerateEnable) {
+    public void setServiceImplGenerateEnable(Boolean serviceImplGenerateEnable) {
         this.serviceImplGenerateEnable = serviceImplGenerateEnable;
     }
 
     /**
-     * @see ServiceImplConfig#isOverwriteEnable()
+     * @see ServiceImplConfig#getOverwriteEnable()
      */
-    public boolean isServiceImplOverwriteEnable() {
-        return getServiceImplConfig().isOverwriteEnable();
+    public Boolean isServiceImplOverwriteEnable() {
+        return getServiceImplConfig().getOverwriteEnable();
     }
 
     /**
-     * @see ServiceImplConfig#setOverwriteEnable(boolean)
+     * @see ServiceImplConfig#setOverwriteEnable(Boolean)
      */
-    public void setServiceImplOverwriteEnable(boolean serviceImplOverwriteEnable) {
+    public void setServiceImplOverwriteEnable(Boolean serviceImplOverwriteEnable) {
         getServiceImplConfig().setOverwriteEnable(serviceImplOverwriteEnable);
     }
 
@@ -1371,34 +1338,34 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see ServiceImplConfig#isCacheExample()
+     * @see ServiceImplConfig#getCacheExample()
      */
-    public boolean isServiceImplCacheExample() {
-        return getServiceImplConfig().isCacheExample();
+    public Boolean isServiceImplCacheExample() {
+        return getServiceImplConfig().getCacheExample();
     }
 
     /**
-     * @see ServiceImplConfig#setCacheExample(boolean)
+     * @see ServiceImplConfig#setCacheExample(Boolean)
      */
-    public void setServiceImplCacheExample(boolean cacheExample) {
+    public void setServiceImplCacheExample(Boolean cacheExample) {
         getServiceImplConfig().setCacheExample(cacheExample);
     }
 
     /**
-     * @see ControllerConfig#isOverwriteEnable()
+     * @see ControllerConfig#getOverwriteEnable()
      */
-    public boolean isControllerOverwriteEnable() {
-        return getControllerConfig().isOverwriteEnable();
+    public Boolean isControllerOverwriteEnable() {
+        return getControllerConfig().getOverwriteEnable();
     }
 
-    public boolean isControllerGenerateEnable() {
+    public Boolean isControllerGenerateEnable() {
         return controllerGenerateEnable;
     }
 
     /**
-     * @see ControllerConfig#setOverwriteEnable(boolean)
+     * @see ControllerConfig#setOverwriteEnable(Boolean)
      */
-    public void setControllerOverwriteEnable(boolean controllerOverwriteEnable) {
+    public void setControllerOverwriteEnable(Boolean controllerOverwriteEnable) {
         getControllerConfig().setOverwriteEnable(controllerOverwriteEnable);
     }
 
@@ -1406,7 +1373,7 @@ public class GlobalConfig implements Serializable {
      * @see #enableController()
      * @see #disableController()
      */
-    public void setControllerGenerateEnable(boolean controllerGenerateEnable) {
+    public void setControllerGenerateEnable(Boolean controllerGenerateEnable) {
         this.controllerGenerateEnable = controllerGenerateEnable;
     }
 
@@ -1467,20 +1434,20 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see ControllerConfig#isRestStyle()
+     * @see ControllerConfig#getRestStyle()
      */
-    public boolean isControllerRestStyle() {
-        return getControllerConfig().isRestStyle();
+    public Boolean isControllerRestStyle() {
+        return getControllerConfig().getRestStyle();
     }
 
     /**
-     * @see ControllerConfig#setRestStyle(boolean)
+     * @see ControllerConfig#setRestStyle(Boolean)
      */
-    public void setControllerRestStyle(boolean restStyle) {
+    public void setControllerRestStyle(Boolean restStyle) {
         getControllerConfig().setRestStyle(restStyle);
     }
 
-    public boolean isTableDefGenerateEnable() {
+    public Boolean isTableDefGenerateEnable() {
         return tableDefGenerateEnable;
     }
 
@@ -1488,21 +1455,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableTableDef()
      * @see #disableTableDef()
      */
-    public void setTableDefGenerateEnable(boolean tableDefGenerateEnable) {
+    public void setTableDefGenerateEnable(Boolean tableDefGenerateEnable) {
         this.tableDefGenerateEnable = tableDefGenerateEnable;
     }
 
     /**
-     * @see TableDefConfig#isOverwriteEnable()
+     * @see TableDefConfig#getOverwriteEnable()
      */
-    public boolean isTableDefOverwriteEnable() {
-        return getTableDefConfig().isOverwriteEnable();
+    public Boolean isTableDefOverwriteEnable() {
+        return getTableDefConfig().getOverwriteEnable();
     }
 
     /**
-     * @see TableDefConfig#setOverwriteEnable(boolean)
+     * @see TableDefConfig#setOverwriteEnable(Boolean)
      */
-    public void setTableDefOverwriteEnable(boolean tableDefOverwriteEnable) {
+    public void setTableDefOverwriteEnable(Boolean tableDefOverwriteEnable) {
         getTableDefConfig().setOverwriteEnable(tableDefOverwriteEnable);
     }
 
@@ -1562,7 +1529,7 @@ public class GlobalConfig implements Serializable {
         getTableDefConfig().setInstanceSuffix(instanceSuffix);
     }
 
-    public boolean isMapperXmlGenerateEnable() {
+    public Boolean isMapperXmlGenerateEnable() {
         return mapperXmlGenerateEnable;
     }
 
@@ -1570,21 +1537,21 @@ public class GlobalConfig implements Serializable {
      * @see #enableMapperXml()
      * @see #disableMapperXml()
      */
-    public void setMapperXmlGenerateEnable(boolean mapperXmlGenerateEnable) {
+    public void setMapperXmlGenerateEnable(Boolean mapperXmlGenerateEnable) {
         this.mapperXmlGenerateEnable = mapperXmlGenerateEnable;
     }
 
     /**
-     * @see MapperXmlConfig#isOverwriteEnable()
+     * @see MapperXmlConfig#getOverwriteEnable()
      */
-    public boolean isMapperXmlOverwriteEnable() {
-        return getMapperXmlConfig().isOverwriteEnable();
+    public Boolean isMapperXmlOverwriteEnable() {
+        return getMapperXmlConfig().getOverwriteEnable();
     }
 
     /**
-     * @see MapperXmlConfig#setOverwriteEnable(boolean)
+     * @see MapperXmlConfig#setOverwriteEnable(Boolean)
      */
-    public void setMapperXmlOverwriteEnable(boolean mapperXmlOverwriteEnable) {
+    public void setMapperXmlOverwriteEnable(Boolean mapperXmlOverwriteEnable) {
         getMapperXmlConfig().setOverwriteEnable(mapperXmlOverwriteEnable);
     }
 
@@ -1616,7 +1583,7 @@ public class GlobalConfig implements Serializable {
         getMapperXmlConfig().setFileSuffix(mapperXmlFileSuffix);
     }
 
-    public boolean isPackageInfoGenerateEnable() {
+    public Boolean isPackageInfoGenerateEnable() {
         return packageInfoGenerateEnable;
     }
 
@@ -1624,7 +1591,7 @@ public class GlobalConfig implements Serializable {
      * @see #enablePackageInfo()
      * @see #disablePackageInfo()
      */
-    public void setPackageInfoGenerateEnable(boolean packageInfoGenerateEnable) {
+    public void setPackageInfoGenerateEnable(Boolean packageInfoGenerateEnable) {
         this.packageInfoGenerateEnable = packageInfoGenerateEnable;
     }
 

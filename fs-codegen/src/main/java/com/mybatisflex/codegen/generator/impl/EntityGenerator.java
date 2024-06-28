@@ -93,9 +93,9 @@ public class EntityGenerator implements IGenerator {
 
         String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
         String entityClassName = table.buildEntityClassName();
-        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + globalConfig.getFileType());
+        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + ".java");
 
-        if (entityJavaFile.exists() && !entityConfig.isOverwriteEnable()) {
+        if (entityJavaFile.exists() && !entityConfig.getOverwriteEnable()) {
             return;
         }
 
@@ -136,7 +136,7 @@ public class EntityGenerator implements IGenerator {
         String templatePath = this.genType.getTemplate();
 
         // 开启生成 baseClass
-        if (entityConfig.isWithBaseClassEnable()) {
+        if (entityConfig.getWithBaseClassEnable()) {
             templatePath = this.entityWithBaseTemplatePath;
 
             String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();

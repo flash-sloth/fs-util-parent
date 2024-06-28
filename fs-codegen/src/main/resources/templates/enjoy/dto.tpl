@@ -1,5 +1,5 @@
-#set(withLombok = dtoConfig.isWithLombok())
-#set(withSwagger = dtoConfig.isWithSwagger())
+#set(withLombok = dtoConfig.getWithLombok())
+#set(withSwagger = dtoConfig.getWithSwagger())
 #set(swaggerVersion = dtoConfig.getSwaggerVersion())
 #set(jdkVersion = dtoConfig.getJdkVersion())
 package #(dtoPackageName);

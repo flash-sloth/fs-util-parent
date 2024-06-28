@@ -94,7 +94,7 @@
 //        if (globalConfig.isMapperGenerateEnable()) {
 //            dataList.add(new Data(sourceDir, packageConfig.getMapperPackage(), javadocConfig.getMapperPackage()));
 //        }
-//        if (globalConfig.isServiceGenerateEnable()) {
+//        if (globalConfig.getServiceGenerateEnable()) {
 //            dataList.add(new Data(sourceDir, packageConfig.getServicePackage(), javadocConfig.getServicePackage()));
 //        }
 //        if (globalConfig.isServiceImplGenerateEnable()) {

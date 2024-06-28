@@ -60,7 +60,7 @@ public class VoGenerator implements IGenerator {
         File javaFile = new File(packageConfig.getSourceDir(), packagePath + "/" +
                 table.buildVoClassName() + ".java");
 
-        if (javaFile.exists() && !voConfig.isOverwriteEnable()) {
+        if (javaFile.exists() && !voConfig.getOverwriteEnable()) {
             return;
         }
 
