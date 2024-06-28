@@ -59,7 +59,7 @@ public class MapperXmlGenerator implements IGenerator {
     public String getPath(GlobalConfig globalConfig, boolean absolute) {
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        String path = null;
+        String path = "";
 
         if (absolute) {
             path = packageConfig.getSourceDir();

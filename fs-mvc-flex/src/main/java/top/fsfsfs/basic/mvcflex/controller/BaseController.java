@@ -1,11 +1,16 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
+import cn.hutool.core.util.URLUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.exception.code.BaseExceptionCode;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.utils.ContextUtil;
+
+import java.io.IOException;
 
 /**
  * 基础接口
@@ -15,6 +20,22 @@ import top.fsfsfs.basic.utils.ContextUtil;
  * @since 2020年03月07日21:56:32
  */
 public interface BaseController<Entity extends BaseEntity<?>> {
+    /**
+     * 生成zip文件
+     *
+     * @param data     数据
+     * @param fileName 文件名
+     * @param response 响应
+     * @throws IOException
+     */
+    @SneakyThrows
+    default void write(byte[] data, String fileName, HttpServletResponse response) {
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLUtil.encode(fileName));
+        response.addHeader("Content-Length", String.valueOf(data.length));
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        response.getOutputStream().write(data);
+    }
 
     /**
      * 获取Service

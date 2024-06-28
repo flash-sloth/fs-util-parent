@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 @Builder
 public class DownloadVO {
-    byte[] data;
-    String fileName;
+    private byte[] data;
+    private String fileName;
 }

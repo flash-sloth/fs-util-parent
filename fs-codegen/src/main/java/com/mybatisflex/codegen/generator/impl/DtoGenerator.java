@@ -57,7 +57,7 @@ public class DtoGenerator implements IGenerator {
         String sourceDir = config.getSourceDir();
 
 
-        String path = null;
+        String path = "";
         if (absolute) {
             path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
             if (!path.endsWith(File.separator)) {
