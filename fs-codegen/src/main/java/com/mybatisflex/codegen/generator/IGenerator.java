@@ -29,11 +29,12 @@ public interface IGenerator {
     /**
      *  代码路径
      *
+     * @param table 表
      * @param globalConfig  全局配置
      * @param absolute true 绝对路径； false 相对路径
      * @return 代码路径
      */
-    String getPath(GlobalConfig globalConfig, boolean absolute);
+    String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute);
 
     /**
      *  生成器类型

@@ -57,7 +57,7 @@ public class TableDefGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         TableDefConfig config = globalConfig.getTableDefConfig();
         String layerPackage = packageConfig.getTableDefPackage();
@@ -73,7 +73,8 @@ public class TableDefGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildTableDefClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -87,8 +88,8 @@ public class TableDefGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
 
-        String tableDefPackagePath = getPath(globalConfig, true);
-        File tableDefJavaFile = new File(tableDefPackagePath, table.buildTableDefClassName() + StrPool.DOT_JAVA);
+        String tableDefPackagePath = getFilePath(table, globalConfig, true);
+        File tableDefJavaFile = new File(tableDefPackagePath);
 
 
         if (tableDefJavaFile.exists() && !tableDefConfig.getOverwriteEnable()) {

@@ -51,7 +51,7 @@ public class QueryGenerator implements IGenerator {
 
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         QueryConfig config = globalConfig.getQueryConfig();
         String layerPackage = packageConfig.getQueryPackage();
@@ -67,7 +67,8 @@ public class QueryGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildQueryClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -80,8 +81,8 @@ public class QueryGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         QueryConfig queryConfig = globalConfig.getQueryConfig();
 
-        String packagePath = getPath(globalConfig, true);
-        File javaFile = new File(packagePath, table.buildQueryClassName() + ".java");
+        String packagePath = getFilePath(table, globalConfig, true);
+        File javaFile = new File(packagePath);
 
         if (javaFile.exists() && !queryConfig.getOverwriteEnable()) {
             return;

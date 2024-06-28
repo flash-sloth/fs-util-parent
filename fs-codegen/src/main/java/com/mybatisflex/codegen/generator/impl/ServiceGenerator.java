@@ -57,7 +57,7 @@ public class ServiceGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ServiceConfig config = globalConfig.getServiceConfig();
         String layerPackage = packageConfig.getServicePackage();
@@ -73,7 +73,8 @@ public class ServiceGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildServiceClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -87,8 +88,8 @@ public class ServiceGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ServiceConfig serviceConfig = globalConfig.getServiceConfig();
 
-        String servicePackagePath = getPath(globalConfig, true);
-        File serviceJavaFile = new File(servicePackagePath, table.buildServiceClassName() + StrPool.DOT_JAVA);
+        String servicePackagePath = getFilePath(table, globalConfig, true);
+        File serviceJavaFile = new File(servicePackagePath);
 
 
         if (serviceJavaFile.exists() && !serviceConfig.getOverwriteEnable()) {

@@ -56,7 +56,7 @@ public class MapperXmlGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         String path = "";
@@ -69,7 +69,8 @@ public class MapperXmlGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_RESOURCES + File.separator;
-        path += packageConfig.getMapperXmlPath();
+        path += packageConfig.getMapperXmlPath() + File.separator;
+        path += table.buildMapperXmlFileName() + StrPool.DOT_XML;
         return path;
     }
 
@@ -83,8 +84,8 @@ public class MapperXmlGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         MapperXmlConfig mapperXmlConfig = globalConfig.getMapperXmlConfig();
 
-        String path = getPath(globalConfig, true);
-        File mapperXmlFile = new File(path, table.buildMapperXmlFileName() + StrPool.DOT_XML);
+        String path = getFilePath(table, globalConfig, true);
+        File mapperXmlFile = new File(path);
 
         if (mapperXmlFile.exists() && !mapperXmlConfig.getOverwriteEnable()) {
             return;

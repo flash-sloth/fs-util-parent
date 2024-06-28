@@ -58,7 +58,7 @@ public class ControllerGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath( GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         String layerPackage = packageConfig.getControllerPackage();
@@ -74,8 +74,8 @@ public class ControllerGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
-//        path += table.buildControllerClassName() + StrPool.DOT_JAVA;
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildControllerClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -89,7 +89,7 @@ public class ControllerGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
 
-        String path = getPath(globalConfig, true);
+        String path = getFilePath(table, globalConfig, true);
         File controllerJavaFile = new File(path);
 
         if (controllerJavaFile.exists() && !controllerConfig.getOverwriteEnable()) {

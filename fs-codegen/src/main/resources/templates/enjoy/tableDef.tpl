@@ -13,6 +13,8 @@ import java.io.Serial;
 /**
  * #(table.getComment()) 表定义层。
  *
+ * 带类是自动生成，使用下载或预览功能生成该类时，请忽略该类
+ *
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
  */

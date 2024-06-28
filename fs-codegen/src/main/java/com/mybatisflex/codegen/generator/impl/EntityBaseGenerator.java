@@ -59,7 +59,7 @@ public class EntityBaseGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         EntityConfig config = globalConfig.getEntityConfig();
         String sourceDir = config.getSourceDir();
@@ -75,7 +75,10 @@ public class EntityBaseGenerator implements IGenerator {
         path += StrPool.SRC_MAIN_JAVA + File.separator;
 
         String packageName = getEntityPackageName(config, packageConfig.getEntityPackage());
-        path += packageName;
+        path += packageName + File.separator;
+
+        String baseEntityClassName = table.buildEntityClassName() + config.getWithBaseClassSuffix();
+        path += baseEntityClassName + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -104,10 +107,10 @@ public class EntityBaseGenerator implements IGenerator {
         }
 
 
-        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
-        String path = getPath(globalConfig, true);
-        File baseEntityJavaFile = new File(path, baseEntityClassName + ".java");
+        String path = getFilePath(table, globalConfig, true);
+        File baseEntityJavaFile = new File(path);
 
+        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
         Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityClassName);
 
         log.info("BaseEntity ---> {}", baseEntityJavaFile);

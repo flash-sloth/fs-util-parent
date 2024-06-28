@@ -61,7 +61,7 @@ public class EntityGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         EntityConfig config = globalConfig.getEntityConfig();
         String layerPackage = packageConfig.getEntityPackage();
@@ -76,7 +76,8 @@ public class EntityGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildEntityClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -89,9 +90,8 @@ public class EntityGenerator implements IGenerator {
 
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
-        String entityPackagePath = getPath(globalConfig, true);
-        String entityClassName = table.buildEntityClassName();
-        File entityJavaFile = new File(entityPackagePath, entityClassName + StrPool.DOT_JAVA);
+        String entityPackagePath = getFilePath(table, globalConfig, true);
+        File entityJavaFile = new File(entityPackagePath);
 
         if (entityJavaFile.exists() && !entityConfig.getOverwriteEnable()) {
             return;

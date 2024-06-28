@@ -57,7 +57,7 @@ public class MapperGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         MapperConfig config = globalConfig.getMapperConfig();
         String layerPackage = packageConfig.getMapperPackage();
@@ -73,7 +73,8 @@ public class MapperGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildMapperClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -87,8 +88,8 @@ public class MapperGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         MapperConfig mapperConfig = globalConfig.getMapperConfig();
 
-        String mapperPackagePath = getPath(globalConfig, true);
-        File mapperJavaFile = new File(mapperPackagePath, table.buildMapperClassName() + ".java");
+        String mapperPackagePath = getFilePath(table, globalConfig, true);
+        File mapperJavaFile = new File(mapperPackagePath);
 
         if (mapperJavaFile.exists() && !mapperConfig.getOverwriteEnable()) {
             return;

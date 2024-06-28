@@ -50,7 +50,7 @@ public class DtoGenerator implements IGenerator {
     }
 
     @Override
-    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+    public String getFilePath(Table table, GlobalConfig globalConfig, boolean absolute) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         DtoConfig config = globalConfig.getDtoConfig();
         String layerPackage = packageConfig.getDtoPackage();
@@ -66,7 +66,8 @@ public class DtoGenerator implements IGenerator {
         }
 
         path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(".", "/");
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += table.buildDtoClassName() + StrPool.DOT_JAVA;
         return path;
     }
 
@@ -79,8 +80,8 @@ public class DtoGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         DtoConfig dtoConfig = globalConfig.getDtoConfig();
 
-        String packagePath = getPath(globalConfig, true);
-        File javaFile = new File(packagePath, table.buildDtoClassName() + StrPool.DOT_JAVA);
+        String packagePath = getFilePath(table, globalConfig, true);
+        File javaFile = new File(packagePath);
 
         if (javaFile.exists() && !dtoConfig.getOverwriteEnable()) {
             return;
