@@ -19,9 +19,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.ControllerConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.GenTypeEnum;
-import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
@@ -29,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -59,6 +58,27 @@ public class ControllerGenerator implements IGenerator {
     }
 
     @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        String layerPackage = packageConfig.getControllerPackage();
+        ControllerConfig config = globalConfig.getControllerConfig();
+        String sourceDir = config.getSourceDir();
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
+
+    @Override
     public void generate(Table table, GlobalConfig globalConfig) {
 
         if (!globalConfig.isControllerGenerateEnable()) {
@@ -68,12 +88,8 @@ public class ControllerGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
 
-        String sourceDir = StringUtil.isNotBlank(controllerConfig.getSourceDir()) ? controllerConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String controllerPackagePath = packageConfig.getControllerPackage().replace(".", "/");
-        File controllerJavaFile = new File(sourceDir, controllerPackagePath + "/" +
-                table.buildControllerClassName() + ".java");
-
+        String path = getPath(globalConfig, true);
+        File controllerJavaFile = new File(path, table.buildControllerClassName() + StrPool.DOT_JAVA);
 
         if (controllerJavaFile.exists() && !controllerConfig.getOverwriteEnable()) {
             return;

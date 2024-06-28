@@ -19,9 +19,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.TableDefConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.GenTypeEnum;
-import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
@@ -29,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -57,6 +56,26 @@ public class TableDefGenerator implements IGenerator {
         this.genType = genType;
     }
 
+    @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        TableDefConfig config = globalConfig.getTableDefConfig();
+        String layerPackage = packageConfig.getTableDefPackage();
+        String sourceDir = config.getSourceDir();
+
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -68,11 +87,8 @@ public class TableDefGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
 
-        String sourceDir = StringUtil.isNotBlank(tableDefConfig.getSourceDir()) ? tableDefConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String tableDefPackagePath = packageConfig.getTableDefPackage().replace(".", "/");
-        File tableDefJavaFile = new File(sourceDir, tableDefPackagePath + "/" +
-                table.buildTableDefClassName() + ".java");
+        String tableDefPackagePath = getPath(globalConfig, true);
+        File tableDefJavaFile = new File(tableDefPackagePath, table.buildTableDefClassName() + StrPool.DOT_JAVA);
 
 
         if (tableDefJavaFile.exists() && !tableDefConfig.getOverwriteEnable()) {

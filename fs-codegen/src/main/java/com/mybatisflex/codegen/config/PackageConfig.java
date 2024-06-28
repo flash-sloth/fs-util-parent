@@ -96,7 +96,7 @@ public class PackageConfig implements Serializable {
      */
     public String getSourceDir() {
         if (StringUtil.isBlank(sourceDir)) {
-            return System.getProperty("user.dir") + "/src/main/java";
+            return System.getProperty("user.dir");
         }
         return sourceDir;
     }
@@ -207,7 +207,7 @@ public class PackageConfig implements Serializable {
      */
     public String getMapperXmlPath() {
         if (StringUtil.isBlank(mapperXmlPath)) {
-            return System.getProperty("user.dir").concat("/src/main/resources/mapper");
+            return "/mapper";
         }
         return mapperXmlPath;
     }

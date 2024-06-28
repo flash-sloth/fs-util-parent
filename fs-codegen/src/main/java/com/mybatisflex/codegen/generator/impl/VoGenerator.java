@@ -15,10 +15,12 @@ import com.mybatisflex.codegen.config.VoConfig;
 import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
+import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -48,6 +50,26 @@ public class VoGenerator implements IGenerator {
     }
 
     @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        VoConfig config = globalConfig.getVoConfig();
+        String layerPackage = packageConfig.getVoPackage();
+        String sourceDir = config.getSourceDir();
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
+
+    @Override
     public void generate(Table table, GlobalConfig globalConfig) {
         if (!globalConfig.isVoGenerateEnable()) {
             return;
@@ -56,9 +78,8 @@ public class VoGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         VoConfig voConfig = globalConfig.getVoConfig();
 
-        String packagePath = packageConfig.getVoPackage().replace(".", "/");
-        File javaFile = new File(packageConfig.getSourceDir(), packagePath + "/" +
-                table.buildVoClassName() + ".java");
+        String packagePath = getPath(globalConfig, true);
+        File javaFile = new File(packagePath, table.buildVoClassName() + StrPool.DOT_JAVA);
 
         if (javaFile.exists() && !voConfig.getOverwriteEnable()) {
             return;

@@ -93,7 +93,7 @@ public class VoConfig implements Serializable {
     /**
      * Swagger 版本
      */
-    private EntityConfig.SwaggerVersion swaggerVersion;
+    private EntityConfig.SwaggerVersion swaggerVersion = EntityConfig.SwaggerVersion.DOC;
 
     /**
      * 项目jdk版本

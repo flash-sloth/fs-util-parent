@@ -26,12 +26,14 @@ import com.mybatisflex.codegen.entity.Table;
  * @author 王帅
  */
 public interface IGenerator {
-//    /**
-//     *  生成器类型
-//     *
-//     * @param genType 生成器类型
-//     */
-//    IGenerator setGenType(String genType);
+    /**
+     *  代码路径
+     *
+     * @param globalConfig  全局配置
+     * @param absolute true 绝对路径； false 相对路径
+     * @return 代码路径
+     */
+    String getPath(GlobalConfig globalConfig, boolean absolute);
 
     /**
      *  生成器类型

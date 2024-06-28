@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -59,6 +60,25 @@ public class EntityGenerator implements IGenerator {
         this.genType = genType;
     }
 
+    @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        EntityConfig config = globalConfig.getEntityConfig();
+        String layerPackage = packageConfig.getEntityPackage();
+        String sourceDir = config.getSourceDir();
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -67,33 +87,11 @@ public class EntityGenerator implements IGenerator {
             return;
         }
 
-        // 生成 entity 类
-        genEntityClass(table, globalConfig);
-    }
-
-    @Override
-    public String preview(Table table, GlobalConfig globalConfig) {
-
-        Map<String, Object> params = new HashMap<>(7);
-
-        String templatePath = getTemplatePath(params, table, globalConfig);
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
-        }
-    }
-
-    protected void genEntityClass(Table table, GlobalConfig globalConfig) {
-        PackageConfig packageConfig = globalConfig.getPackageConfig();
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
-        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String entityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
+        String entityPackagePath = getPath(globalConfig, true);
         String entityClassName = table.buildEntityClassName();
-        File entityJavaFile = new File(sourceDir, entityPackagePath + "/" + entityClassName + ".java");
+        File entityJavaFile = new File(entityPackagePath, entityClassName + StrPool.DOT_JAVA);
 
         if (entityJavaFile.exists() && !entityConfig.getOverwriteEnable()) {
             return;
@@ -112,6 +110,21 @@ public class EntityGenerator implements IGenerator {
         }
 
     }
+
+    @Override
+    public String preview(Table table, GlobalConfig globalConfig) {
+
+        Map<String, Object> params = new HashMap<>(7);
+
+        String templatePath = getTemplatePath(params, table, globalConfig);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        } else {
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
+        }
+    }
+
 
     public String getTemplatePath(Map<String, Object> params, Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();

@@ -70,7 +70,7 @@ public class TableConfig implements Serializable {
     /**
      * 是否开启 Mapper 生成。
      */
-    private Boolean mapperGenerateEnable = Boolean.FALSE;
+    private Boolean mapperGenerateEnable ;
 
     /**
      * 对应列的配置。

@@ -92,10 +92,10 @@ public class #(entityClassName)#if(withActiveRecord) extends Model<#(entityClass
     #(annotations)
     #end
     #if(withSwagger && swaggerVersion.getName() == "FOX")
-    @ApiModelProperty("#(column.comment)")
+    @ApiModelProperty("#(column.getSwaggerComment())")
     #end
     #if(withSwagger && swaggerVersion.getName() == "DOC")
-    @Schema(description = "#(column.comment)")
+    @Schema(description = "#(column.getSwaggerComment())")
     #end
     private #(column.propertySimpleType) #(column.property)#if(isNotBlank(column.propertyDefaultValue)) = #(column.propertyDefaultValue)#end;
 

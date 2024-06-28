@@ -19,9 +19,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
 import com.mybatisflex.codegen.config.ServiceConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.GenTypeEnum;
-import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
@@ -29,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -58,6 +57,27 @@ public class ServiceGenerator implements IGenerator {
     }
 
     @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        ServiceConfig config = globalConfig.getServiceConfig();
+        String layerPackage = packageConfig.getServicePackage();
+        String sourceDir = config.getSourceDir();
+
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
+
+    @Override
     public void generate(Table table, GlobalConfig globalConfig) {
 
         if (!globalConfig.getServiceGenerateEnable()) {
@@ -67,11 +87,8 @@ public class ServiceGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ServiceConfig serviceConfig = globalConfig.getServiceConfig();
 
-        String sourceDir = StringUtil.isNotBlank(serviceConfig.getSourceDir()) ? serviceConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String servicePackagePath = packageConfig.getServicePackage().replace(".", "/");
-        File serviceJavaFile = new File(sourceDir, servicePackagePath + "/" +
-                table.buildServiceClassName() + ".java");
+        String servicePackagePath = getPath(globalConfig, true);
+        File serviceJavaFile = new File(servicePackagePath, table.buildServiceClassName() + StrPool.DOT_JAVA);
 
 
         if (serviceJavaFile.exists() && !serviceConfig.getOverwriteEnable()) {

@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -55,6 +56,26 @@ public class ServiceImplGenerator implements IGenerator {
         this.genType = genType;
     }
 
+    @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        ServiceImplConfig config = globalConfig.getServiceImplConfig();
+        String layerPackage = packageConfig.getServiceImplPackage();
+        String sourceDir = config.getSourceDir();
+
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -66,11 +87,8 @@ public class ServiceImplGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ServiceImplConfig serviceImplConfig = globalConfig.getServiceImplConfig();
 
-        String sourceDir = StringUtil.isNotBlank(serviceImplConfig.getSourceDir()) ? serviceImplConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String serviceImplPackagePath = packageConfig.getServiceImplPackage().replace(".", "/");
-        File serviceImplJavaFile = new File(sourceDir, serviceImplPackagePath + "/" +
-                table.buildServiceImplClassName() + ".java");
+        String serviceImplPackagePath = getPath(globalConfig, true);
+        File serviceImplJavaFile = new File(serviceImplPackagePath, table.buildServiceImplClassName() + StrPool.DOT_JAVA);
 
         if (serviceImplJavaFile.exists() && !serviceImplConfig.getOverwriteEnable()) {
             return;

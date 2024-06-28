@@ -19,9 +19,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.MapperConfig;
 import com.mybatisflex.codegen.config.PackageConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
 import com.mybatisflex.codegen.constant.GenTypeEnum;
-import com.mybatisflex.codegen.constant.TemplateConst;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
@@ -29,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -57,7 +56,26 @@ public class MapperGenerator implements IGenerator {
         this.genType = genType;
     }
 
+    @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        MapperConfig config = globalConfig.getMapperConfig();
+        String layerPackage = packageConfig.getMapperPackage();
+        String sourceDir = config.getSourceDir();
 
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += layerPackage.replace(".", "/");
+        return path;
+    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -69,12 +87,8 @@ public class MapperGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         MapperConfig mapperConfig = globalConfig.getMapperConfig();
 
-        String sourceDir = StringUtil.isNotBlank(mapperConfig.getSourceDir()) ? mapperConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String mapperPackagePath = packageConfig.getMapperPackage().replace(".", "/");
-        File mapperJavaFile = new File(sourceDir, mapperPackagePath + "/" +
-                table.buildMapperClassName() + ".java");
-
+        String mapperPackagePath = getPath(globalConfig, true);
+        File mapperJavaFile = new File(mapperPackagePath, table.buildMapperClassName() + ".java");
 
         if (mapperJavaFile.exists() && !mapperConfig.getOverwriteEnable()) {
             return;

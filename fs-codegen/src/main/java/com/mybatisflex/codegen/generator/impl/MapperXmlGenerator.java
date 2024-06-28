@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -54,6 +55,23 @@ public class MapperXmlGenerator implements IGenerator {
         this.genType = genType;
     }
 
+    @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        String path = null;
+
+        if (absolute) {
+            path = packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_RESOURCES + File.separator;
+        path += packageConfig.getMapperXmlPath();
+        return path;
+    }
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
@@ -65,14 +83,12 @@ public class MapperXmlGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         MapperXmlConfig mapperXmlConfig = globalConfig.getMapperXmlConfig();
 
-        File mapperXmlFile = new File(packageConfig.getMapperXmlPath() + "/" +
-                table.buildMapperXmlFileName() + ".xml");
-
+        String path = getPath(globalConfig, true);
+        File mapperXmlFile = new File(path, table.buildMapperXmlFileName() + StrPool.DOT_XML);
 
         if (mapperXmlFile.exists() && !mapperXmlConfig.getOverwriteEnable()) {
             return;
         }
-
 
         Map<String, Object> params = new HashMap<>(2);
         params.put("table", table);

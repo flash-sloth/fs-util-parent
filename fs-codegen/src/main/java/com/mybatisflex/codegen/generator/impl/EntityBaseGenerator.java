@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.File;
 import java.util.HashMap;
@@ -58,38 +59,43 @@ public class EntityBaseGenerator implements IGenerator {
     }
 
     @Override
+    public String getPath(GlobalConfig globalConfig, boolean absolute) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        EntityConfig config = globalConfig.getEntityConfig();
+        String sourceDir = config.getSourceDir();
+
+        String path = null;
+        if (absolute) {
+            path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+        }
+
+        path += StrPool.SRC_MAIN_JAVA + File.separator;
+
+        String packageName = getEntityPackageName(config, packageConfig.getEntityPackage());
+        path += packageName;
+        return path;
+    }
+
+    private static String getEntityPackageName(EntityConfig config, String layerPackage) {
+        String packageName;
+        if (StringUtil.isNotBlank(config.getWithBasePackage())) {
+            packageName = config.getWithBasePackage().replace(".", "/");
+        } else {
+            packageName = layerPackage.replace(".", "/") + "/base";
+        }
+        return packageName;
+    }
+
+    @Override
     public void generate(Table table, GlobalConfig globalConfig) {
 
         if (!globalConfig.isEntityGenerateEnable()) {
             return;
         }
 
-        // 生成 base 类
-        genBaseClass(table, globalConfig);
-    }
-
-    @Override
-    public String preview(Table table, GlobalConfig globalConfig) {
-        PackageConfig packageConfig = globalConfig.getPackageConfig();
-        EntityConfig entityConfig = globalConfig.getEntityConfig();
-
-
-        String baseEntityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
-        baseEntityPackagePath = StringUtil.isNotBlank(entityConfig.getWithBasePackage()) ? entityConfig.getWithBasePackage().replace(".", "")
-                : baseEntityPackagePath + "/base";
-
-        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
-
-        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityPackagePath, baseEntityClassName);
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
-        }
-    }
-
-    protected void genBaseClass(Table table, GlobalConfig globalConfig) {
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
         // 不需要生成 baseClass
@@ -97,18 +103,12 @@ public class EntityBaseGenerator implements IGenerator {
             return;
         }
 
-        PackageConfig packageConfig = globalConfig.getPackageConfig();
-        String sourceDir = StringUtil.isNotBlank(entityConfig.getSourceDir()) ? entityConfig.getSourceDir() : packageConfig.getSourceDir();
-
-        String baseEntityPackagePath = packageConfig.getEntityPackage().replace(".", "/");
-        baseEntityPackagePath = StringUtil.isNotBlank(entityConfig.getWithBasePackage()) ? entityConfig.getWithBasePackage().replace(".", "")
-                : baseEntityPackagePath + "/base";
 
         String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+        String path = getPath(globalConfig, true);
+        File baseEntityJavaFile = new File(path, baseEntityClassName + ".java");
 
-        File baseEntityJavaFile = new File(sourceDir, baseEntityPackagePath + "/" + baseEntityClassName + ".java");
-
-        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityPackagePath, baseEntityClassName);
+        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityClassName);
 
         log.info("BaseEntity ---> {}", baseEntityJavaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
@@ -118,7 +118,23 @@ public class EntityBaseGenerator implements IGenerator {
         }
     }
 
-    public Map<String, Object> getTemplatePath(Table table, GlobalConfig globalConfig, String baseEntityPackagePath, String baseEntityClassName) {
+    @Override
+    public String preview(Table table, GlobalConfig globalConfig) {
+        EntityConfig entityConfig = globalConfig.getEntityConfig();
+
+        String baseEntityClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
+
+        Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityClassName);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
+        } else {
+            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
+        }
+    }
+
+
+    public Map<String, Object> getTemplatePath(Table table, GlobalConfig globalConfig, String baseEntityClassName) {
         Map<String, Object> params = new HashMap<>(8);
         EntityConfig entityConfig = globalConfig.getEntityConfig();
         PackageConfig packageConfig = globalConfig.getPackageConfig();
@@ -127,6 +143,8 @@ public class EntityBaseGenerator implements IGenerator {
         if (globalConfig.getStrategyConfig().getIgnoreColumns() != null) {
             table.getColumns().removeIf(column -> globalConfig.getStrategyConfig().getIgnoreColumns().contains(column.getName().toLowerCase()));
         }
+
+        String baseEntityPackagePath = getEntityPackageName(entityConfig, packageConfig.getEntityPackage());
 
         params.put("table", table);
         params.put("entityPackageName", baseEntityPackagePath.replace("/", "."));

@@ -54,22 +54,22 @@ public class ColumnConfig implements Serializable {
     /**
      * 是否是大字段，大字段 APT 不会生成到 DEFAULT_COLUMNS 里。
      */
-    private Boolean large = false;
+    private Boolean large;
 
     /**
      * 是否是逻辑删除字段，一张表中只能存在 1 一个逻辑删除字段。
      */
-    private Boolean logicDelete = false;
+    private Boolean logicDelete;
 
     /**
      * 是否为乐观锁字段。
      */
-    private Boolean version = false;
+    private Boolean version;
 
     /**
      * 是否是租户 ID。
      */
-    private Boolean tenantId = false;
+    private Boolean tenantId;
 
     /**
      * 配置的 jdbcType。
