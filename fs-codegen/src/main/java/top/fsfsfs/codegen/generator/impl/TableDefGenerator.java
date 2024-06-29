@@ -86,16 +86,12 @@ public class TableDefGenerator implements IGenerator {
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
-
         if (!globalConfig.isTableDefGenerateEnable()) {
             return;
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         TableDefConfig config = globalConfig.getTableDefConfig();
-
-//        String tableDefPackagePath = getFilePath(table, globalConfig, true);
-//        File tableDefJavaFile = new File(tableDefPackagePath);
 
         if (config.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
             return;
