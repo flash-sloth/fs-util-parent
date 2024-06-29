@@ -19,6 +19,7 @@ package top.fsfsfs.codegen.config;
 import com.mybatisflex.core.service.IService;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -56,9 +57,9 @@ public class ServiceConfig implements Serializable {
     private Class<?> superClass = IService.class;
 
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     public String buildSuperClassImport() {
         return superClass.getName();

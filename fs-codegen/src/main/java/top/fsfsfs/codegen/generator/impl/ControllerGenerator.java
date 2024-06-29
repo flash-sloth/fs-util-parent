@@ -113,19 +113,11 @@ public class ControllerGenerator implements IGenerator {
                 String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
                 String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
                 controllerJavaFile = new File(newPath);
-                controllerClassName = table.buildControllerClassName() + "_Add" + now;
+                controllerClassName += "_Add" + now;
             }
         }
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("controllerClassName", controllerClassName);
-        params.put("table", table);
-        params.put("packageConfig", packageConfig);
-        params.put("controllerConfig", controllerConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("withSwagger", globalConfig.isEntityWithSwagger());
-        params.put("swaggerVersion", globalConfig.getSwaggerVersion());
-        params.putAll(globalConfig.getCustomConfig());
+        Map<String, Object> params = getParams(table, globalConfig, controllerClassName, packageConfig, controllerConfig);
 
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, controllerJavaFile);
@@ -136,12 +128,9 @@ public class ControllerGenerator implements IGenerator {
         log.info("Controller ---> {}", controllerJavaFile);
     }
 
-    @Override
-    public String preview(Table table, GlobalConfig globalConfig) {
-        PackageConfig packageConfig = globalConfig.getPackageConfig();
-        ControllerConfig controllerConfig = globalConfig.getControllerConfig();
-
-        Map<String, Object> params = new HashMap<>(4);
+    private static Map<String, Object> getParams(Table table, GlobalConfig globalConfig, String controllerClassName, PackageConfig packageConfig, ControllerConfig controllerConfig) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("controllerClassName", controllerClassName);
         params.put("table", table);
         params.put("packageConfig", packageConfig);
         params.put("controllerConfig", controllerConfig);
@@ -149,6 +138,16 @@ public class ControllerGenerator implements IGenerator {
         params.put("withSwagger", globalConfig.isEntityWithSwagger());
         params.put("swaggerVersion", globalConfig.getSwaggerVersion());
         params.putAll(globalConfig.getCustomConfig());
+        return params;
+    }
+
+    @Override
+    public String preview(Table table, GlobalConfig globalConfig) {
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+        ControllerConfig controllerConfig = globalConfig.getControllerConfig();
+
+        Map<String, Object> params = getParams(table, globalConfig, table.buildControllerClassName(), packageConfig, controllerConfig);
+
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
         } else {

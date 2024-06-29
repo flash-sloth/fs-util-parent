@@ -30,7 +30,7 @@ import java.util.List;
 #if(isCacheExample)
 @CacheConfig(cacheNames = "#(firstCharToLowerCase(entityClassName))")
 #end
-public class #(table.buildServiceImplClassName()) extends #(serviceImplConfig.buildSuperClassName())<#(table.buildMapperClassName()), #(table.buildEntityClassName())> implements #(table.buildServiceClassName()) {
+public class #(serviceImplClassName) extends #(serviceImplConfig.buildSuperClassName())<#(table.buildMapperClassName()), #(table.buildEntityClassName())> implements #(table.buildServiceClassName()) {
 
 #if(isCacheExample)
     @Override

@@ -15,22 +15,28 @@
  */
 package top.fsfsfs.codegen.generator.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.MapperXmlConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.MapperXmlConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
  * MapperXml 生成器。
@@ -82,26 +88,45 @@ public class MapperXmlGenerator implements IGenerator {
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        MapperXmlConfig mapperXmlConfig = globalConfig.getMapperXmlConfig();
+        MapperXmlConfig config = globalConfig.getMapperXmlConfig();
 
-        String path = getFilePath(table, globalConfig, true);
-        File mapperXmlFile = new File(path);
-
-        if (mapperXmlFile.exists() && !mapperXmlConfig.getOverwriteEnable()) {
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
             return;
         }
 
-        Map<String, Object> params = new HashMap<>(2);
+        String path = getFilePath(table, globalConfig, true);
+        File javaFile = new File(path);
+
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.EXIST_IGNORE) {
+            if (javaFile.exists()) {
+                return;
+            }
+        }
+
+        if (javaFile.exists()) {
+            if (config.getGenerationStrategy() == GenerationStrategyEnum.BACKUPS) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Backups" + now + StrPool.DOT_JAVA);
+                File newFile = new File(newPath);
+                FileUtil.copy(javaFile, newFile, true);
+            } else if (config.getGenerationStrategy() == GenerationStrategyEnum.ADD) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
+                javaFile = new File(newPath);
+            }
+        }
+
+        Map<String, Object> params = new HashMap<>(4);
         params.put("table", table);
         params.put("packageConfig", packageConfig);
         params.putAll(globalConfig.getCustomConfig());
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, mapperXmlFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
         } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), mapperXmlFile);
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
 
-        log.info("MapperXML ---> {}", mapperXmlFile);
+        log.info("MapperXML ---> {}", javaFile);
     }
 
     @Override
@@ -109,7 +134,7 @@ public class MapperXmlGenerator implements IGenerator {
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
 
-        Map<String, Object> params = new HashMap<>(2);
+        Map<String, Object> params = new HashMap<>(4);
         params.put("table", table);
         params.put("packageConfig", packageConfig);
         params.putAll(globalConfig.getCustomConfig());

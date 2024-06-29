@@ -18,6 +18,7 @@ package top.fsfsfs.codegen.config;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -44,10 +45,9 @@ public class MapperXmlConfig implements Serializable {
      * MapperXml 文件的后缀。
      */
     private String fileSuffix = "Mapper";
-
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
 }

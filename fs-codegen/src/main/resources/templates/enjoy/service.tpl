@@ -9,6 +9,6 @@ import #(packageConfig.entityPackage).#(table.buildEntityClassName());
  * @author #(javadocConfig.getAuthor())
  * @since #(javadocConfig.getSince())
  */
-public interface #(table.buildServiceClassName()) extends #(serviceConfig.buildSuperClassName())<#(table.buildEntityClassName())> {
+public interface #(serviceClassName) extends #(serviceConfig.buildSuperClassName())<#(table.buildEntityClassName())> {
 
 }

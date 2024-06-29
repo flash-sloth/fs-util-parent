@@ -15,23 +15,29 @@
  */
 package top.fsfsfs.codegen.generator.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.MapperConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.MapperConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
  * Mapper 生成器。
@@ -86,43 +92,64 @@ public class MapperGenerator implements IGenerator {
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        MapperConfig mapperConfig = globalConfig.getMapperConfig();
+        MapperConfig config = globalConfig.getMapperConfig();
 
-        String mapperPackagePath = getFilePath(table, globalConfig, true);
-        File mapperJavaFile = new File(mapperPackagePath);
-
-        if (mapperJavaFile.exists() && !mapperConfig.getOverwriteEnable()) {
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
             return;
         }
 
+        String path = getFilePath(table, globalConfig, true);
+        File javaFile = new File(path);
 
-        Map<String, Object> params = new HashMap<>(4);
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.EXIST_IGNORE) {
+            if (javaFile.exists()) {
+                return;
+            }
+        }
+
+        String mapperClassName = table.buildMapperClassName();
+        if (javaFile.exists()) {
+            if (config.getGenerationStrategy() == GenerationStrategyEnum.BACKUPS) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Backups" + now + StrPool.DOT_JAVA);
+                File newFile = new File(newPath);
+                FileUtil.copy(javaFile, newFile, true);
+            } else if (config.getGenerationStrategy() == GenerationStrategyEnum.ADD) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
+                javaFile = new File(newPath);
+                mapperClassName += "_Add" + now;
+            }
+        }
+
+        Map<String, Object> params = getParams(table, globalConfig, mapperClassName, config, packageConfig);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
+        }
+
+        log.info("Mapper ---> {}", javaFile);
+    }
+
+    private static Map<String, Object> getParams(Table table, GlobalConfig globalConfig, String mapperClassName, MapperConfig config, PackageConfig packageConfig) {
+        Map<String, Object> params = new HashMap<>(6);
         params.put("table", table);
-        params.put("mapperConfig", mapperConfig);
+        params.put("mapperClassName", mapperClassName);
+        params.put("mapperConfig", config);
         params.put("packageConfig", packageConfig);
         params.put("javadocConfig", globalConfig.getJavadocConfig());
         params.putAll(globalConfig.getCustomConfig());
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, mapperJavaFile);
-        } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), mapperJavaFile);
-        }
-
-        log.info("Mapper ---> {}", mapperJavaFile);
+        return params;
     }
 
     @Override
     public String preview(Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        MapperConfig mapperConfig = globalConfig.getMapperConfig();
+        MapperConfig config = globalConfig.getMapperConfig();
 
-        Map<String, Object> params = new HashMap<>(4);
-        params.put("table", table);
-        params.put("mapperConfig", mapperConfig);
-        params.put("packageConfig", packageConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.putAll(globalConfig.getCustomConfig());
+        Map<String, Object> params = getParams(table, globalConfig, table.buildMapperClassName(), config, packageConfig);
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);

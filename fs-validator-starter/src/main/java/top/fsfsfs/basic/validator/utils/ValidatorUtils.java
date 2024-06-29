@@ -1,6 +1,7 @@
 package top.fsfsfs.basic.validator.utils;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -82,7 +83,7 @@ public class ValidatorUtils {
                     Schema apiModelProperty = field.getAnnotation(Schema.class);
                     name = apiModelProperty != null ? apiModelProperty.description() : "";
                 } else {
-                    name = StrUtil.join(".", excelProperty.value());
+                    name = ArrayUtil.join(excelProperty.value(), ".");
                 }
 
                 System.out.println(name + ": " + cv.getPropertyPath() + "：" + cv.getMessage());
@@ -107,7 +108,7 @@ public class ValidatorUtils {
                     ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
                     String name = "";
                     if (excelProperty != null) {
-                        name = StrUtil.join(".", excelProperty.value());
+                        name = ArrayUtil.join(excelProperty.value(), ".");
                     }
                     if (StrUtil.isEmpty(name)) {
                         Schema apiModelProperty = field.getAnnotation(Schema.class);

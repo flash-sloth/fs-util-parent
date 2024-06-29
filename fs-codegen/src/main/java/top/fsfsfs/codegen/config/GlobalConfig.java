@@ -949,20 +949,6 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see EntityConfig#getOverwriteEnable()
-     */
-    public Boolean isEntityOverwriteEnable() {
-        return getEntityConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see EntityConfig#setOverwriteEnable(Boolean)
-     */
-    public void setEntityOverwriteEnable(Boolean entityOverwriteEnable) {
-        getEntityConfig().setOverwriteEnable(entityOverwriteEnable);
-    }
-
-    /**
      * @see EntityConfig#getClassPrefix()
      */
     public String getEntityClassPrefix() {
@@ -1131,19 +1117,6 @@ public class GlobalConfig implements Serializable {
         this.mapperGenerateEnable = mapperGenerateEnable;
     }
 
-    /**
-     * @see MapperConfig#getOverwriteEnable()
-     */
-    public Boolean isMapperOverwriteEnable() {
-        return getMapperConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see MapperConfig#setOverwriteEnable(Boolean)
-     */
-    public void setMapperOverwriteEnable(Boolean mapperOverwriteEnable) {
-        getMapperConfig().setOverwriteEnable(mapperOverwriteEnable);
-    }
 
     /**
      * @see MapperConfig#getClassPrefix()
@@ -1214,20 +1187,6 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see ServiceConfig#getOverwriteEnable()
-     */
-    public Boolean isServiceOverwriteEnable() {
-        return getServiceConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see ServiceConfig#setOverwriteEnable(Boolean)
-     */
-    public void setServiceOverwriteEnable(Boolean serviceOverwriteEnable) {
-        getServiceConfig().setOverwriteEnable(serviceOverwriteEnable);
-    }
-
-    /**
      * @see ServiceConfig#getClassPrefix()
      */
     public String getServiceClassPrefix() {
@@ -1281,19 +1240,6 @@ public class GlobalConfig implements Serializable {
         this.serviceImplGenerateEnable = serviceImplGenerateEnable;
     }
 
-    /**
-     * @see ServiceImplConfig#getOverwriteEnable()
-     */
-    public Boolean isServiceImplOverwriteEnable() {
-        return getServiceImplConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see ServiceImplConfig#setOverwriteEnable(Boolean)
-     */
-    public void setServiceImplOverwriteEnable(Boolean serviceImplOverwriteEnable) {
-        getServiceImplConfig().setOverwriteEnable(serviceImplOverwriteEnable);
-    }
 
     /**
      * @see ServiceImplConfig#getClassPrefix()
@@ -1442,20 +1388,6 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see TableDefConfig#getOverwriteEnable()
-     */
-    public Boolean isTableDefOverwriteEnable() {
-        return getTableDefConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see TableDefConfig#setOverwriteEnable(Boolean)
-     */
-    public void setTableDefOverwriteEnable(Boolean tableDefOverwriteEnable) {
-        getTableDefConfig().setOverwriteEnable(tableDefOverwriteEnable);
-    }
-
-    /**
      * @see TableDefConfig#getClassPrefix()
      */
     public String getTableDefClassPrefix() {
@@ -1523,19 +1455,6 @@ public class GlobalConfig implements Serializable {
         this.mapperXmlGenerateEnable = mapperXmlGenerateEnable;
     }
 
-    /**
-     * @see MapperXmlConfig#getOverwriteEnable()
-     */
-    public Boolean isMapperXmlOverwriteEnable() {
-        return getMapperXmlConfig().getOverwriteEnable();
-    }
-
-    /**
-     * @see MapperXmlConfig#setOverwriteEnable(Boolean)
-     */
-    public void setMapperXmlOverwriteEnable(Boolean mapperXmlOverwriteEnable) {
-        getMapperXmlConfig().setOverwriteEnable(mapperXmlOverwriteEnable);
-    }
 
     /**
      * @see MapperXmlConfig#getFilePrefix()

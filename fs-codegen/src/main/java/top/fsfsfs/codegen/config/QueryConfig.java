@@ -16,6 +16,7 @@
 package top.fsfsfs.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
@@ -70,9 +71,9 @@ public class QueryConfig implements Serializable {
     private Class<?> genericityType;
 
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * VO 默认实现的接口。

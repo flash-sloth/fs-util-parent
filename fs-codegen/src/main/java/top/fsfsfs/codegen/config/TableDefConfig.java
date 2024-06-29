@@ -18,6 +18,7 @@ package top.fsfsfs.codegen.config;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -47,11 +48,10 @@ public class TableDefConfig implements Serializable {
      * TableDef 类的后缀。
      */
     private String classSuffix = "TableDef";
-
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * 生成辅助类的字段风格。

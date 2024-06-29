@@ -94,11 +94,9 @@ public class EntityBaseGenerator implements IGenerator {
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
-
         if (!globalConfig.isEntityGenerateEnable()) {
             return;
         }
-
         EntityConfig entityConfig = globalConfig.getEntityConfig();
 
         // 不需要生成 baseClass

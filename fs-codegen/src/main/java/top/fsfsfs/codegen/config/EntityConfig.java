@@ -15,6 +15,7 @@
  */
 package top.fsfsfs.codegen.config;
 
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.entity.Table;
 import lombok.Data;
 import lombok.Getter;
@@ -73,9 +74,9 @@ public class EntityConfig implements Serializable {
     private Class<?> genericityType;
 
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * Entity 默认实现的接口。

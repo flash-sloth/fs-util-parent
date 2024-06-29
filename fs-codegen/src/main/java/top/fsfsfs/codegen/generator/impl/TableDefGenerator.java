@@ -15,23 +15,29 @@
  */
 package top.fsfsfs.codegen.generator.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.config.TableDefConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.config.TableDefConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
  * TableDef 生成器。
@@ -86,47 +92,71 @@ public class TableDefGenerator implements IGenerator {
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
+        TableDefConfig config = globalConfig.getTableDefConfig();
 
-        String tableDefPackagePath = getFilePath(table, globalConfig, true);
-        File tableDefJavaFile = new File(tableDefPackagePath);
+//        String tableDefPackagePath = getFilePath(table, globalConfig, true);
+//        File tableDefJavaFile = new File(tableDefPackagePath);
 
-
-        if (tableDefJavaFile.exists() && !tableDefConfig.getOverwriteEnable()) {
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
             return;
         }
 
+        String path = getFilePath(table, globalConfig, true);
+        File javaFile = new File(path);
 
-        Map<String, Object> params = new HashMap<>(4);
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.EXIST_IGNORE) {
+            if (javaFile.exists()) {
+                return;
+            }
+        }
+
+        String tableDefClassName = table.buildTableDefClassName();
+        if (javaFile.exists()) {
+            if (config.getGenerationStrategy() == GenerationStrategyEnum.BACKUPS) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Backups" + now + StrPool.DOT_JAVA);
+                File newFile = new File(newPath);
+                FileUtil.copy(javaFile, newFile, true);
+            } else if (config.getGenerationStrategy() == GenerationStrategyEnum.ADD) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
+                javaFile = new File(newPath);
+                tableDefClassName += "_Add" + now;
+            }
+        }
+
+
+        Map<String, Object> params = getParams(table, globalConfig, packageConfig, config, tableDefClassName);
+
+        if (StrUtil.isNotEmpty(templateContent)) {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
+        } else {
+            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
+        }
+
+        log.info("TableDef ---> {}", javaFile);
+    }
+
+    private static Map<String, Object> getParams(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, TableDefConfig config, String tableDefClassName) {
+        Map<String, Object> params = new HashMap<>(7);
         params.put("table", table);
         params.put("packageConfig", packageConfig);
-        params.put("tableDefConfig", tableDefConfig);
+        params.put("tableDefConfig", config);
+        params.put("tableDefClassName", tableDefClassName);
         params.put("javadocConfig", globalConfig.getJavadocConfig());
         params.put("entityConfig", globalConfig.getEntityConfig());
         params.putAll(globalConfig.getCustomConfig());
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, tableDefJavaFile);
-        } else {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), tableDefJavaFile);
-        }
-
-        log.info("TableDef ---> {}", tableDefJavaFile);
+        return params;
     }
 
     @Override
     public String preview(Table table, GlobalConfig globalConfig) {
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        TableDefConfig tableDefConfig = globalConfig.getTableDefConfig();
+        TableDefConfig config = globalConfig.getTableDefConfig();
 
 
-        Map<String, Object> params = new HashMap<>(4);
-        params.put("table", table);
-        params.put("packageConfig", packageConfig);
-        params.put("tableDefConfig", tableDefConfig);
-        params.put("javadocConfig", globalConfig.getJavadocConfig());
-        params.put("entityConfig", globalConfig.getEntityConfig());
+        Map<String, Object> params = getParams(table, globalConfig, packageConfig, config, table.buildTableDefClassName());
         params.putAll(globalConfig.getCustomConfig());
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);

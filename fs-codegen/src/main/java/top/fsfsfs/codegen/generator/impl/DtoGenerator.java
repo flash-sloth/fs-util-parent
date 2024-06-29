@@ -8,23 +8,29 @@
 
 package top.fsfsfs.codegen.generator.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.DtoConfig;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.DtoConfig;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
  * DTO（写入方法入参） 生成器。
@@ -78,33 +84,53 @@ public class DtoGenerator implements IGenerator {
         }
 
         PackageConfig packageConfig = globalConfig.getPackageConfig();
-        DtoConfig dtoConfig = globalConfig.getDtoConfig();
+        DtoConfig config = globalConfig.getDtoConfig();
 
-        String packagePath = getFilePath(table, globalConfig, true);
-        File javaFile = new File(packagePath);
 
-        if (javaFile.exists() && !dtoConfig.getOverwriteEnable()) {
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
             return;
         }
 
-        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, dtoConfig);
+        String path = getFilePath(table, globalConfig, true);
+        File javaFile = new File(path);
+
+        if (config.getGenerationStrategy() == GenerationStrategyEnum.EXIST_IGNORE) {
+            if (javaFile.exists()) {
+                return;
+            }
+        }
+
+        String dtoClassName = table.buildDtoClassName();
+        if (javaFile.exists()) {
+            if (config.getGenerationStrategy() == GenerationStrategyEnum.BACKUPS) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Backups" + now + StrPool.DOT_JAVA);
+                File newFile = new File(newPath);
+                FileUtil.copy(javaFile, newFile, true);
+            } else if (config.getGenerationStrategy() == GenerationStrategyEnum.ADD) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
+                javaFile = new File(newPath);
+                dtoClassName += "_Add" + now;
+            }
+        }
+
+        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, config, dtoClassName);
 
         log.info("Dto ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
-
             globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
         } else {
-
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
     }
 
-    private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, DtoConfig dtoConfig) {
+    private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig, DtoConfig dtoConfig, String dtoClassName) {
         Map<String, Object> params = new HashMap<>(7);
+        params.put("dtoClassName", dtoClassName);
         params.put("table", table);
         params.put("dtoPackageName", packageConfig.getDtoPackage());
         params.put("dtoConfig", dtoConfig);
-        params.put("dtoClassName", table.buildDtoClassName());
         params.put("javadocConfig", globalConfig.getJavadocConfig());
         params.put("packageConfig", packageConfig);
         params.put("globalConfig", globalConfig);
@@ -116,7 +142,7 @@ public class DtoGenerator implements IGenerator {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         DtoConfig dtoConfig = globalConfig.getDtoConfig();
 
-        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, dtoConfig);
+        Map<String, Object> params = buildParam(table, globalConfig, packageConfig, dtoConfig, table.buildDtoClassName());
 
         if (StrUtil.isNotEmpty(templateContent)) {
             return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);

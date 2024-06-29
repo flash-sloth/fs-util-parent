@@ -17,6 +17,7 @@ package top.fsfsfs.codegen.config;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -53,11 +54,10 @@ public class ServiceImplConfig implements Serializable {
      * 自定义 ServiceImpl 的父类。
      */
     private Class<?> superClass;
-
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * 是否生成缓存样例代码。

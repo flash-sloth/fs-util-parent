@@ -18,6 +18,7 @@ package top.fsfsfs.codegen.config;
 import com.mybatisflex.core.BaseMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -53,11 +54,10 @@ public class MapperConfig implements Serializable {
      * 自定义 Mapper 的父类。
      */
     private Class<?> superClass = BaseMapper.class;
-
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * 是否添加 {@code @Mapper} 注解。

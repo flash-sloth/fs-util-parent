@@ -17,6 +17,6 @@ import #(packageConfig.entityPackage).#(table.buildEntityClassName());
 @Mapper
 #end
 @Repository
-public interface #(table.buildMapperClassName()) extends #(mapperConfig.buildSuperClassName())<#(table.buildEntityClassName())> {
+public interface #(mapperClassName) extends #(mapperConfig.buildSuperClassName())<#(table.buildEntityClassName())> {
 
 }

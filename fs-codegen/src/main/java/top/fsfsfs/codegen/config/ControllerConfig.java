@@ -64,7 +64,7 @@ public class ControllerConfig implements Serializable {
      */
     private Boolean withCrud = false;
     /**
-     * 是否覆盖之前生成的文件。
+     * 生成策略。
      */
     private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
