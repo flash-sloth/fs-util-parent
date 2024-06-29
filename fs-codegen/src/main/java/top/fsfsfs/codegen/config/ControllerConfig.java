@@ -16,6 +16,7 @@
 package top.fsfsfs.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.entity.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -65,7 +66,7 @@ public class ControllerConfig implements Serializable {
     /**
      * 是否覆盖之前生成的文件。
      */
-    private Boolean overwriteEnable = false;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
      * 生成 REST 风格的 Controller。

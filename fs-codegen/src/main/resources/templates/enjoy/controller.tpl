@@ -31,7 +31,7 @@ import #(importClass);
 @Tag(name = "#(tableComment)接口")
 #end
 @RequestMapping("#(table.buildControllerRequestMappingPrefix())/#(firstCharToLowerCase(entityClassName))")
-public class #(table.buildControllerClassName()) #if(controllerConfig.superClass)extends #(controllerConfig.buildSuperClassName(table)) #end {
+public class #(controllerClassName) #if(controllerConfig.superClass)extends #(controllerConfig.buildSuperClassName(table)) #end {
 #if(controllerConfig.withCrud)
     @Autowired
     private #(table.buildServiceClassName()) #(serviceVarName);

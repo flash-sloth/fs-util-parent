@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>top.fsfsfs.basic</groupId>
-            <artifactId>fs-core</artifactId>
+            <artifactId>fs-util</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

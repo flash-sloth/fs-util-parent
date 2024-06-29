@@ -15,23 +15,29 @@
  */
 package top.fsfsfs.codegen.generator.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.ControllerConfig;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.ControllerConfig;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.util.utils.DateUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
  * Controller 生成器。
@@ -81,23 +87,38 @@ public class ControllerGenerator implements IGenerator {
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig) {
-
-        if (!globalConfig.isControllerGenerateEnable()) {
-            return;
-        }
-
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
+        if (controllerConfig.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {
+            return;
+        }
 
         String path = getFilePath(table, globalConfig, true);
         File controllerJavaFile = new File(path);
 
-        if (controllerJavaFile.exists() && !controllerConfig.getOverwriteEnable()) {
-            return;
+        if (controllerConfig.getGenerationStrategy() == GenerationStrategyEnum.EXIST_IGNORE) {
+            if (controllerJavaFile.exists()) {
+                return;
+            }
         }
 
+        String controllerClassName = table.buildControllerClassName();
+        if (controllerJavaFile.exists()) {
+            if (controllerConfig.getGenerationStrategy() == GenerationStrategyEnum.BACKUPS) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Backups" + now + StrPool.DOT_JAVA);
+                File newFile = new File(newPath);
+                FileUtil.copy(controllerJavaFile, newFile, true);
+            } else if (controllerConfig.getGenerationStrategy() == GenerationStrategyEnum.ADD) {
+                String now = DateUtils.format(LocalDateTime.now(), CHINESE_DATE_TIME_PATTERN);
+                String newPath = StrUtil.replaceLast(path, StrPool.DOT_JAVA, "_Add" + now + StrPool.DOT_JAVA);
+                controllerJavaFile = new File(newPath);
+                controllerClassName = table.buildControllerClassName() + "_Add" + now;
+            }
+        }
 
-        Map<String, Object> params = new HashMap<>(4);
+        Map<String, Object> params = new HashMap<>();
+        params.put("controllerClassName", controllerClassName);
         params.put("table", table);
         params.put("packageConfig", packageConfig);
         params.put("controllerConfig", controllerConfig);

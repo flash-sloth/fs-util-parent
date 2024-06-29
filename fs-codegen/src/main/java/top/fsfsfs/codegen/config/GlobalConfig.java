@@ -1352,24 +1352,6 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see ControllerConfig#getOverwriteEnable()
-     */
-    public Boolean isControllerOverwriteEnable() {
-        return getControllerConfig().getOverwriteEnable();
-    }
-
-    public Boolean isControllerGenerateEnable() {
-        return controllerGenerateEnable;
-    }
-
-    /**
-     * @see ControllerConfig#setOverwriteEnable(Boolean)
-     */
-    public void setControllerOverwriteEnable(Boolean controllerOverwriteEnable) {
-        getControllerConfig().setOverwriteEnable(controllerOverwriteEnable);
-    }
-
-    /**
      * @see #enableController()
      * @see #disableController()
      */
