@@ -15,6 +15,7 @@
  */
 package top.fsfsfs.codegen;
 
+import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.codegen.config.GlobalConfig;
 import top.fsfsfs.codegen.config.StrategyConfig;
 import top.fsfsfs.codegen.constant.GenTypeEnum;
@@ -22,7 +23,6 @@ import top.fsfsfs.codegen.dialect.IDialect;
 import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.codegen.generator.GeneratorFactory;
 import top.fsfsfs.codegen.generator.IGenerator;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -75,7 +75,7 @@ public class Generator {
         for (Table table : tables) {
             Collection<IGenerator> generators = GeneratorFactory.getGenerators();
             for (IGenerator generator : generators) {
-                generator.generate(table, globalConfig);
+                generator.generate(table, globalConfig, null);
             }
         }
         log.info("Code is generated successfully.");

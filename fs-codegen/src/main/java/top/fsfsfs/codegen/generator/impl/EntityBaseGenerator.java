@@ -16,18 +16,18 @@
 package top.fsfsfs.codegen.generator.impl;
 
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.config.EntityConfig;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.PackageConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.PackageConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.IGenerator;
 
 import java.io.File;
 import java.util.HashMap;
@@ -47,8 +47,6 @@ public class EntityBaseGenerator implements IGenerator {
 
     /** 模板路径 */
     private GenTypeEnum genType;
-    /** 模板内容 */
-    protected String templateContent;
 
     public EntityBaseGenerator() {
         this(GenTypeEnum.ENTITY_BASE);
@@ -93,7 +91,7 @@ public class EntityBaseGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isEntityGenerateEnable()) {
             return;
         }
@@ -127,11 +125,7 @@ public class EntityBaseGenerator implements IGenerator {
 
         Map<String, Object> params = getTemplatePath(table, globalConfig, baseEntityClassName);
 
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
-        }
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
     }
 
 

@@ -51,7 +51,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class MapperGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public MapperGenerator() {
@@ -85,7 +84,7 @@ public class MapperGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
 
         if (!globalConfig.isMapperGenerateEnable()) {
             return;
@@ -151,10 +150,6 @@ public class MapperGenerator implements IGenerator {
 
         Map<String, Object> params = getParams(table, globalConfig, table.buildMapperClassName(), config, packageConfig);
 
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
-        }
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
     }
 }

@@ -51,7 +51,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class TableDefGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public TableDefGenerator() {
@@ -85,7 +84,7 @@ public class TableDefGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isTableDefGenerateEnable()) {
             return;
         }
@@ -154,9 +153,6 @@ public class TableDefGenerator implements IGenerator {
 
         Map<String, Object> params = getParams(table, globalConfig, packageConfig, config, table.buildTableDefClassName());
         params.putAll(globalConfig.getCustomConfig());
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        }
         return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
     }
 }

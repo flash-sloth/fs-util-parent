@@ -44,7 +44,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class DtoGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public DtoGenerator() {
@@ -78,7 +77,7 @@ public class DtoGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isDtoGenerateEnable()) {
             return;
         }
@@ -144,9 +143,6 @@ public class DtoGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, dtoConfig, table.buildDtoClassName());
 
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        }
         return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.genType.getTemplate());
     }
 }

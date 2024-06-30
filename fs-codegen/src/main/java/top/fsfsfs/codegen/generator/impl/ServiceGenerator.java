@@ -51,7 +51,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class ServiceGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public ServiceGenerator() {
@@ -85,7 +84,7 @@ public class ServiceGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.getServiceGenerateEnable()) {
             return;
         }
@@ -149,10 +148,6 @@ public class ServiceGenerator implements IGenerator {
         ServiceConfig serviceConfig = globalConfig.getServiceConfig();
 
         Map<String, Object> params = getParams(table, globalConfig, table.buildServiceClassName(), serviceConfig, packageConfig);
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
-        }
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, genType.getTemplate());
     }
 }

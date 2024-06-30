@@ -44,7 +44,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class VoGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public VoGenerator() {
@@ -77,7 +76,7 @@ public class VoGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isVoGenerateEnable()) {
             return;
         }
@@ -117,7 +116,7 @@ public class VoGenerator implements IGenerator {
 
         log.info("Vo ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, getTemplateContent(), javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
@@ -142,10 +141,6 @@ public class VoGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, voConfig, table.buildVoClassName());
 
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        }
         return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.genType.getTemplate());
     }
 }

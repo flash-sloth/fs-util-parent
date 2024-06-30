@@ -44,7 +44,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class QueryGenerator implements IGenerator {
 
-    private String templateContent;
     private GenTypeEnum genType;
 
     public QueryGenerator() {
@@ -79,7 +78,7 @@ public class QueryGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isQueryGenerateEnable()) {
             return;
         }
@@ -119,7 +118,7 @@ public class QueryGenerator implements IGenerator {
 
         log.info("Query ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, this.getTemplateContent(), javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
@@ -144,10 +143,6 @@ public class QueryGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(table, globalConfig, packageConfig, queryConfig, table.buildQueryClassName());
 
-
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        }
         return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.genType.getTemplate());
     }
 }

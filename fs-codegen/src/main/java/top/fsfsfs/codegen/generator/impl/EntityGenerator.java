@@ -51,8 +51,6 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Accessors(chain = true)
 public class EntityGenerator implements IGenerator {
 
-    /** 模板内容 */
-    protected String templateContent;
     private GenTypeEnum genType;
 
     protected String entityWithBaseTemplatePath = "/templates/enjoy/entityWithBase.tpl";
@@ -88,7 +86,7 @@ public class EntityGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(Table table, GlobalConfig globalConfig) {
+    public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
         if (!globalConfig.isEntityGenerateEnable()) {
             return;
         }
@@ -144,11 +142,7 @@ public class EntityGenerator implements IGenerator {
 
         String templatePath = getTemplatePath(params, table, globalConfig, table.buildEntityClassName());
 
-        if (StrUtil.isNotEmpty(templateContent)) {
-            return globalConfig.getTemplateConfig().getTemplate().previewByContent(params, templateContent);
-        } else {
-            return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
-        }
+        return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, templatePath);
     }
 
 

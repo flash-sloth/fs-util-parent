@@ -44,20 +44,13 @@ public interface IGenerator {
     GenTypeEnum getGenType();
 
     /**
-     * 设置模板内容
-     *
-     * @param templateContent 模版内容
-     * @return 生成器
-     */
-    IGenerator setTemplateContent(String templateContent);
-
-    /**
      * 根据模板生成文件。
      *
      * @param table        表内容
+     * @param templateContent  模版内容
      * @param globalConfig 全局配置
      */
-    void generate(Table table, GlobalConfig globalConfig);
+    void generate(Table table, GlobalConfig globalConfig,  String templateContent);
 
     /**
      * 预览代码
