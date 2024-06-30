@@ -119,7 +119,7 @@ public class QueryGenerator implements IGenerator {
 
         log.info("Query ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, this.getTemplateContent(), javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, this.getTemplateContent(), javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }

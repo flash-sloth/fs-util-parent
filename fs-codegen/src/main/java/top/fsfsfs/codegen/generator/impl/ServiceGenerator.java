@@ -124,7 +124,7 @@ public class ServiceGenerator implements IGenerator {
         Map<String, Object> params = getParams(table, globalConfig, serviceClassName, config, packageConfig);
 
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }

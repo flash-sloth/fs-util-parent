@@ -125,7 +125,7 @@ public class MapperGenerator implements IGenerator {
         Map<String, Object> params = getParams(table, globalConfig, mapperClassName, config, packageConfig);
 
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, templateContent, javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }

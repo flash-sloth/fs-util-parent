@@ -117,7 +117,7 @@ public class VoGenerator implements IGenerator {
 
         log.info("Vo ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
-            globalConfig.getTemplateConfig().getTemplate().generate(params, getTemplateContent(), javaFile);
+            globalConfig.getTemplateConfig().getTemplate().generateByContent(params, getTemplateContent(), javaFile);
         } else {
             globalConfig.getTemplateConfig().getTemplate().generate(params, genType.getTemplate(), javaFile);
         }
