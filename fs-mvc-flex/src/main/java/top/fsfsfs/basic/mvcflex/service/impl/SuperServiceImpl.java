@@ -111,6 +111,7 @@ public abstract class SuperServiceImpl<M extends BaseMapper<Entity>, Entity exte
     @Transactional(rollbackFor = Exception.class)
     public <DTO> Entity saveDto(DTO save) {
         Entity entity = saveBefore(save);
+        entity.setId(null);
         save(entity);
         saveAfter(save, entity);
         return entity;
