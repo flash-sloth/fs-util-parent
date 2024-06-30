@@ -92,7 +92,7 @@ public class EntityConfig implements Serializable {
     /**
      * Entity 是否使用 Swagger 注解。
      */
-    private Boolean withSwagger = true;
+    private Boolean withSwagger = false;
 
     /**
      * Swagger 版本

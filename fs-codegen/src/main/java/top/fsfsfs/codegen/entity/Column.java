@@ -282,7 +282,7 @@ public class Column {
         if (primaryKey || columnConfig.getPrimaryKey()) {
             annotations.append("@Id(");
 
-            Boolean needComma = false;
+            boolean needComma = false;
             if (autoIncrement) {
                 annotations.append("keyType = KeyType.Auto");
                 needComma = true;
@@ -324,7 +324,7 @@ public class Column {
             }
         }
 
-        Boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation())
+        boolean needGenColumnAnnotation = (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation())
                 || !name.equalsIgnoreCase(StringUtil.camelToUnderline(property))
                 || (entityConfig != null && entityConfig.getColumnCommentEnable() && StringUtil.isNotBlank(this.comment) && annotations.length() == 0);
 
@@ -341,7 +341,7 @@ public class Column {
                 || columnConfig.getTenantId() != null
                 || needGenColumnAnnotation
         ) {
-            Boolean needComma = false;
+            boolean needComma = false;
             if (entityConfig != null && entityConfig.getAlwaysGenColumnAnnotation()
                     || !name.equalsIgnoreCase(StringUtil.camelToUnderline(property))) {
                 columnAnnotation.append("value = \"").append(name).append("\"");

@@ -92,7 +92,7 @@ public class ColumnConfig implements Serializable {
     /**
      * 自定义 TypeHandler。
      */
-    private Class<? extends TypeHandler> typeHandler;
+    private Class<? extends TypeHandler<?>> typeHandler;
 
     /**
      * 脱敏方式。
@@ -117,7 +117,7 @@ public class ColumnConfig implements Serializable {
     /**
      * sequence 序列执行顺序。
      */
-    private Boolean keyBefore = false;
+    private Boolean keyBefore;
 
 
     public static ColumnConfig create() {
@@ -187,7 +187,7 @@ public class ColumnConfig implements Serializable {
             return this;
         }
 
-        public Builder typeHandler(Class<? extends TypeHandler> typeHandler) {
+        public Builder typeHandler(Class<? extends TypeHandler<?>> typeHandler) {
             this.columnConfig.setTypeHandler(typeHandler);
             return this;
         }
