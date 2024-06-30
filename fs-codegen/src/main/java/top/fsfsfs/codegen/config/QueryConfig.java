@@ -16,12 +16,12 @@
 package top.fsfsfs.codegen.config;
 
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
-import top.fsfsfs.codegen.entity.Column;
-import top.fsfsfs.codegen.entity.Table;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Column;
+import top.fsfsfs.codegen.entity.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -160,33 +160,6 @@ public class QueryConfig implements Serializable {
         Set<String> imports = new HashSet<>();
         if (superClass != null) {
             imports.add(superClass.getName());
-        }
-        imports.add(com.mybatisflex.annotation.Table.class.getName());
-        TableConfig tableConfig = table.getTableConfig();
-        if (tableConfig != null) {
-            if (tableConfig.getInsertListenerClass() != null) {
-                imports.add(tableConfig.getInsertListenerClass().getName());
-            }
-            if (tableConfig.getUpdateListenerClass() != null) {
-                imports.add(tableConfig.getUpdateListenerClass().getName());
-            }
-            if (tableConfig.getSetListenerClass() != null) {
-                imports.add(tableConfig.getSetListenerClass().getName());
-            }
-        }
-
-        EntityConfig entityConfig = table.getEntityConfig();
-        if (entityConfig.getWithBaseClassEnable()) {
-            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
-            String baseClassName = table.buildEntityClassName() + entityConfig.getWithBaseClassSuffix();
-            String baseClassPackage = StringUtil.isNotBlank(entityConfig.getWithBasePackage())
-                    ? entityConfig.getWithBasePackage() : packageConfig.getEntityPackage() + ".base";
-            imports.add(baseClassPackage + "." + baseClassName);
-        } else {
-            PackageConfig packageConfig = table.getGlobalConfig().getPackageConfig();
-            String baseClassName = table.buildEntityClassName();
-            String baseClassPackage = packageConfig.getEntityPackage();
-            imports.add(baseClassPackage + "." + baseClassName);
         }
 
         if (implInterfaces != null) {

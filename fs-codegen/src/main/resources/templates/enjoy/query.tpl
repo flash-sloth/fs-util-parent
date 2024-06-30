@@ -52,7 +52,6 @@ import lombok.EqualsAndHashCode;
 #if(withSwagger && swaggerVersion.getName() == "DOC")
 @Schema(description = "#(table.getComment())")
 #end
-#(table.buildTableAnnotation())
 public class #(queryClassName)#(queryConfig.buildExtends(globalConfig))#(queryConfig.buildImplements(globalConfig)) {
 
     #if(jdkVersion >= 14)
@@ -66,10 +65,6 @@ public class #(queryClassName)#(queryConfig.buildExtends(globalConfig))#(queryCo
     /**
      * #(comment)
      */
-    #end
-    #set(annotations = column.buildAnnotations())
-    #if(isNotBlank(annotations))
-    #(annotations)
     #end
     #if(withSwagger && swaggerVersion.getName() == "FOX")
     @ApiModelProperty("#(column.getSwaggerComment())")
