@@ -1,5 +1,6 @@
 package top.fsfsfs.basic.mvcflex.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,12 +76,21 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
      * @return 查询构造器
      */
     default QueryWrapper handlerWrapper(PageParams<Query> params) {
-        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
+        Entity entity = queryToEntity(params.getModel());
+        QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(params.getModel().getClass()));
 
         ControllerUtil.buildOrder(wrapper, params);
         return wrapper;
     }
 
+    /**
+     * 将查询参数转换为实体
+     * @param query 查询实体
+     * @return 实体类
+     */
+    default Entity queryToEntity(Query query) {
+        return BeanUtil.toBean(query, getEntityClass());
+    }
 
     /**
      * 获取echo Service
