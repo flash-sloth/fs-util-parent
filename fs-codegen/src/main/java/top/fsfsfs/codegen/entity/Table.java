@@ -17,8 +17,11 @@ package top.fsfsfs.codegen.entity;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.core.util.StringUtil;
+import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
 import top.fsfsfs.codegen.config.ControllerConfig;
 import top.fsfsfs.codegen.config.DtoConfig;
 import top.fsfsfs.codegen.config.EntityConfig;
@@ -33,7 +36,6 @@ import top.fsfsfs.codegen.config.TableConfig;
 import top.fsfsfs.codegen.config.TableDefConfig;
 import top.fsfsfs.codegen.config.VoConfig;
 import top.fsfsfs.codegen.constant.PackageConst;
-import com.mybatisflex.core.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -123,6 +125,7 @@ public class Table {
         }
         return null;
     }
+
     public String getSwaggerComment() {
         if (StringUtil.isNotBlank(comment)) {
             return globalConfig.getJavadocConfig().formatTableSwaggerComment(comment);
@@ -326,6 +329,17 @@ public class Table {
                     imports.add(tableConfig.getSetListenerClass().getName());
                 }
             }
+        }
+
+        return imports.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+    }
+
+    public List<String> buildServiceImplImports() {
+        Set<String> imports = new HashSet<>();
+
+        ServiceImplConfig serviceImplConfig = globalConfig.getServiceImplConfig();
+        if (BooleanUtil.isTrue(serviceImplConfig.getCache())) {
+            imports.add(CacheKeyBuilder.class.getName());
         }
 
         return imports.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());

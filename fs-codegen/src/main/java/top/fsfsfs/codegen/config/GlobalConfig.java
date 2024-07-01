@@ -1284,20 +1284,6 @@ public class GlobalConfig implements Serializable {
     }
 
     /**
-     * @see ServiceImplConfig#getCacheExample()
-     */
-    public Boolean isServiceImplCacheExample() {
-        return getServiceImplConfig().getCacheExample();
-    }
-
-    /**
-     * @see ServiceImplConfig#setCacheExample(Boolean)
-     */
-    public void setServiceImplCacheExample(Boolean cacheExample) {
-        getServiceImplConfig().setCacheExample(cacheExample);
-    }
-
-    /**
      * @see #enableController()
      * @see #disableController()
      */

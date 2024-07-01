@@ -60,11 +60,9 @@ public class ServiceImplConfig implements Serializable {
     private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 
     /**
-     * 是否生成缓存样例代码。
+     * 是否封装缓存
      */
-    private Boolean cacheExample = false;
-
-
+    private Boolean cache = false;
     public String buildSuperClassImport() {
         if (superClass == null) {
             return "com.mybatisflex.spring.service.impl.ServiceImpl";

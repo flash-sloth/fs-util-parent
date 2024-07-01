@@ -97,4 +97,11 @@ public class ClassUtils {
     public static Class<?> forName(String className) {
         return StrUtil.isNotEmpty(className) ? Class.forName(className) : null;
     }
+
+    public static boolean equals(Class<?> source, Class<?> target) {
+        if (source == null || target == null) {
+            return false;
+        }
+        return source.getName().equals(target.getName());
+    }
 }
