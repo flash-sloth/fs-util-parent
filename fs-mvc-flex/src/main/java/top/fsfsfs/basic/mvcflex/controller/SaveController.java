@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.BaseEntity;
@@ -38,20 +37,6 @@ public interface SaveController<Id extends Serializable, Entity extends BaseEnti
             return R.success(entity.getId());
         }
         return result;
-    }
-
-    /**
-     * 复制
-     *
-     * @param id ID
-     * @return 实体
-     */
-    @Operation(summary = "复制")
-    @PostMapping("/copy")
-    @WebLog(value = "复制", request = false)
-    default R<Id> copy(@RequestParam("id") Id id) {
-        Entity entity = getSuperService().copy(id);
-        return R.success(entity.getId());
     }
 
     /**
