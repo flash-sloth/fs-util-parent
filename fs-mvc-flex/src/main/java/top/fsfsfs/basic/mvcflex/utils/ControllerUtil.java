@@ -43,7 +43,7 @@ public class ControllerUtil {
         }));
     }
 
-    public static <Query> void buildOrder(QueryWrapper wrapper, PageParams<Query> params) {
+    public static <Query> void buildOrder(QueryWrapper wrapper, PageParams<Query> params, Class<?> entity) {
         List<String> sortArr = StrUtil.split(params.getSort(), StrPool.COMMA);
         List<String> orderArr = StrUtil.split(params.getOrder(), StrPool.COMMA);
 
@@ -52,7 +52,7 @@ public class ControllerUtil {
             String humpSort = sortArr.get(i);
             String order = orderArr.get(i);
 
-            String beanColumn = ControllerUtil.getColumnByProperty(humpSort, params.getModel().getClass());
+            String beanColumn = ControllerUtil.getColumnByProperty(humpSort, entity);
             wrapper.orderBy(new QueryColumn(beanColumn), StrUtil.equalsAny(order, "ascending", "ascend"));
         }
     }

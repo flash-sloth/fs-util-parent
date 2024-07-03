@@ -73,7 +73,7 @@ public abstract class SuperController<S extends SuperService<Entity>, Id extends
             @Parameter(name = "id", description = "主键", schema = @Schema(type = "long"), in = ParameterIn.PATH),
     })
     @Operation(summary = "单体查询(优先查缓存)", description = "单体查询(优先查缓存)")
-    @GetMapping("/getByIdCache/{id}")
+    @GetMapping("/cache/{id}")
     @WebLog("'单体查询(优先查缓存):' + #id")
     public R<VO> getByIdCache(@PathVariable Id id) {
         Entity entity = getSuperService().getByIdCache(id);

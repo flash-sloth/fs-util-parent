@@ -46,23 +46,9 @@ public interface QueryController<Id extends Serializable, Entity extends BaseEnt
             @Parameter(name = "id", description = "主键", schema = @Schema(type = "long"), in = ParameterIn.PATH),
     })
     @Operation(summary = "单体查询", description = "单体查询")
-    @GetMapping("/{id}")
+    @GetMapping("/info/{id}")
     @WebLog("'单体查询:' + #id")
-    default R<VO> get(@PathVariable Id id) {
-        Entity entity = getSuperService().getById(id);
-        return success(BeanPlusUtil.toBean(entity, getVoClass()));
-    }
-
-    /**
-     * 查询详情
-     *
-     * @param id 主键id
-     * @return 查询结果
-     */
-    @Operation(summary = "查询单体详情", description = "查询单体详情")
-    @GetMapping("/detail")
-    @WebLog("'查询单体详情:' + #id")
-    default R<VO> getDetail(@RequestParam("id") Id id) {
+    default R<VO> getById(@PathVariable Id id) {
         Entity entity = getSuperService().getById(id);
         VO vo = BeanPlusUtil.toBean(entity, getVoClass());
         EchoService echoService = getEchoService();

@@ -79,7 +79,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
         Entity entity = queryToEntity(params.getModel());
         QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(params.getModel().getClass()));
 
-        ControllerUtil.buildOrder(wrapper, params);
+        ControllerUtil.buildOrder(wrapper, params, entity.getClass());
         return wrapper;
     }
 
