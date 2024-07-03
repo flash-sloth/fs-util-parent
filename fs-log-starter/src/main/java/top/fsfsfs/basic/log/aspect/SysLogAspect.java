@@ -53,7 +53,7 @@ import java.util.function.Consumer;
  * @since 2019-07-01 15:15
  */
 @Slf4j
-@Aspect
+//@Aspect
 public class SysLogAspect {
 
     public static final int MAX_LENGTH = 65535;
