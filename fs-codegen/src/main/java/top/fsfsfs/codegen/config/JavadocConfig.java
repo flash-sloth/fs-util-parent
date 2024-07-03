@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -47,7 +47,7 @@ public class JavadocConfig implements Serializable {
     /**
      * 自。
      */
-    private Supplier<String> since = () -> DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
+    private Supplier<String> since = () -> DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 
     /**
      * 表名格式化。
