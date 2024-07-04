@@ -77,7 +77,7 @@ public interface PageController<Entity extends BaseEntity<?>, Query, VO> extends
      */
     default QueryWrapper handlerWrapper(PageParams<Query> params) {
         Entity entity = queryToEntity(params.getModel());
-        QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(params.getModel().getClass()));
+        QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
 
         ControllerUtil.buildOrder(wrapper, params, entity.getClass());
         return wrapper;

@@ -120,8 +120,9 @@ public class #(controllerClassName) #if(controllerConfig.superClass)extends #(co
     #end
     public R<Page<#(voClassName)>> page(@RequestBody @Validated  PageParams<#(queryClassName)> params) {
         Page<#(voClassName)> page = Page.of(params.getCurrent(), params.getSize());
-        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
-        ControllerUtil.buildOrder(wrapper, params);
+        #(entityClassName) entity = BeanUtil.toBean(params.getModel(), #(entityClassName).class);
+        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(entity.getClass()));
+        ControllerUtil.buildOrder(wrapper, params, entity.getClass());
         #(serviceVarName).pageAs(page, wrapper, #(voClassName).class);
         return R.success(page);
         // Page<#(entityClassName)> page = Page.of(params.getCurrent(), params.getSize());
