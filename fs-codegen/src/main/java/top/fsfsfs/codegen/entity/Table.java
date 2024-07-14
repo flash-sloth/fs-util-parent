@@ -43,7 +43,6 @@ import java.lang.reflect.TypeVariable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -179,6 +178,14 @@ public class Table {
         ArrayList<Column> arrayList = new ArrayList<>(columns);
         // 生成字段排序
         arrayList.sort(Comparator.comparingInt((Column c) -> c.getProperty().length())
+                .thenComparing(Column::getProperty));
+        return arrayList;
+    }
+
+    public List<Column> getSortedListColumns() {
+        ArrayList<Column> arrayList = new ArrayList<>(columns);
+        // 生成字段排序
+        arrayList.sort(Comparator.comparingInt((Column c) -> c.getListConfig().getSequence())
                 .thenComparing(Column::getProperty));
         return arrayList;
     }
@@ -356,7 +363,6 @@ public class Table {
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
         EntityConfig.SwaggerVersion swaggerVersion = globalConfig.getSwaggerVersion();
 
-
         if (controllerConfig.getRestStyle()) {
             imports.add(PackageConst.REST_CONTROLLER);
         } else {
@@ -365,12 +371,16 @@ public class Table {
 
         if (EntityConfig.SwaggerVersion.FOX.getName().equals(swaggerVersion.getName())) {
             imports.add(PackageConst.API);
-            imports.add(PackageConst.API_OPERATION);
-            imports.add(PackageConst.API_PARAM);
+            if (controllerConfig.getWithCrud()) {
+                imports.add(PackageConst.API_OPERATION);
+                imports.add(PackageConst.API_PARAM);
+            }
         } else {
             imports.add(PackageConst.TAG);
-            imports.add(PackageConst.OPERATION);
-            imports.add(PackageConst.PARAMETER);
+            if (controllerConfig.getWithCrud()) {
+                imports.add(PackageConst.OPERATION);
+                imports.add(PackageConst.PARAMETER);
+            }
         }
 
         imports.add(PackageConst.VALIDATED);
@@ -396,7 +406,7 @@ public class Table {
 
         Class<?> superClass = controllerConfig.getSuperClass();
         if (superClass == null) {
-            return Collections.emptyList();
+            return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
         }
 
         TypeVariable<? extends Class<?>>[] typeParameters = superClass.getTypeParameters();

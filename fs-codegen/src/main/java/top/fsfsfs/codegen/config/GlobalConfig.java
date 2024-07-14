@@ -49,6 +49,7 @@ public class GlobalConfig implements Serializable {
 
     // === 可选配置 ===
 
+    private FrontConfig frontConfig;
     private EntityConfig entityConfig;
     private VoConfig voConfig;
     private DtoConfig dtoConfig;
@@ -65,6 +66,7 @@ public class GlobalConfig implements Serializable {
 
     // === 是否启用生成 ===
 
+    private Boolean frontGenerateEnable = false;
     private Boolean entityGenerateEnable = false;
     private Boolean voGenerateEnable = false;
     private Boolean dtoGenerateEnable = false;
@@ -108,6 +110,13 @@ public class GlobalConfig implements Serializable {
             entityConfig = new EntityConfig();
         }
         return entityConfig;
+    }
+
+    public FrontConfig getFrontConfig() {
+        if (frontConfig == null) {
+            frontConfig = new FrontConfig();
+        }
+        return frontConfig;
     }
 
     public VoConfig getVoConfig() {
@@ -180,6 +189,11 @@ public class GlobalConfig implements Serializable {
         return getEntityConfig();
     }
 
+    public FrontConfig enableFront() {
+        frontGenerateEnable = true;
+        return getFrontConfig();
+    }
+
     public VoConfig enableVo() {
         voGenerateEnable = true;
         return getVoConfig();
@@ -231,6 +245,9 @@ public class GlobalConfig implements Serializable {
 
     // === 禁用配置 ===
 
+    public void disableFront() {
+        frontGenerateEnable = false;
+    }
     public void disableEntity() {
         entityGenerateEnable = false;
     }
@@ -899,6 +916,14 @@ public class GlobalConfig implements Serializable {
         return getTemplateConfig().getMapperXml();
     }
 
+    public Boolean getFrontGenerateEnable() {
+        return frontGenerateEnable;
+    }
+
+    public GlobalConfig setFrontGenerateEnable(Boolean frontGenerateEnable) {
+        this.frontGenerateEnable = frontGenerateEnable;
+        return this;
+    }
 
     public Boolean isEntityGenerateEnable() {
         return entityGenerateEnable;

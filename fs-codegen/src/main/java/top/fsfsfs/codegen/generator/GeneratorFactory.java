@@ -28,6 +28,7 @@ import top.fsfsfs.codegen.generator.impl.ServiceGenerator;
 import top.fsfsfs.codegen.generator.impl.ServiceImplGenerator;
 import top.fsfsfs.codegen.generator.impl.TableDefGenerator;
 import top.fsfsfs.codegen.generator.impl.VoGenerator;
+import top.fsfsfs.codegen.generator.impl.front.IndexTsxGenerator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -56,6 +57,7 @@ public class GeneratorFactory {
         registerGenerator(GenTypeEnum.TABLE_DEF, new TableDefGenerator());
         registerGenerator(GenTypeEnum.MAPPER_XML, new MapperXmlGenerator());
 //        registerGenerator(GenTypeConst.PACKAGE_INFO, new PackageInfoGenerator());
+        registerGenerator(GenTypeEnum.INDEX_TSX, new IndexTsxGenerator());
     }
 
     private GeneratorFactory() {

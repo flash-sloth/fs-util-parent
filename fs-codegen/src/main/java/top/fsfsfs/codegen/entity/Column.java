@@ -19,12 +19,14 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.annotation.ColumnMask;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
-import top.fsfsfs.codegen.config.ColumnConfig;
-import top.fsfsfs.codegen.config.EntityConfig;
-import top.fsfsfs.codegen.config.JavadocConfig;
 import com.mybatisflex.core.mask.MaskManager;
 import com.mybatisflex.core.mask.Masks;
 import com.mybatisflex.core.util.StringUtil;
+import top.fsfsfs.codegen.config.ColumnConfig;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.JavadocConfig;
+import top.fsfsfs.codegen.config.front.ListConfig;
+import top.fsfsfs.codegen.config.front.PropertyConfig;
 
 import java.math.BigDecimal;
 import java.sql.ResultSetMetaData;
@@ -98,6 +100,10 @@ public class Column {
 
     private EntityConfig entityConfig;
     private JavadocConfig javadocConfig;
+    /** 列表配置 */
+    private ListConfig listConfig;
+    private PropertyConfig propertyConfig;
+
 
     public String getName() {
         return name;
@@ -149,6 +155,9 @@ public class Column {
     }
 
     public String getSwaggerComment() {
+        if (propertyConfig != null) {
+            return propertyConfig.getSwaggerDescription();
+        }
         return getJavadocConfig().formatColumnSwaggerComment(comment);
     }
 
@@ -535,6 +544,24 @@ public class Column {
         boolean isLarge = columnConfig.getLarge() != null && columnConfig.getLarge();
         boolean isLogicDelete = columnConfig.getLogicDelete() != null && columnConfig.getLogicDelete();
         return !isLarge && !isLogicDelete;
+    }
+
+    public ListConfig getListConfig() {
+        return listConfig;
+    }
+
+    public Column setListConfig(ListConfig listConfig) {
+        this.listConfig = listConfig;
+        return this;
+    }
+
+    public PropertyConfig getPropertyConfig() {
+        return propertyConfig;
+    }
+
+    public Column setPropertyConfig(PropertyConfig propertyConfig) {
+        this.propertyConfig = propertyConfig;
+        return this;
     }
 
     @Override

@@ -16,10 +16,17 @@
 package top.fsfsfs.codegen.dialect;
 
 import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.front.ListConfig;
+import top.fsfsfs.codegen.config.front.PropertyConfig;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +65,13 @@ public abstract class AbstractJdbcDialect implements IDialect {
                 column.setPropertyType(JdbcTypeMapping.getType(jdbcType, table, column));
                 column.setTsType(TsTypeMapping.getType(column.getRawType(), jdbcType, table, column));
 
+                ListConfig listConfig = new ListConfig();
+                listConfig.setShow(true).setSequence(i);
+                column.setListConfig(listConfig);
+                PropertyConfig propertyConfig = new PropertyConfig();
+                propertyConfig.setRequired(column.getNullable() == ResultSetMetaData.columnNoNulls)
+                        .setSwaggerDescription(columnRemarks.get(column.getName()));
+                column.setPropertyConfig(propertyConfig);
                 table.addColumn(column);
             }
         }

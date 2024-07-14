@@ -37,6 +37,12 @@ public enum GenTypeEnum {
     SERVICE(GenTypeConst.SERVICE, TemplateConst.SERVICE),
     SERVICE_IMPL(GenTypeConst.SERVICE_IMPL, TemplateConst.SERVICE_IMPL),
     CONTROLLER(GenTypeConst.CONTROLLER, TemplateConst.CONTROLLER),
+    // 前端
+    INDEX_TSX(GenTypeConst.INDEX_TSX, TemplateConst.INDEX_TSX),
+    INDEX_VUE(GenTypeConst.INDEX_VUE, TemplateConst.INDEX_VUE),
+    FORM_TSX(GenTypeConst.FORM_TSX, TemplateConst.FORM_TSX),
+    FORM_VUE(GenTypeConst.FORM_VUE, TemplateConst.FORM_VUE),
+    WRAPPER_VUE(GenTypeConst.WRAPPER_VUE, TemplateConst.WRAPPER_VUE),
 
 
     ;

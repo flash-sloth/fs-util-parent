@@ -16,9 +16,11 @@
 
 package top.fsfsfs.codegen.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import top.fsfsfs.basic.utils.StrPool;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,11 +41,20 @@ public class PackageConfig implements Serializable {
      * 代码生成目录。
      */
     private String sourceDir;
+    /**
+     * 前端代码生成目录。
+     */
+    private String frontSourceDir;
 
     /**
      * 根包。
      */
     private String basePackage = "com.mybatisflex";
+    /** 子系统包名 */
+    private String subSystem;
+    /** 模块包名 */
+    private String module;
+
     /**
      * Vo 所在包。
      */
@@ -107,7 +118,15 @@ public class PackageConfig implements Serializable {
      */
     public String getEntityPackage() {
         if (StringUtil.isBlank(entityPackage)) {
-            return basePackage.concat(".entity");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".entity").toString();
         }
         return entityPackage;
     }
@@ -117,7 +136,15 @@ public class PackageConfig implements Serializable {
      */
     public String getVoPackage() {
         if (StringUtil.isBlank(voPackage)) {
-            return basePackage.concat(".vo");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".vo").toString();
         }
         return voPackage;
     }
@@ -128,7 +155,15 @@ public class PackageConfig implements Serializable {
      */
     public String getDtoPackage() {
         if (StringUtil.isBlank(dtoPackage)) {
-            return basePackage.concat(".dto");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".dto").toString();
         }
         return dtoPackage;
     }
@@ -139,7 +174,15 @@ public class PackageConfig implements Serializable {
      */
     public String getQueryPackage() {
         if (StringUtil.isBlank(queryPackage)) {
-            return basePackage.concat(".query");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".query").toString();
         }
         return queryPackage;
     }
@@ -150,7 +193,15 @@ public class PackageConfig implements Serializable {
      */
     public String getMapperPackage() {
         if (StringUtil.isBlank(mapperPackage)) {
-            return basePackage.concat(".mapper");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".mapper").toString();
         }
         return mapperPackage;
     }
@@ -161,7 +212,15 @@ public class PackageConfig implements Serializable {
      */
     public String getServicePackage() {
         if (StringUtil.isBlank(servicePackage)) {
-            return basePackage.concat(".service");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".service").toString();
         }
         return servicePackage;
     }
@@ -172,10 +231,7 @@ public class PackageConfig implements Serializable {
      */
     public String getServiceImplPackage() {
         if (StringUtil.isBlank(serviceImplPackage)) {
-            if (StringUtil.isBlank(servicePackage)) {
-                return getServicePackage().concat(".impl");
-            }
-            return servicePackage.concat(".impl");
+            return getServicePackage().concat(".impl");
         }
         return serviceImplPackage;
     }
@@ -186,7 +242,15 @@ public class PackageConfig implements Serializable {
      */
     public String getControllerPackage() {
         if (StringUtil.isBlank(controllerPackage)) {
-            return basePackage.concat(".controller");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".controller").toString();
         }
         return controllerPackage;
     }
@@ -197,7 +261,15 @@ public class PackageConfig implements Serializable {
      */
     public String getTableDefPackage() {
         if (StringUtil.isBlank(tableDefPackage)) {
-            return getEntityPackage().concat(".table");
+            StringBuilder sb = new StringBuilder(basePackage);
+
+            if (StrUtil.isNotEmpty(subSystem)) {
+                sb.append(StrPool.DOT).append(subSystem);
+            }
+            if (StrUtil.isNotEmpty(module)) {
+                sb.append(StrPool.DOT).append(module);
+            }
+            return sb.append(".table").toString();
         }
         return tableDefPackage;
     }

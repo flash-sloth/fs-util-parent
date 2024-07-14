@@ -37,6 +37,11 @@ public final class TemplateConst {
     public static final String CONTROLLER = "/templates/enjoy/controller.tpl";
     public static final String TABLE_DEF = "/templates/enjoy/tableDef.tpl";
 
+    public static final String INDEX_TSX = "/templates/front/index.tsx.tpl";
+    public static final String INDEX_VUE = "/templates/front/index.vue.tpl";
+    public static final String FORM_TSX = "/templates/front/form.tsx.tpl";
+    public static final String FORM_VUE = "/templates/front/form.vue.tpl";
+    public static final String WRAPPER_VUE = "/templates/front/wrapper.vue.tpl";
 
     public static final String MAPPER_XML = "/templates/enjoy/mapperXml.tpl";
     public static final String PACKAGE_INFO = "/templates/enjoy/package-info.tpl";

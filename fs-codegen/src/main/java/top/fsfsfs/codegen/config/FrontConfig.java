@@ -15,11 +15,19 @@
  */
 package top.fsfsfs.codegen.config;
 
+import cn.hutool.core.util.StrUtil;
+import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.entity.Table;
 
 import java.io.Serial;
-import java.io.Serializable;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * 前端配置。
@@ -27,9 +35,10 @@ import java.io.Serializable;
  * @author tangyh
  * @since 2024年06月25日14:30:32
  */
-@Data
 @Accessors(chain = true)
-public class FrontConfig implements Serializable {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class FrontConfig extends BaseConfig {
 
     @Serial
     private static final long serialVersionUID = -6790274333595436008L;
@@ -71,5 +80,16 @@ public class FrontConfig implements Serializable {
         SIMPLE, TREE, SLAVE;
     }
 
+
+    public List<String> buildIndexTsxImports(GlobalConfig globalConfig, Table table) {
+        Set<String> imports = new HashSet<>();
+        imports.add("type { VxeGridPropTypes, VxeTableDefines } from 'vxe-table'");
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        imports.add(StrUtil.format("type { {} } from '@/service/{}/{}/{}/model'", table.buildVoClassName(),
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+    }
 
 }
