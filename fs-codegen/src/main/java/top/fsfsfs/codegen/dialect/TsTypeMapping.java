@@ -15,9 +15,9 @@
  */
 package top.fsfsfs.codegen.dialect;
 
+import com.mybatisflex.core.util.StringUtil;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
-import com.mybatisflex.core.util.StringUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -78,7 +78,16 @@ public class TsTypeMapping {
     }
 
     public interface JdbcTypeMapper {
-        String getType(String rawType, String jdbcType, Table table, Column column);
+        /**
+         * 获取类型映射。
+         *
+         * @param rawType  原始类型
+         * @param jdbcJavaType jdbc 类型
+         * @param table    表
+         * @param column   字段
+         * @return 类型映射
+         */
+        String getType(String rawType, String jdbcJavaType, Table table, Column column);
     }
 
 }

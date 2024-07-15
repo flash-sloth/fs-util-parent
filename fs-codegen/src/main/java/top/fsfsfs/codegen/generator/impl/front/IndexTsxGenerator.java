@@ -111,7 +111,7 @@ public class IndexTsxGenerator implements IGenerator {
             }
         }
 
-        Map<String, Object> params = buildParam(table, globalConfig, packageConfig);
+        Map<String, Object> params = buildParam(config, table, globalConfig, packageConfig);
 
         log.info("index.tsx ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
@@ -121,8 +121,9 @@ public class IndexTsxGenerator implements IGenerator {
         }
     }
 
-    private static Map<String, Object> buildParam(Table table, GlobalConfig globalConfig, PackageConfig packageConfig) {
+    private static Map<String, Object> buildParam(FrontConfig config, Table table, GlobalConfig globalConfig, PackageConfig packageConfig) {
         Map<String, Object> params = new HashMap<>(7);
+        params.put("config", config);
         params.put("table", table);
         params.put("voClassName", table.buildVoClassName());
         params.put("javadocConfig", globalConfig.getJavadocConfig());
@@ -134,8 +135,9 @@ public class IndexTsxGenerator implements IGenerator {
     @Override
     public String preview(Table table, GlobalConfig globalConfig) {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
+        FrontConfig config = globalConfig.getFrontConfig();
 
-        Map<String, Object> params = buildParam(table, globalConfig, packageConfig);
+        Map<String, Object> params = buildParam(config, table, globalConfig, packageConfig);
 
         return globalConfig.getTemplateConfig().getTemplate().previewByFile(params, this.genType.getTemplate());
     }

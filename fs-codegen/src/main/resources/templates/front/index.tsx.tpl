@@ -1,4 +1,4 @@
-#for(importClass : dtoConfig.buildIndexTsxImports(globalConfig, table))
+#for(importClass : config.buildIndexTsxImports(globalConfig, table))
 import #(importClass);
 #end
 

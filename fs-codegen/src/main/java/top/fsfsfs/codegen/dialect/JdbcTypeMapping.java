@@ -15,9 +15,9 @@
  */
 package top.fsfsfs.codegen.dialect;
 
+import com.mybatisflex.core.util.StringUtil;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
-import com.mybatisflex.core.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,9 +73,9 @@ public class JdbcTypeMapping {
         registerMapping("java.time.LocalDate", "java.util.Date");
     }
 
-    public static String getType(String jdbcType, Table table, Column column) {
+    public static String getType(String rawType, String jdbcType, Table table, Column column) {
         if (typeMapper != null) {
-            String type = typeMapper.getType(jdbcType, table, column);
+            String type = typeMapper.getType(rawType, jdbcType, table, column);
             if (StringUtil.isNotBlank(type)) {
                 return type;
             }
@@ -85,7 +85,16 @@ public class JdbcTypeMapping {
     }
 
     public interface JdbcTypeMapper {
-        String getType(String jdbcType, Table table, Column column);
+        /**
+         * 获取字段的实体类类型
+         *
+         * @param rawType 数据库原始类型
+         * @param javaType 自动推断的实体类类型
+         * @param table 表
+         * @param column 列
+         * @return 实际的实体类类型
+         */
+        String getType(String rawType, String javaType, Table table, Column column);
     }
 
 }

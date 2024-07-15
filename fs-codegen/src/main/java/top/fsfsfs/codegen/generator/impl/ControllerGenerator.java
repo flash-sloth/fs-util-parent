@@ -86,6 +86,11 @@ public class ControllerGenerator implements IGenerator {
 
     @Override
     public void generate(Table table, GlobalConfig globalConfig, String templateContent) {
+        if (!globalConfig.isControllerGenerateEnable()) {
+            return;
+        }
+
+
         PackageConfig packageConfig = globalConfig.getPackageConfig();
         ControllerConfig controllerConfig = globalConfig.getControllerConfig();
         if (controllerConfig.getGenerationStrategy() == GenerationStrategyEnum.IGNORE) {

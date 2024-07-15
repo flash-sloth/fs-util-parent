@@ -61,9 +61,9 @@ public abstract class AbstractJdbcDialect implements IDialect {
                 //注释
                 column.setComment(columnRemarks.get(column.getName()));
 
-                String jdbcType = columnMetaData.getColumnClassName(i);
-                column.setPropertyType(JdbcTypeMapping.getType(jdbcType, table, column));
-                column.setTsType(TsTypeMapping.getType(column.getRawType(), jdbcType, table, column));
+                String jdbcJavaType = columnMetaData.getColumnClassName(i);
+                column.setPropertyType(JdbcTypeMapping.getType(column.getRawType(), jdbcJavaType, table, column));
+                column.setTsType(TsTypeMapping.getType(column.getRawType(), jdbcJavaType, table, column));
 
                 ListConfig listConfig = new ListConfig();
                 listConfig.setShow(true).setSequence(i);

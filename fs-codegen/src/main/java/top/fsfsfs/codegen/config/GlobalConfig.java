@@ -953,6 +953,11 @@ public class GlobalConfig implements Serializable {
         return dtoGenerateEnable;
     }
 
+    public Boolean isControllerGenerateEnable() {
+        return controllerGenerateEnable;
+    }
+
+
     /**
      * @see #enableDto()
      * @see #disableDto()
