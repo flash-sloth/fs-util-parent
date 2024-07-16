@@ -25,8 +25,10 @@ import com.mybatisflex.core.util.StringUtil;
 import top.fsfsfs.codegen.config.ColumnConfig;
 import top.fsfsfs.codegen.config.EntityConfig;
 import top.fsfsfs.codegen.config.JavadocConfig;
+import top.fsfsfs.codegen.config.front.FormConfig;
 import top.fsfsfs.codegen.config.front.ListConfig;
 import top.fsfsfs.codegen.config.front.PropertyConfig;
+import top.fsfsfs.codegen.config.front.SearchConfig;
 
 import java.math.BigDecimal;
 import java.sql.ResultSetMetaData;
@@ -102,6 +104,8 @@ public class Column {
     private JavadocConfig javadocConfig;
     /** 列表配置 */
     private ListConfig listConfig;
+    private FormConfig formConfig;
+    private SearchConfig searchConfig;
     private PropertyConfig propertyConfig;
 
 
@@ -552,6 +556,24 @@ public class Column {
 
     public Column setListConfig(ListConfig listConfig) {
         this.listConfig = listConfig;
+        return this;
+    }
+
+    public FormConfig getFormConfig() {
+        return formConfig;
+    }
+
+    public Column setFormConfig(FormConfig formConfig) {
+        this.formConfig = formConfig;
+        return this;
+    }
+
+    public SearchConfig getSearchConfig() {
+        return searchConfig;
+    }
+
+    public Column setSearchConfig(SearchConfig searchConfig) {
+        this.searchConfig = searchConfig;
         return this;
     }
 

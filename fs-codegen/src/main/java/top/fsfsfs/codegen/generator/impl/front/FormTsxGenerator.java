@@ -33,7 +33,7 @@ import java.util.Map;
 import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
- * index.tsx 生成器。
+ * form.tsx 生成器。
  *
  * @author tangyh
  * @since 2024年06月18日15:48:18
@@ -42,15 +42,15 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class IndexTsxGenerator implements IGenerator {
+public class FormTsxGenerator implements IGenerator {
 
     private GenTypeEnum genType;
 
-    public IndexTsxGenerator() {
-        this(GenTypeEnum.INDEX_TSX);
+    public FormTsxGenerator() {
+        this(GenTypeEnum.FORM_TSX);
     }
 
-    public IndexTsxGenerator(GenTypeEnum genType) {
+    public FormTsxGenerator(GenTypeEnum genType) {
         this.genType = genType;
     }
 
@@ -73,7 +73,7 @@ public class IndexTsxGenerator implements IGenerator {
         path += packageConfig.getModule() + File.separator;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
         path += "data" + File.separator;
-        path += "index" + StrPool.DOT_TSX;
+        path += "form" + StrPool.DOT_TSX;
         return path;
     }
 
@@ -114,7 +114,7 @@ public class IndexTsxGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(config, table, globalConfig, packageConfig);
 
-        log.info("index.tsx ---> {}", javaFile);
+        log.info("form.tsx ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {

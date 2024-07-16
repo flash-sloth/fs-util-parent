@@ -14,7 +14,7 @@ export const columns = (action: VxeTableDefines.ColumnOptions): VxeGridPropTypes
 #for(column : table.getSortedListColumns())
     {
       field: '#(column.property)',
-      title: '#(column.swaggerComment)'
+      title: '#(column.propertyConfig?.swaggerDescription)'
     },
 #end
     action
@@ -25,8 +25,8 @@ export const columns = (action: VxeTableDefines.ColumnOptions): VxeGridPropTypes
 export const searchFormConfig = (): VxeGridPropTypes.FormConfig => {
   return {
     items: [
-#for(column : table.getSortedListColumns())
-      { field: '#(column.property)', title: '#(column.swaggerComment)', itemRender: { name: '#(column.tsType)' } },
+#for(column : table.getSortedSearchColumns())
+      { field: '#(column.property)', title: '#(column.propertyConfig?.swaggerDescription)', itemRender: { name: '#(column.searchConfig?.componentType)' } },
 #end
       {
         itemRender: {

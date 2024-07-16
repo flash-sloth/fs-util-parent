@@ -20,6 +20,7 @@ import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.config.front.ButtonConfig;
 import top.fsfsfs.codegen.entity.Table;
 
 import java.io.Serial;
@@ -43,11 +44,12 @@ public class FrontConfig extends BaseConfig {
     @Serial
     private static final long serialVersionUID = -6790274333595436008L;
 
+    /** index页面的按钮。 */
+    private List<ButtonConfig> buttonConfigList;
     /**
      * 表单打开方式。
      */
     private OpenMode openMode = OpenMode.MODAL;
-
     /**
      * 布局方式。
      */
@@ -87,6 +89,38 @@ public class FrontConfig extends BaseConfig {
         PackageConfig packageConfig = globalConfig.getPackageConfig();
 
         imports.add(StrUtil.format("type { {} } from '@/service/{}/{}/{}/model'", table.buildVoClassName(),
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+    }
+
+    public List<String> buildFormVueImports(GlobalConfig globalConfig, Table table) {
+        Set<String> imports = new HashSet<>();
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        imports.add(StrUtil.format("import { getById, save, update } from '@/service/{}/{}/{}/api'",
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+        imports.add(StrUtil.format("import type { {} } from '@/service/{}/{}/{}/model'", table.buildDtoClassName(),
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+    }
+    public List<String> buildWrapperVueImports(GlobalConfig globalConfig, Table table) {
+        Set<String> imports = new HashSet<>();
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        imports.add(StrUtil.format("import type { {} } from '@/service/{}/{}/{}/model'", table.buildVoClassName(),
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+
+        return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
+    }
+    public List<String> buildIndexVueImports(GlobalConfig globalConfig, Table table) {
+        Set<String> imports = new HashSet<>();
+        PackageConfig packageConfig = globalConfig.getPackageConfig();
+
+        imports.add(StrUtil.format("import { page, remove } from '@/service/{}/{}/{}/api'",
+                packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
+        imports.add(StrUtil.format("import type { {}, {} } from '@/service/{}/{}/{}/model'", table.buildQueryClassName(), table.buildVoClassName(),
                 packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(table.buildEntityClassName())));
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();

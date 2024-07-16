@@ -48,7 +48,7 @@ public enum GenTypeEnum {
     WRAPPER_VUE(GenTypeConst.WRAPPER_VUE, TemplateConst.WRAPPER_VUE),
     ;
 
-    public final static List<GenTypeEnum> FRONT_LIST = Arrays.asList(INDEX_TSX, INDEX_VUE, INDEX_VUE, FORM_VUE, WRAPPER_VUE);
+    public final static List<GenTypeEnum> FRONT_LIST = Arrays.asList(INDEX_TSX, INDEX_VUE, FORM_TSX, FORM_VUE, WRAPPER_VUE);
     public final static List<GenTypeEnum> BACKEND_LIST = Arrays.asList(DTO, QUERY, VO, ENTITY, ENTITY_BASE, TABLE_DEF, MAPPER, MAPPER_XML, SERVICE, SERVICE_IMPL, CONTROLLER);
 
     GenTypeEnum(String type, String template) {

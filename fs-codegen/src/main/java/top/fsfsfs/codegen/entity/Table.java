@@ -184,8 +184,19 @@ public class Table {
 
     public List<Column> getSortedListColumns() {
         ArrayList<Column> arrayList = new ArrayList<>(columns);
-        // 生成字段排序
         arrayList.sort(Comparator.comparingInt((Column c) -> c.getListConfig().getSequence())
+                .thenComparing(Column::getProperty));
+        return arrayList;
+    }
+    public List<Column> getSortedFormColumns() {
+        ArrayList<Column> arrayList = new ArrayList<>(columns);
+        arrayList.sort(Comparator.comparingInt((Column c) -> c.getFormConfig().getSequence())
+                .thenComparing(Column::getProperty));
+        return arrayList;
+    }
+    public List<Column> getSortedSearchColumns() {
+        ArrayList<Column> arrayList = new ArrayList<>(columns);
+        arrayList.sort(Comparator.comparingInt((Column c) -> c.getSearchConfig().getSequence())
                 .thenComparing(Column::getProperty));
         return arrayList;
     }

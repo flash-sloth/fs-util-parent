@@ -28,7 +28,11 @@ import top.fsfsfs.codegen.generator.impl.ServiceGenerator;
 import top.fsfsfs.codegen.generator.impl.ServiceImplGenerator;
 import top.fsfsfs.codegen.generator.impl.TableDefGenerator;
 import top.fsfsfs.codegen.generator.impl.VoGenerator;
+import top.fsfsfs.codegen.generator.impl.front.FormTsxGenerator;
+import top.fsfsfs.codegen.generator.impl.front.FormVueGenerator;
 import top.fsfsfs.codegen.generator.impl.front.IndexTsxGenerator;
+import top.fsfsfs.codegen.generator.impl.front.IndexVueGenerator;
+import top.fsfsfs.codegen.generator.impl.front.WrapperVueGenerator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -58,6 +62,10 @@ public class GeneratorFactory {
         registerGenerator(GenTypeEnum.MAPPER_XML, new MapperXmlGenerator());
 //        registerGenerator(GenTypeConst.PACKAGE_INFO, new PackageInfoGenerator());
         registerGenerator(GenTypeEnum.INDEX_TSX, new IndexTsxGenerator());
+        registerGenerator(GenTypeEnum.FORM_TSX, new FormTsxGenerator());
+        registerGenerator(GenTypeEnum.FORM_VUE, new FormVueGenerator());
+        registerGenerator(GenTypeEnum.INDEX_VUE, new IndexVueGenerator());
+        registerGenerator(GenTypeEnum.WRAPPER_VUE, new WrapperVueGenerator());
     }
 
     private GeneratorFactory() {
