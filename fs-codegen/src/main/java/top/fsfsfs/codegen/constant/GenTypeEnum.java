@@ -17,6 +17,9 @@ package top.fsfsfs.codegen.constant;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 生成类型常量。
  *
@@ -43,9 +46,10 @@ public enum GenTypeEnum {
     FORM_TSX(GenTypeConst.FORM_TSX, TemplateConst.FORM_TSX),
     FORM_VUE(GenTypeConst.FORM_VUE, TemplateConst.FORM_VUE),
     WRAPPER_VUE(GenTypeConst.WRAPPER_VUE, TemplateConst.WRAPPER_VUE),
-
-
     ;
+
+    public final static List<GenTypeEnum> FRONT_LIST = Arrays.asList(INDEX_TSX, INDEX_VUE, INDEX_VUE, FORM_VUE, WRAPPER_VUE);
+    public final static List<GenTypeEnum> BACKEND_LIST = Arrays.asList(DTO, QUERY, VO, ENTITY, ENTITY_BASE, TABLE_DEF, MAPPER, MAPPER_XML, SERVICE, SERVICE_IMPL, CONTROLLER);
 
     GenTypeEnum(String type, String template) {
         this.type = type;
