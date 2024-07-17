@@ -1,4 +1,5 @@
 import type { VxeFormPropTypes } from 'vxe-table';
+import { $t } from '@/locales';
 
 /** @returns 表单校验规则 */
 export const formRules = (): VxeFormPropTypes.Rules => {
@@ -9,7 +10,7 @@ export const formRules = (): VxeFormPropTypes.Rules => {
 export const formItems = (): VxeFormPropTypes.Items => {
   return [
 #for(column : table.getSortedFormColumns())
-    { field: '#(column.property)', title: '#(column.propertyConfig?.swaggerDescription)', span: 24, itemRender: { name: '#(column.formConfig?.componentType)' } },
+    { field: '#(column.property)', title: $t('#(packageConfig.subSystem).#(packageConfig.module).#(table.buildEntityVarName()).#(column.property)'), itemRender: { name: '#(column.formConfig?.componentType)' } },
 #end
   ];
 };

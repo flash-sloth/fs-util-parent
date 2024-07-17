@@ -86,6 +86,7 @@ public class FrontConfig extends BaseConfig {
     public List<String> buildIndexTsxImports(GlobalConfig globalConfig, Table table) {
         Set<String> imports = new HashSet<>();
         imports.add("type { VxeGridPropTypes, VxeTableDefines } from 'vxe-table'");
+        imports.add("{ $t } from '@/locales'");
         PackageConfig packageConfig = globalConfig.getPackageConfig();
 
         imports.add(StrUtil.format("type { {} } from '@/service/{}/{}/{}/model'", table.buildVoClassName(),

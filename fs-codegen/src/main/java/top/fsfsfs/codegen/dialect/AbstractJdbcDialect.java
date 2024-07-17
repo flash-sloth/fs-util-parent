@@ -80,8 +80,7 @@ public abstract class AbstractJdbcDialect implements IDialect {
                 column.setSearchConfig(searchConfig);
 
                 PropertyConfig propertyConfig = new PropertyConfig();
-                propertyConfig.setRequired(column.getNullable() == ResultSetMetaData.columnNoNulls)
-                        .setSwaggerDescription(columnRemarks.get(column.getName()));
+                propertyConfig.setRequired(column.getNullable() == ResultSetMetaData.columnNoNulls);
                 column.setPropertyConfig(propertyConfig);
 
                 table.addColumn(column);

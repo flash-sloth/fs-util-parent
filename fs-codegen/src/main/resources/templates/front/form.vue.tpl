@@ -149,6 +149,7 @@ defineExpose<FormInstance<FormDataType>>({ init, handleSubmit });
   <VxeForm
     ref="formRef"
     :loading="formLoading.loading.value"
+    :readonly="formConfig.readonly"
     :rules="formConfig.formRules"
     :data="formConfig.formData"
     :items="formConfig.formItems"

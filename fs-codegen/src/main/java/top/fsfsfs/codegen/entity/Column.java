@@ -159,9 +159,6 @@ public class Column {
     }
 
     public String getSwaggerComment() {
-        if (propertyConfig != null) {
-            return propertyConfig.getSwaggerDescription();
-        }
         return getJavadocConfig().formatColumnSwaggerComment(comment);
     }
 

@@ -31,12 +31,17 @@ const submitEvent = async () => {
 </script>
 
 <template>
-  <FsAModal is="VxeModal" show-footer position="top" show-zoom :title="getTitle" :width="900" @register="register">
+  <FsAModal
+    is="VxeModal"
+    show-footer
+    position="top"
+    show-zoom
+    :title="getTitle"
+    :width="900"
+    @ok="submitEvent"
+    @register="register"
+  >
     <Form ref="formRef"></Form>
-    <template #footer>
-      <VxeButton content="取消" @click="close"></VxeButton>
-      <VxeButton status="primary" content="提交" @click="submitEvent"></VxeButton>
-    </template>
   </FsAModal>
 </template>
 

@@ -36,16 +36,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PropertyConfig {
-    /** 字段名 */
-//    private String name;
-    /** JAVA字段名  */
-//    private String property;
-    /** JAVA字段类型 */
-//    private String propertySimpleType;
-//    /** JAVA字段完整类型 */
-//    private String propertyType;
-//    /** TS字段类型 */
-//    private String tsType;
     /** 文档描述 */
     private String swaggerDescription;
     /** 必填 */

@@ -128,7 +128,7 @@ function handleView(row: FormDataType) {
 function handleRemove($grid: VxeGridConstructor<FormDataType>) {
   const checkedRows = $grid.getCheckboxRecords();
   if (!checkedRows || checkedRows.length === 0) {
-    createMessage.error('请选择要删除的数据');
+    createMessage.error($t('common.chooseText', [$t('common.deleteData')]));
   } else {
     confirmRemove(checkedRows.map((x: FormDataType) => x.id));
   }
@@ -137,11 +137,11 @@ function handleRemove($grid: VxeGridConstructor<FormDataType>) {
 function confirmRemove(ids: string[]) {
   createConfirm({
     iconType: 'warning',
-    title: '系统提示',
-    content: '确定删除选中数据吗？',
+    title: $t('common.tip'),
+    content: $t('common.confirmDelete'),
     onOk: async () => {
       await remove(ids);
-      createMessage.success('删除成功');
+      createMessage.success($t('common.deleteSuccess'));
       await reloadData();
     }
   });
@@ -162,7 +162,7 @@ function toolbarButtonClick({ code, $grid }: VxeGridDefines.ToolbarButtonClickEv
 </script>
 
 <template>
-  <div>
+  <div class="h-full p-2">
     <VxeGrid ref="xGrid" v-bind="gridOptions" @toolbar-button-click="toolbarButtonClick"></VxeGrid>
     <FormWrapper ref="formRef" @register="register" @success="reloadData"></FormWrapper>
   </div>

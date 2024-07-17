@@ -14,7 +14,7 @@ export const columns = (action: VxeTableDefines.ColumnOptions): VxeGridPropTypes
 #for(column : table.getSortedListColumns())
     {
       field: '#(column.property)',
-      title: '#(column.propertyConfig?.swaggerDescription)'
+      title: $t('#(packageConfig.subSystem).#(packageConfig.module).#(table.buildEntityVarName()).#(column.property)')
     },
 #end
     action
@@ -26,7 +26,7 @@ export const searchFormConfig = (): VxeGridPropTypes.FormConfig => {
   return {
     items: [
 #for(column : table.getSortedSearchColumns())
-      { field: '#(column.property)', title: '#(column.propertyConfig?.swaggerDescription)', itemRender: { name: '#(column.searchConfig?.componentType)' } },
+      { field: '#(column.property)', title: $t('#(packageConfig.subSystem).#(packageConfig.module).#(table.buildEntityVarName()).#(column.property)'), itemRender: { name: '#(column.searchConfig?.componentType)' } },
 #end
       {
         itemRender: {
@@ -34,10 +34,10 @@ export const searchFormConfig = (): VxeGridPropTypes.FormConfig => {
           options: [
             {
               type: 'submit',
-              content: '搜索',
+              content: $t('common.search'),
               status: 'primary'
             },
-            { type: 'reset', content: '重置' }
+            { type: 'reset', content: $t('common.reset') }
           ]
         }
       }

@@ -1,5 +1,5 @@
 {
-#for(column : table.getSortedFormColumns())
+#for(column : table.allColumns)
   "#(column.property)": "#(firstCharToLowerCase(column.property))"
 #end
 }
