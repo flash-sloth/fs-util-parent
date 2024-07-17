@@ -73,7 +73,7 @@ public class FormTsxGenerator implements IGenerator {
         path += packageConfig.getModule() + File.separator;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
         path += "data" + File.separator;
-        path += "form" + StrPool.DOT_TSX;
+        path += genType.getType();
         return path;
     }
 

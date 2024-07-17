@@ -33,7 +33,7 @@ import java.util.Map;
 import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
- * index.tsx 生成器。
+ * .model.d.ts 生成器。
  *
  * @author tangyh
  * @since 2024年06月18日15:48:18
@@ -42,15 +42,15 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class IndexTsxGenerator implements IGenerator {
+public class ModelTsGenerator implements IGenerator {
 
     private GenTypeEnum genType;
 
-    public IndexTsxGenerator() {
-        this(GenTypeEnum.INDEX_TSX);
+    public ModelTsGenerator() {
+        this(GenTypeEnum.FORM_TSX);
     }
 
-    public IndexTsxGenerator(GenTypeEnum genType) {
+    public ModelTsGenerator(GenTypeEnum genType) {
         this.genType = genType;
     }
 
@@ -67,12 +67,10 @@ public class IndexTsxGenerator implements IGenerator {
         }
 
         path += "src" + File.separator;
-        path += "views" + File.separator;
-        // TODO 这里怎么取值
+        path += "service" + File.separator;
         path += packageConfig.getSubSystem() + File.separator;
         path += packageConfig.getModule() + File.separator;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
-        path += "data" + File.separator;
         path += genType.getType();
         return path;
     }
@@ -114,7 +112,7 @@ public class IndexTsxGenerator implements IGenerator {
 
         Map<String, Object> params = buildParam(config, table, globalConfig, packageConfig);
 
-        log.info("index.tsx ---> {}", javaFile);
+        log.info("model.d.ts ---> {}", javaFile);
         if (StrUtil.isNotEmpty(templateContent)) {
             globalConfig.getTemplateConfig().getTemplate().generateByContent(params, templateContent, javaFile);
         } else {
@@ -123,10 +121,12 @@ public class IndexTsxGenerator implements IGenerator {
     }
 
     private static Map<String, Object> buildParam(FrontConfig config, Table table, GlobalConfig globalConfig, PackageConfig packageConfig) {
-        Map<String, Object> params = new HashMap<>(7);
+        Map<String, Object> params = new HashMap<>(8);
         params.put("config", config);
         params.put("table", table);
         params.put("voClassName", table.buildVoClassName());
+        params.put("dtoClassName", table.buildDtoClassName());
+        params.put("queryClassName", table.buildQueryClassName());
         params.put("javadocConfig", globalConfig.getJavadocConfig());
         params.put("packageConfig", packageConfig);
         params.put("globalConfig", globalConfig);

@@ -72,7 +72,7 @@ public class WrapperVueGenerator implements IGenerator {
         path += packageConfig.getModule() + File.separator;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
         path += "modules" + File.separator;
-        path += "wrapper" + StrPool.DOT_VUE;
+        path += genType.getType();
         return path;
     }
 

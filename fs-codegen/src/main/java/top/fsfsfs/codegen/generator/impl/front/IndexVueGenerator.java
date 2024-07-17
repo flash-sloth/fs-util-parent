@@ -71,7 +71,7 @@ public class IndexVueGenerator implements IGenerator {
         path += packageConfig.getSubSystem() + File.separator;
         path += packageConfig.getModule() + File.separator;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
-        path += "index" + StrPool.DOT_VUE;
+        path += genType.getType();
         return path;
     }
 

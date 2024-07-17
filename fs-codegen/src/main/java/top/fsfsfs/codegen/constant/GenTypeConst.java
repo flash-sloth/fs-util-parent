@@ -38,6 +38,8 @@ public class GenTypeConst {
     public static final String TABLE_DEF = "tableDef";
     public static final String MAPPER_XML = "mapperXml";
     public static final String PACKAGE_INFO = "package-info";
+    public static final String MODEL_TS = "model.d.ts";
+    public static final String API_TS = "api.ts";
     public static final String INDEX_TSX = "index.tsx";
     public static final String INDEX_VUE = "index.vue";
     public static final String FORM_TSX = "form.tsx";

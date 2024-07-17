@@ -25,6 +25,7 @@ public interface StrPool {
     String DOT_JAVA = ".java";
     String DOT_XML = ".xml";
     String DOT_TSX = ".tsx";
+    String DOT_TS = ".ts";
     String DOT_VUE = ".vue";
     String EMPTY = "";
     String EQUALS = "=";

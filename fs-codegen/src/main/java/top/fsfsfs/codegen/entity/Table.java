@@ -615,6 +615,13 @@ public class Table {
     }
 
     /**
+     * 构建 entity 的 变量 名称。
+     */
+    public String buildEntityVarName() {
+        return StringUtil.firstCharToLowerCase(buildEntityClassName());
+    }
+
+    /**
      * 构建 entity 的 Class 名称。
      */
     public String buildEntityBaseClassName() {

@@ -28,10 +28,12 @@ import top.fsfsfs.codegen.generator.impl.ServiceGenerator;
 import top.fsfsfs.codegen.generator.impl.ServiceImplGenerator;
 import top.fsfsfs.codegen.generator.impl.TableDefGenerator;
 import top.fsfsfs.codegen.generator.impl.VoGenerator;
+import top.fsfsfs.codegen.generator.impl.front.ApiTsGenerator;
 import top.fsfsfs.codegen.generator.impl.front.FormTsxGenerator;
 import top.fsfsfs.codegen.generator.impl.front.FormVueGenerator;
 import top.fsfsfs.codegen.generator.impl.front.IndexTsxGenerator;
 import top.fsfsfs.codegen.generator.impl.front.IndexVueGenerator;
+import top.fsfsfs.codegen.generator.impl.front.ModelTsGenerator;
 import top.fsfsfs.codegen.generator.impl.front.WrapperVueGenerator;
 
 import java.util.Collection;
@@ -66,6 +68,8 @@ public class GeneratorFactory {
         registerGenerator(GenTypeEnum.FORM_VUE, new FormVueGenerator());
         registerGenerator(GenTypeEnum.INDEX_VUE, new IndexVueGenerator());
         registerGenerator(GenTypeEnum.WRAPPER_VUE, new WrapperVueGenerator());
+        registerGenerator(GenTypeEnum.MODEL_TS, new ModelTsGenerator());
+        registerGenerator(GenTypeEnum.API_TS, new ApiTsGenerator());
     }
 
     private GeneratorFactory() {

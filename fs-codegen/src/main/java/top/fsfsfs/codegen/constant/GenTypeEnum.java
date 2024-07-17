@@ -41,6 +41,8 @@ public enum GenTypeEnum {
     SERVICE_IMPL(GenTypeConst.SERVICE_IMPL, TemplateConst.SERVICE_IMPL),
     CONTROLLER(GenTypeConst.CONTROLLER, TemplateConst.CONTROLLER),
     // 前端
+    API_TS(GenTypeConst.API_TS, TemplateConst.API_TS),
+    MODEL_TS(GenTypeConst.MODEL_TS, TemplateConst.MODEL_TS),
     INDEX_TSX(GenTypeConst.INDEX_TSX, TemplateConst.INDEX_TSX),
     INDEX_VUE(GenTypeConst.INDEX_VUE, TemplateConst.INDEX_VUE),
     FORM_TSX(GenTypeConst.FORM_TSX, TemplateConst.FORM_TSX),
@@ -48,7 +50,7 @@ public enum GenTypeEnum {
     WRAPPER_VUE(GenTypeConst.WRAPPER_VUE, TemplateConst.WRAPPER_VUE),
     ;
 
-    public final static List<GenTypeEnum> FRONT_LIST = Arrays.asList(INDEX_TSX, INDEX_VUE, FORM_TSX, FORM_VUE, WRAPPER_VUE);
+    public final static List<GenTypeEnum> FRONT_LIST = Arrays.asList(INDEX_TSX, INDEX_VUE, FORM_TSX, FORM_VUE, WRAPPER_VUE, API_TS, MODEL_TS);
     public final static List<GenTypeEnum> BACKEND_LIST = Arrays.asList(DTO, QUERY, VO, ENTITY, ENTITY_BASE, TABLE_DEF, MAPPER, MAPPER_XML, SERVICE, SERVICE_IMPL, CONTROLLER);
 
     GenTypeEnum(String type, String template) {

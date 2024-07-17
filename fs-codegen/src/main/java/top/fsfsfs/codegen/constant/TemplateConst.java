@@ -37,6 +37,8 @@ public final class TemplateConst {
     public static final String CONTROLLER = "/templates/enjoy/controller.tpl";
     public static final String TABLE_DEF = "/templates/enjoy/tableDef.tpl";
 
+    public static final String API_TS = "/templates/front/api.ts.tpl";
+    public static final String MODEL_TS = "/templates/front/model.d.ts.tpl";
     public static final String INDEX_TSX = "/templates/front/index.tsx.tpl";
     public static final String INDEX_VUE = "/templates/front/index.vue.tpl";
     public static final String FORM_TSX = "/templates/front/form.tsx.tpl";
