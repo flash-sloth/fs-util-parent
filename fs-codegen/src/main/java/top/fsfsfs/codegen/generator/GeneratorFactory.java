@@ -33,6 +33,8 @@ import top.fsfsfs.codegen.generator.impl.front.FormTsxGenerator;
 import top.fsfsfs.codegen.generator.impl.front.FormVueGenerator;
 import top.fsfsfs.codegen.generator.impl.front.IndexTsxGenerator;
 import top.fsfsfs.codegen.generator.impl.front.IndexVueGenerator;
+import top.fsfsfs.codegen.generator.impl.front.LangEnJsonGenerator;
+import top.fsfsfs.codegen.generator.impl.front.LangZhJsonGenerator;
 import top.fsfsfs.codegen.generator.impl.front.ModelTsGenerator;
 import top.fsfsfs.codegen.generator.impl.front.WrapperVueGenerator;
 
@@ -70,6 +72,8 @@ public class GeneratorFactory {
         registerGenerator(GenTypeEnum.WRAPPER_VUE, new WrapperVueGenerator());
         registerGenerator(GenTypeEnum.MODEL_TS, new ModelTsGenerator());
         registerGenerator(GenTypeEnum.API_TS, new ApiTsGenerator());
+        registerGenerator(GenTypeEnum.LANG_EN, new LangEnJsonGenerator());
+        registerGenerator(GenTypeEnum.LANG_ZH, new LangZhJsonGenerator());
     }
 
     private GeneratorFactory() {

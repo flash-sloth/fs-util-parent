@@ -22,6 +22,7 @@ public interface StrPool {
     String DOT = ".";
     String DOTDOT = "..";
     String DOT_CLASS = ".class";
+    String DOT_JSON = ".json";
     String DOT_JAVA = ".java";
     String DOT_XML = ".xml";
     String DOT_TSX = ".tsx";

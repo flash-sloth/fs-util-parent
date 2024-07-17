@@ -33,7 +33,7 @@ import java.util.Map;
 import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 
 /**
- * .model.d.ts 生成器。
+ * en.json 生成器。
  *
  * @author tangyh
  * @since 2024年06月18日15:48:18
@@ -42,15 +42,15 @@ import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class ModelTsGenerator implements IGenerator {
+public class LangEnJsonGenerator implements IGenerator {
 
     private GenTypeEnum genType;
 
-    public ModelTsGenerator() {
-        this(GenTypeEnum.MODEL_TS);
+    public LangEnJsonGenerator() {
+        this(GenTypeEnum.LANG_EN);
     }
 
-    public ModelTsGenerator(GenTypeEnum genType) {
+    public LangEnJsonGenerator(GenTypeEnum genType) {
         this.genType = genType;
     }
 
@@ -66,12 +66,10 @@ public class ModelTsGenerator implements IGenerator {
             }
         }
 
-        path += "src" + File.separator;
-        path += "service" + File.separator;
+        path += "src" + File.separator + "locales" + File.separator + "langs" + File.separator + "en" + File.separator;
         path += packageConfig.getSubSystem() + File.separator;
         path += packageConfig.getModule() + File.separator;
-        path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
-        path += genType.getType();
+        path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + StrPool.DOT_JSON;
         return path;
     }
 
