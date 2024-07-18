@@ -72,13 +72,13 @@ public class TableDefGenerator implements IGenerator {
         String path = "";
         if (absolute) {
             path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
+            if (!path.endsWith(StrPool.SLASH)) {
+                path += StrPool.SLASH;
             }
         }
 
-        path += StrPool.SRC_MAIN_JAVA + File.separator;
-        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + File.separator;
+        path += StrPool.SRC_MAIN_JAVA + StrPool.SLASH;
+        path += layerPackage.replace(StrPool.DOT, StrPool.SLASH) + StrPool.SLASH;
         path += table.buildTableDefClassName() + StrPool.DOT_JAVA;
         return path;
     }

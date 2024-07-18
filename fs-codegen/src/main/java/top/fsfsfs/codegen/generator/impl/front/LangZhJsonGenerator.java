@@ -61,14 +61,14 @@ public class LangZhJsonGenerator implements IGenerator {
         String path = "";
         if (absolute) {
             path = packageConfig.getFrontSourceDir();
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
+            if (!path.endsWith(StrPool.SLASH)) {
+                path += StrPool.SLASH;
             }
         }
 
-        path += "src" + File.separator + "locales" + File.separator + "langs" + File.separator + "zh-CN" + File.separator;
-        path += packageConfig.getSubSystem() + File.separator;
-        path += packageConfig.getModule() + File.separator;
+        path += "src" + StrPool.SLASH + "locales" + StrPool.SLASH + "langs" + StrPool.SLASH + "zh-CN" + StrPool.SLASH;
+        path += packageConfig.getSubSystem() + StrPool.SLASH;
+        path += packageConfig.getModule() + StrPool.SLASH;
         path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + StrPool.DOT_JSON;
         return path;
     }

@@ -65,15 +65,15 @@ public class EntityBaseGenerator implements IGenerator {
         String path = "";
         if (absolute) {
             path = StringUtil.isNotBlank(sourceDir) ? sourceDir : packageConfig.getSourceDir();
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
+            if (!path.endsWith(StrPool.SLASH)) {
+                path += StrPool.SLASH;
             }
         }
 
-        path += StrPool.SRC_MAIN_JAVA + File.separator;
+        path += StrPool.SRC_MAIN_JAVA + StrPool.SLASH;
 
         String packageName = getEntityPackageName(config, packageConfig.getEntityPackage());
-        path += packageName + File.separator;
+        path += packageName + StrPool.SLASH;
 
         String baseEntityClassName = table.buildEntityClassName() + config.getWithBaseClassSuffix();
         path += baseEntityClassName + StrPool.DOT_JAVA;

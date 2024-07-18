@@ -61,17 +61,17 @@ public class WrapperVueGenerator implements IGenerator {
         String path = "";
         if (absolute) {
             path = packageConfig.getFrontSourceDir();
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
+            if (!path.endsWith(StrPool.SLASH)) {
+                path += StrPool.SLASH;
             }
         }
 
-        path += "src" + File.separator;
-        path += "views" + File.separator;
-        path += packageConfig.getSubSystem() + File.separator;
-        path += packageConfig.getModule() + File.separator;
-        path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + File.separator;
-        path += "modules" + File.separator;
+        path += "src" + StrPool.SLASH;
+        path += "views" + StrPool.SLASH;
+        path += packageConfig.getSubSystem() + StrPool.SLASH;
+        path += packageConfig.getModule() + StrPool.SLASH;
+        path += StringUtil.firstCharToLowerCase(table.buildEntityClassName()) + StrPool.SLASH;
+        path += "modules" + StrPool.SLASH;
         path += genType.getType();
         return path;
     }

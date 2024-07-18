@@ -68,13 +68,13 @@ public class MapperXmlGenerator implements IGenerator {
 
         if (absolute) {
             path = packageConfig.getSourceDir();
-            if (!path.endsWith(File.separator)) {
-                path += File.separator;
+            if (!path.endsWith(StrPool.SLASH)) {
+                path += StrPool.SLASH;
             }
         }
 
-        path += StrPool.SRC_MAIN_RESOURCES + File.separator;
-        path += packageConfig.getMapperXmlPath() + File.separator;
+        path += StrPool.SRC_MAIN_RESOURCES + StrPool.SLASH;
+        path += packageConfig.getMapperXmlPath() + StrPool.SLASH;
         path += table.buildMapperXmlFileName() + StrPool.DOT_XML;
         return path;
     }
