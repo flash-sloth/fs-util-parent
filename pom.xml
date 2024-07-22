@@ -73,7 +73,7 @@
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <dynamic.datasource.version>4.3.1</dynamic.datasource.version>
         <enjoy.version>5.1.3</enjoy.version>
-        <mybatis-flex.version>1.9.3</mybatis-flex.version>
+        <mybatis-flex.version>1.9.4</mybatis-flex.version>
         <jasypt.version>3.0.4</jasypt.version>
         <p6spy.version>3.9.1</p6spy.version>
         <fastjson.version>1.2.83</fastjson.version>
