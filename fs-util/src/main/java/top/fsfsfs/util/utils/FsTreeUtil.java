@@ -26,10 +26,15 @@ public final class FsTreeUtil {
      * 默认的树节点 分隔符
      */
     public static final String TREE_SPLIT = StrPool.SLASH;
+
     /**
      * 默认的父id
      */
     public static final Long DEF_PARENT_ID = null;
+    /**
+     * 默认树层级
+     */
+    public static final Integer TREE_GRADE = 0;
     private static final int TOP_LEVEL = 1;
 
     private FsTreeUtil() {
