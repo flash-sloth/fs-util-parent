@@ -17,9 +17,12 @@ import com.mybatisflex.core.logicdelete.impl.TimeStampLogicDeleteProcessor;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import com.mybatisflex.spring.boot.MybatisFlexProperties;
 import lombok.extern.slf4j.Slf4j;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.db.config.FsDbConfiguration;
 import top.fsfsfs.basic.db.properties.DatabaseProperties;
 import top.fsfsfs.basic.mybatisflex.keygen.UidKeyGenerator;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.mybatisflex.logicdelete.TimeStampDelByLogicDeleteProcessor;
 
 /**
@@ -44,6 +47,11 @@ public abstract class FsMybatisFlexConfiguration extends FsDbConfiguration imple
         uid(globalConfig);
 
         logicDelete();
+
+        // 全局监听器
+        globalConfig.registerInsertListener(new DefaultInsertListener(), BaseEntity.class);
+        globalConfig.registerUpdateListener(new DefaultUpdateListener(), BaseEntity.class);
+
     }
 
     /** UID注册 */
